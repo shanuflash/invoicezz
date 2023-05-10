@@ -7,7 +7,7 @@ const menu = () => {
       <div className={styles["menu-title"]}>Add items to your bill:</div>
       <div className={styles["menu-container"]}>
         {Array.from({ length: 4 }).map((_, index) => (
-          <MenuItem id={index + 1} key={index} />
+          <MenuItem id={index} key={index} />
         ))}
       </div>
     </div>

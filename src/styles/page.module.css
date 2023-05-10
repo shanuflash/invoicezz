@@ -14,10 +14,24 @@
 }
 
 .nav-title {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
   padding: 1rem;
-  background-color: rgba(20, 20, 20, 0.5);
+  background-color: rgba(72, 72, 72, 0.5);
   border: 1px solid rgba(108, 108, 108, 0.3);
   border-radius: 12px;
+}
+
+.nav-title a {
+  margin: -0.5rem;
+  font-size: 1rem;
+  color: white;
+  padding: 0.5rem 2rem;
+  border-radius: 12px;
+  background-color: rgba(72, 72, 72, 0.5);
+  border: 1px solid rgba(108, 108, 108, 0.3);
+  cursor: pointer;
 }
 
 .content {
@@ -42,7 +56,6 @@
   display: flex;
   flex-direction: column;
   min-width: 100vw;
-  min-height: 100vh;
   padding: 1rem;
   background-color: rgba(20, 20, 20, 0.5);
   border: 1px 0 solid rgba(108, 108, 108, 0.3);
@@ -59,7 +72,7 @@
   padding: 1rem 2rem;
   /* background-color: rgba(255, 255, 255, 1); */
 
-  background-color: rgba(20, 20, 20, 0.5);
+  background-color: rgba(72, 72, 72, 0.5);
   /* color: black; */
   border: 1px solid rgba(108, 108, 108, 0.3);
   border-radius: 12px;
@@ -105,4 +118,43 @@
 }
 
 .menu-item-description {
+  font-size: 1rem;
+}
+
+.menu-item-counter-value {
+  /* width: 40px; */
+  background: none;
+  border: none;
+  color: white;
+}
+
+.total {
+  gap: 1rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.total-left {
+  display: flex;
+  gap: 1rem;
+}
+
+.total-left button {
+  font-size: 1rem;
+  color: white;
+  width: 100%;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  background-color: rgba(72, 72, 72, 0.5);
+  border: 1px solid rgba(108, 108, 108, 0.3);
+  cursor: pointer;
+}
+.total-title {
+  font-size: 1.3rem;
+}
+.total-price {
+  font-size: 1.3rem;
 }
