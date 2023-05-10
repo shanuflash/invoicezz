@@ -5,11 +5,9 @@ import Total from "@/components/total";
 
 export default function Home() {
   return (
-    // <main className={styles.main}>
-    <div className={styles.content}>
+    <>
       <Menu />
       <Total />
-    </div>
-    // </main>
+    </>
   );
 }

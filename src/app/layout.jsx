@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import styles from "../styles/page.module.css";
 import { Inter } from "next/font/google";
 import Nav from "../components/nav";
 import DataProvider from "@/context/dataProvider";
@@ -15,7 +16,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <DataProvider>
           <Nav />
-          {children}
+          <div className={styles.content}>{children}</div>
         </DataProvider>
       </body>
     </html>
