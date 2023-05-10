@@ -4,7 +4,7 @@ import { createContext, useState } from "react";
 
 export const dataContext = createContext();
 
-export default dataProvider = ({ children }) => {
+const dataProvider = ({ children }) => {
   const [count, setCount] = useState([
     { id: 1, price: 100, count: 0 },
     { id: 2, price: 50, count: 0 },
@@ -18,3 +18,5 @@ export default dataProvider = ({ children }) => {
     </dataContext.Provider>
   );
 };
+
+export default dataProvider;
