@@ -160,7 +160,7 @@
 }
 
 @media print {
-  body {
+  .body {
     visibility: hidden;
   }
   .print {

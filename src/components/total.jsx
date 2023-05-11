@@ -5,7 +5,8 @@ import styles from "../styles/page.module.css";
 import { dataContext } from "@/context/dataProvider";
 
 const total = ({ invoice }) => {
-  const { count, setCount, price, setPrice } = useContext(dataContext);
+  const { count, setCount, price, setPrice, initialState } =
+    useContext(dataContext);
   useEffect(() => {
     let total = 0;
     count.forEach((item) => {
@@ -15,12 +16,7 @@ const total = ({ invoice }) => {
   }, [count]);
 
   const handleClear = () => {
-    setCount([
-      { id: 1, price: 100, count: 0 },
-      { id: 2, price: 50, count: 0 },
-      { id: 3, price: 200, count: 0 },
-      { id: 4, price: 350, count: 0 },
-    ]);
+    setCount(initialState);
   };
 
   const handleGenerate = () => {
