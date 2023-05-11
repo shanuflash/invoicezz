@@ -57,8 +57,6 @@
   flex-direction: column;
   min-width: 100vw;
   padding: 1rem;
-  background-color: rgba(20, 20, 20, 0.5);
-  border: 1px 0 solid rgba(108, 108, 108, 0.3);
   border-radius: 12px;
 }
 
@@ -122,6 +120,8 @@
 }
 
 .menu-item-counter-value {
+  font-size: 1rem;
+  font-family: inherit;
   /* width: 40px; */
   background: none;
   border: none;
@@ -146,7 +146,7 @@
   font-size: 1rem;
   color: white;
   width: 100%;
-  padding: 1rem 2rem;
+  padding: 0.7rem 2rem;
   border-radius: 12px;
   background-color: rgba(72, 72, 72, 0.5);
   border: 1px solid rgba(108, 108, 108, 0.3);

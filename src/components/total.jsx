@@ -23,7 +23,7 @@ const total = () => {
     ]);
   };
 
-  const handlePrint = () => {
+  const handleGenerate = () => {
     window.print();
   };
 
@@ -31,7 +31,7 @@ const total = () => {
     <div className={styles.total}>
       <div className={styles["total-left"]}>
         <button onClick={handleClear}>Clear</button>
-        <button onClick={handlePrint}>Print</button>
+        <button onClick={handleGenerate}>Generate</button>
       </div>
       <div className={styles["total-right"]}>
         <div className={styles["total-title"]}>

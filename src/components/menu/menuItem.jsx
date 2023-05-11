@@ -64,7 +64,7 @@ const menuItem = ({ id }) => {
           </div>
           <input
             className={styles["menu-item-counter-value"]}
-            style={{ width: `${count[id]?.count.toString().length + 1}ch` }}
+            style={{ width: `${count[id]?.count.toString().length + 0.5}ch` }}
             type="number"
             name="count"
             id="count"
@@ -73,7 +73,7 @@ const menuItem = ({ id }) => {
               setCount((prev) => {
                 return prev.map((item) => {
                   if (item.id === Number(id + 1)) {
-                    return { ...item, count: e.target.value };
+                    return { ...item, count: Number(e.target.value) };
                   }
                   return item;
                 });
