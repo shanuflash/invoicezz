@@ -18,7 +18,7 @@ function details() {
       className={styles.forms}
       onSubmit={(e) => {
         e.preventDefault();
-        console.log(Data.current["Date"].value);
+        console.log(Data.current);
       }}
     >
       <div
@@ -48,20 +48,13 @@ function details() {
           placeholder="Invoice No"
           value={Data.InvoiceNo}
           pattern="[0-9]+"
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, InvoiceNo: e.target.value }))
-          }
+          ref={(el) => (Data.current["InvoiceNo"] = el)}
           required
         />
       </div>
       <div className={styles["form-item"]}>
         <label>Payment method:</label>
-        <select
-          value={Data.Paymed}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, Paymed: e.target.value }))
-          }
-        >
+        <select value={Data.Paymed} ref={(el) => (Data.current["Paymed"] = el)}>
           <option value="">Select a payment method</option>
           <option value="Cash">Cash</option>
           <option value="Card">Card</option>
@@ -76,10 +69,8 @@ function details() {
           type="text"
           placeholder="Buyer's Name"
           value={Data.Name}
+          ref={(el) => (Data.current["Name"] = el)}
           pattern="^[a-zA-Z]+$"
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, Name: e.target.value }))
-          }
           required
         />
       </div>
@@ -92,9 +83,7 @@ function details() {
           placeholder="Buyer Phone Number"
           pattern="[0-9]+"
           value={Data.PhoneNo}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, PhoneNo: e.target.value }))
-          }
+          ref={(el) => (Data.current["PhoneNo"] = el)}
           required
         />
       </div>
@@ -106,9 +95,7 @@ function details() {
           placeholder="Deliver Name"
           value={Data.DelName}
           pattern="^[a-zA-Z]+$"
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, DelName: e.target.value }))
-          }
+          ref={(el) => (Data.current["DelName"] = el)}
           required
         />
       </div>
@@ -118,9 +105,7 @@ function details() {
           type="address"
           placeholder="Buyer Address"
           value={Data.Address}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, Address: e.target.value }))
-          }
+          ref={(el) => (Data.current["Address"] = el)}
           required
         />
       </div>
@@ -130,9 +115,7 @@ function details() {
           type="address"
           placeholder="Delivery Address"
           value={Data.DelAddress}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, DelAddress: e.target.value }))
-          }
+          ref={(el) => (Data.current["DelAddress"] = el)}
           required
         />
       </div>
