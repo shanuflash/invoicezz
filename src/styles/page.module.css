@@ -285,16 +285,15 @@
   z-index: 1;
 }
 
-
-.App {
+/* .App {
+  width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #000000;
-  height: auto;
-  padding: 3rem;
+
   margin: 0;
-}
+} */
 
 .forms {
   box-sizing: border-box;
@@ -302,17 +301,13 @@
   flex-direction: column;
   margin: 0;
   height: auto;
-  width: 60%;
-  background-color: rgba(72, 72, 72, 0.5);
-  border: 1px solid rgba(108, 108, 108, 0.3);
-  border-radius: 12px;
-  border-radius: 12px;
-  padding: 2rem;
+  width: 100vw;
+  padding: 1rem;
   align-items: flex-start;
 }
 
-.forms>input,
-.forms>select {
+.forms > input,
+.forms > select {
   width: 100%;
   padding: 0.5rem;
   margin-bottom: 1.5rem;
@@ -323,13 +318,13 @@
   font-size: 1rem;
 }
 
-.forms>label {
-  font-size: 1.2rem;
+.forms > label {
+  font-size: 1rem;
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
 
-.forms>button[type="submit"] {
+.forms > button[type="submit"] {
   background-color: #007bff;
   color: #000000;
   font-size: 1.2rem;
@@ -339,7 +334,7 @@
   cursor: pointer;
 }
 
-.forms>button[type="submit"]:hover {
+.forms > button[type="submit"]:hover {
   background-color: #0069d9;
 }
 
@@ -353,7 +348,7 @@
   height: 80px;
 }
 
-.forms>textarea {
+.forms > textarea {
   font-size: 1.2rem;
   font-weight: 500;
   width: 100%;
