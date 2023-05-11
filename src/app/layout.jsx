@@ -3,6 +3,7 @@ import styles from "../styles/page.module.css";
 import { Inter } from "next/font/google";
 import Nav from "../components/nav";
 import DataProvider from "@/context/dataProvider";
+import SupabaseProvider from "./supabase-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -14,10 +15,12 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className} ${styles.body}`}>
-        <DataProvider>
-          <Nav />
-          <div className={styles.content}>{children}</div>
-        </DataProvider>
+        <SupabaseProvider>
+          <DataProvider>
+            <Nav />
+            <div className={styles.content}>{children}</div>
+          </DataProvider>
+        </SupabaseProvider>
       </body>
     </html>
   );
