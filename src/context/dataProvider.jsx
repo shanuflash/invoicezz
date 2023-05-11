@@ -16,12 +16,7 @@ const dataProvider = ({ children }) => {
     { name: "Cement I", id: 9, price: 75, count: 0 },
     { name: "Cement J", id: 10, price: 100, count: 0 },
   ];
-  const [count, setCount] = useState(() => {
-    if (typeof window !== "undefined") {
-      let count = JSON.parse(localStorage.getItem("count"));
-      return count ? count : initialState;
-    }
-  });
+  const [count, setCount] = useState(initialState);
   const [Data, setData] = useState({
     date: "",
     invoiceno: "",
