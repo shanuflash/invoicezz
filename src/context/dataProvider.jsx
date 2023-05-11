@@ -3,29 +3,17 @@
 import { createContext, useState, useRef } from "react";
 
 export const dataContext = createContext();
-
+const [Data, setData] = useState({
+  Date: "",
+  InvoiceNo: "",
+  Paymed: "",
+  Name: "",
+  Address: "",
+  PhoneNo: "",
+  DelName: "",
+  DelAddress: "",
+});
 const dataProvider = ({ children }) => {
-  // const Data = useRef({
-  //   Date: "",
-  //   InvoiceNo: "",
-  //   Paymed: "",
-  //   Name: "",
-  //   Address: "",
-  //   PhoneNo: "",
-  //   DelName: "",
-  //   DelAddress: "",
-  // });
-  const refinitial = {
-    Date: "",
-    InvoiceNo: "",
-    Paymed: "",
-    Name: "",
-    Address: "",
-    PhoneNo: "",
-    DelName: "",
-    DelAddress: "",
-  };
-  const Data = useRef(JSON.parse(localStorage.getItem("data")));
   const initialState = [
     { name: "Cement A", id: 1, price: 100, count: 0 },
     { name: "Cement B", id: 2, price: 50, count: 0 },
@@ -50,6 +38,7 @@ const dataProvider = ({ children }) => {
     <dataContext.Provider
       value={{
         Data,
+        setData,
         count,
         setCount,
         price,
