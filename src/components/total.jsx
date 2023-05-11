@@ -1,11 +1,11 @@
 "use client";
+
 import { useContext, useEffect, useState } from "react";
 import styles from "../styles/page.module.css";
 import { dataContext } from "@/context/dataProvider";
 
-const total = () => {
-  const { count, setCount } = useContext(dataContext);
-  const [price, setPrice] = useState(0);
+const total = ({ invoice }) => {
+  const { count, setCount, price, setPrice } = useContext(dataContext);
   useEffect(() => {
     let total = 0;
     count.forEach((item) => {
@@ -30,8 +30,12 @@ const total = () => {
   return (
     <div className={styles.total}>
       <div className={styles["total-left"]}>
-        <button onClick={handleClear}>Clear</button>
-        <button onClick={handleGenerate}>Generate</button>
+        {!invoice && (
+          <>
+            <button onClick={handleClear}>Clear</button>
+            <button onClick={handleGenerate}>Generate</button>
+          </>
+        )}
       </div>
       <div className={styles["total-right"]}>
         <div className={styles["total-title"]}>

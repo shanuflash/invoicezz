@@ -158,3 +158,59 @@
 .total-price {
   font-size: 1.3rem;
 }
+
+@media print {
+  body {
+    visibility: hidden;
+  }
+  .print {
+    width: 100vw;
+    color: black;
+    visibility: visible;
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+}
+
+.invoice-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem 0;
+  background-color: rgba(72, 72, 72, 0.5);
+  border: 1px solid rgba(108, 108, 108, 0.3);
+  border-radius: 12px;
+}
+
+.invoice-title {
+  display: flex;
+  /* justify-content: space-evenly; */
+  width: 100%;
+}
+
+.invoice-title-text,
+.invoice-value {
+  width: 20%;
+  text-align: center;
+}
+
+.print {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.print .left {
+  width: 50%;
+}
+
+.print .right {
+  width: 50%;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(108, 108, 108, 0.3);
+  margin: 1rem 0;
+}

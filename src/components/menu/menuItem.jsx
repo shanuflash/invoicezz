@@ -48,7 +48,7 @@ const menuItem = ({ id }) => {
   return (
     <div className={styles["menu-item"]}>
       <div className={styles["menu-left"]}>
-        <div className={styles["menu-item-title"]}>Cement {id}</div>
+        <div className={styles["menu-item-title"]}>{count[id]?.name}</div>
         <div className={styles["menu-item-description"]}>
           This Cement is very good
         </div>
