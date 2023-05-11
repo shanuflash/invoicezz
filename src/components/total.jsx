@@ -26,23 +26,7 @@ const total = ({ invoice }) => {
   };
 
   return (
-    <div className={styles.total}>
-      <div className={styles["total-left"]}>
-        {!invoice && (
-          <>
-            <button onClick={handleClear}>Clear</button>
-            <button onClick={handleGenerate}>Generate</button>
-          </>
-        )}
-      </div>
-      <div className={styles["total-right"]}>
-        <div className={styles["total-title"]}>
-          Total:{" "}
-          <span className={styles["total-price"]}>
-            ₹{price.toLocaleString("en-IN")}
-          </span>
-        </div>
-      </div>
+    <>
       <div className={isOpen ? styles.backdrop : styles.backdropoff} />
       <Dialog
         className={styles.modal}
@@ -68,7 +52,25 @@ const total = ({ invoice }) => {
           </button>
         </Dialog.Panel>
       </Dialog>
-    </div>
+      <div className={styles.total}>
+        <div className={styles["total-left"]}>
+          {!invoice && (
+            <>
+              <button onClick={handleClear}>Clear</button>
+              <button onClick={handleGenerate}>Generate</button>
+            </>
+          )}
+        </div>
+        <div className={styles["total-right"]}>
+          <div className={styles["total-title"]}>
+            Total:{" "}
+            <span className={styles["total-price"]}>
+              ₹{price.toLocaleString("en-IN")}
+            </span>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
