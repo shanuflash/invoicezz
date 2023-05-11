@@ -4,9 +4,11 @@ import { Dialog } from "@headlessui/react";
 import { useContext, useEffect, useState } from "react";
 import styles from "../styles/page.module.css";
 import { dataContext } from "@/context/dataProvider";
+import { useRouter } from "next/navigation";
 
 const total = ({ invoice }) => {
-  let [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  // let [isOpen, setIsOpen] = useState(false);
   const { count, setCount, price, setPrice, initialState } =
     useContext(dataContext);
   useEffect(() => {
@@ -21,13 +23,18 @@ const total = ({ invoice }) => {
     setCount(initialState);
   };
 
-  const handleGenerate = () => {
-    setIsOpen(true);
+  const handleNext = () => {
+    localStorage.setItem("count", JSON.stringify(count));
+    router.push("/details");
   };
+
+  // const handleGenerate = () => {
+  //   setIsOpen(true);
+  // };
 
   return (
     <>
-      <div className={isOpen ? styles.backdrop : styles.backdropoff} />
+      {/* <div className={isOpen ? styles.backdrop : styles.backdropoff} />
       <Dialog
         className={styles.modal}
         open={isOpen}
@@ -51,13 +58,15 @@ const total = ({ invoice }) => {
             Generate
           </button>
         </Dialog.Panel>
-      </Dialog>
+      </Dialog> */}
       <div className={styles.total}>
         <div className={styles["total-left"]}>
           {!invoice && (
             <>
               <button onClick={handleClear}>Clear</button>
-              <button onClick={handleGenerate}>Generate</button>
+              <button onClick={handleNext}>Next</button>
+
+              {/* <button onClick={handleGenerate}>Generate</button> */}
             </>
           )}
         </div>

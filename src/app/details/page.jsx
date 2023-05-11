@@ -1,26 +1,40 @@
 "use client";
 
-import { useRef, useState } from "react";
-import styles from "../styles/page.module.css";
+import styles from "@/styles/page.module.css";
+import { useContext, useRef } from "react";
+import { dataContext } from "@/context/dataProvider";
+import { useRouter } from "next/navigation";
 function details() {
-  const Data = useRef({
-    Date: "",
-    InvoiceNo: "",
-    Paymed: "",
-    Name: "",
-    Address: "",
-    PhoneNo: "",
-    DelName: "",
-    DelAddress: "",
-  });
+  const router = useRouter();
+  const { Data } = useContext(dataContext);
+
+  const handleClear = () => {
+    Object.keys(Data.current).forEach((key) => {
+      Data.current[key].value = "";
+    });
+  };
+
+  const handleNext = (e) => {
+    e.preventDefault();
+    console.log(Data.current);
+    localStorage.setItem(
+      "data",
+      JSON.stringify({
+        Date: Data.current["Date"].value,
+        InvoiceNo: Data.current["InvoiceNo"].value,
+        Paymed: Data.current["Paymed"].value,
+        Name: Data.current["Name"].value,
+        Address: Data.current["Address"].value,
+        PhoneNo: Data.current["PhoneNo"].value,
+        DelName: Data.current["DelName"].value,
+        DelAddress: Data.current["DelAddress"].value,
+      })
+    );
+    // router.push("/preview");
+  };
+
   return (
-    <form
-      className={styles.forms}
-      onSubmit={(e) => {
-        e.preventDefault();
-        console.log(Data.current);
-      }}
-    >
+    <form className={styles.forms} onSubmit={handleNext}>
       <div
         className={styles["menu-title"]}
         style={{
@@ -119,7 +133,21 @@ function details() {
           required
         />
       </div>
-      <button type="submit"></button>
+      <div className={styles["button-container"]}>
+        <div>
+          <button style={{ width: "auto" }} onClick={() => router.back()}>
+            Previous
+          </button>
+        </div>
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <button style={{ width: "auto" }} onClick={handleClear}>
+            Clear
+          </button>
+          <button style={{ width: "auto" }} type="submit">
+            Next
+          </button>
+        </div>
+      </div>
     </form>
   );
 }

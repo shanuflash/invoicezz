@@ -1,7 +1,7 @@
 "use client";
 import { dataContext } from "@/context/dataProvider";
 import styles from "../../styles/page.module.css";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 // const initialState = {
 //   count: 0,
@@ -45,6 +45,7 @@ const menuItem = ({ id }) => {
         });
       });
   };
+
   return (
     <div className={styles["menu-item"]}>
       <div className={styles["menu-left"]}>

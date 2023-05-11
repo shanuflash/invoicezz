@@ -1,12 +1,15 @@
-// import { dataContext } from "@/context/dataProvider";
-import styles from "../styles/page.module.css";
-import Invoice from "./invoice";
-// import { useContext } from "react";
-import Total from "./total";
+"use client";
+import { dataContext } from "@/context/dataProvider";
+import styles from "@/styles/page.module.css";
+import { useContext } from "react";
+import Total from "@/components/total";
 import numWords from "num-words";
 
 const preview = () => {
-  // const { count, price } = useContext(dataContext);
+  const { count, price } = useContext(dataContext);
+  // useEffect(() => {
+  //   console.log(Data.current.Address.value);
+  // });
   return (
     <div className={styles.menu}>
       <div className={styles["menu-title"]}>Preview</div>
@@ -47,7 +50,6 @@ const preview = () => {
             </div>
             <div className={styles["invoice-buyer-address"]}>
               <br /> {/*fill*/}
-              <br /> {/*fill*/}
             </div>
             <div className={styles["invoice-buyer-contact"]}>
               GSTIN: {/*fill*/}
@@ -73,8 +75,7 @@ const preview = () => {
         {/*  */}
         <div className={styles.divider} />
         {/*  */}
-        <Invoice />
-        {/* <div className={styles["invoice-item-container"]}>
+        <div className={styles["invoice-item-container"]}>
           <div className={styles["invoice-title"]}>
             <div className={styles["invoice-title-text"]}>Item</div>
             <div className={styles["invoice-title-text"]}>HSN/SAC</div>
@@ -82,7 +83,7 @@ const preview = () => {
             <div className={styles["invoice-title-text"]}>Price</div>
             <div className={styles["invoice-title-text"]}>Amount</div>
           </div>
-          {count.map((item) => {
+          {count?.map((item) => {
             if (item.count > 0) {
               return (
                 <div className={styles["invoice-item"]}>
@@ -97,13 +98,13 @@ const preview = () => {
               );
             }
           })}
-        </div> */}
+        </div>
         [GST WIP]
         <Total invoice />
         <div className="invoice-ammountinworkds">
           <div className="invoice-ammountinwords-title">Amount in Words:</div>
           <div className="invoice-ammountinwords-value">
-            {/* {numWords(price).toUpperCase()} */}
+            {numWords(price).toUpperCase()}
           </div>
         </div>
       </div>
