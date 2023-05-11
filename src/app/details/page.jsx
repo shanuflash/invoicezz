@@ -20,8 +20,13 @@ function details() {
     });
   };
 
+  const handleNext = (e) => {
+    e.preventDefault();
+    router.push("/preview");
+  };
+
   return (
-    <form className={styles.forms}>
+    <form className={styles.forms} onSubmit={handleNext}>
       <div
         className={styles["menu-title"]}
         style={{

@@ -10,11 +10,11 @@ const dataProvider = ({ children }) => {
     { name: "Cement C", id: 3, price: 350, count: 0 },
     { name: "Cement D", id: 4, price: 200, count: 0 },
     { name: "Cement E", id: 5, price: 175, count: 0 },
-    { name: "Cement F", id: 6, price: 225, count: 0 },
-    { name: "Cement G", id: 7, price: 125, count: 0 },
-    { name: "Cement H", id: 8, price: 100, count: 0 },
-    { name: "Cement I", id: 9, price: 75, count: 0 },
-    { name: "Cement J", id: 10, price: 100, count: 0 },
+    // { name: "Cement F", id: 6, price: 225, count: 0 },
+    // { name: "Cement G", id: 7, price: 125, count: 0 },
+    // { name: "Cement H", id: 8, price: 100, count: 0 },
+    // { name: "Cement I", id: 9, price: 75, count: 0 },
+    // { name: "Cement J", id: 10, price: 100, count: 0 },
   ];
   const [count, setCount] = useState(initialState);
   const [Data, setData] = useState({
