@@ -3,8 +3,7 @@
 import { useRef, useState } from "react";
 import styles from "../styles/page.module.css";
 function details() {
-  const date = useRef();
-  const [Data, setData] = useState({
+  const Data = useRef({
     Date: "",
     InvoiceNo: "",
     Paymed: "",
@@ -15,7 +14,13 @@ function details() {
     DelAddress: "",
   });
   return (
-    <form className={styles.forms}>
+    <form
+      className={styles.forms}
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log(Data.current["Date"].value);
+      }}
+    >
       <div
         className={styles["menu-title"]}
         style={{
@@ -27,20 +32,18 @@ function details() {
       <div className={styles["form-item"]}>
         <label>Date</label>
         <input
-          autocomplete="off"
+          autoComplete="off"
           type="date"
           placeholder="Date"
           value={Data.Date}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, Date: e.target.value }))
-          }
+          ref={(el) => (Data.current["Date"] = el)}
           required
         />
       </div>
       <div className={styles["form-item"]}>
         <label>Invoice No:</label>
         <input
-          autocomplete="off"
+          autoComplete="off"
           type="text"
           placeholder="Invoice No"
           value={Data.InvoiceNo}
@@ -69,7 +72,7 @@ function details() {
       <div className={styles["form-item"]}>
         <label>Buyer's Name</label>
         <input
-          autocomplete="off"
+          autoComplete="off"
           type="text"
           placeholder="Buyer's Name"
           value={Data.Name}
@@ -84,7 +87,7 @@ function details() {
       <div className={styles["form-item"]}>
         <label>Buyer's Phone Number</label>
         <input
-          autocomplete="off"
+          autoComplete="off"
           type="text"
           placeholder="Buyer Phone Number"
           pattern="[0-9]+"
@@ -98,7 +101,7 @@ function details() {
       <div className={styles["form-item"]}>
         <label>Deliver Name</label>
         <input
-          autocomplete="off"
+          autoComplete="off"
           type="text"
           placeholder="Deliver Name"
           value={Data.DelName}
@@ -133,6 +136,7 @@ function details() {
           required
         />
       </div>
+      <button type="submit"></button>
     </form>
   );
 }
