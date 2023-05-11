@@ -27,7 +27,7 @@ const menuItem = ({ id }) => {
     setCount((prev) => {
       return prev.map((item) => {
         if (item.id === Number(id + 1)) {
-          return { ...item, count: item.count + 1 };
+          return { ...item, count: Number(item.count) + 1 };
         }
         return item;
       });
@@ -39,7 +39,7 @@ const menuItem = ({ id }) => {
       setCount((prev) => {
         return prev.map((item) => {
           if (item.id === Number(id + 1)) {
-            return { ...item, count: item.count - 1 };
+            return { ...item, count: Number(item.count) - 1 };
           }
           return item;
         });
@@ -73,7 +73,7 @@ const menuItem = ({ id }) => {
               setCount((prev) => {
                 return prev.map((item) => {
                   if (item.id === Number(id + 1)) {
-                    return { ...item, count: Number(e.target.value) };
+                    return { ...item, count: e.target.value };
                   }
                   return item;
                 });

@@ -160,6 +160,14 @@
 }
 
 @media print {
+  @page {
+    margin-header: 0mm;
+    margin-footer: 0mm;
+  }
+  .body {
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
   .body {
     visibility: hidden;
   }
@@ -170,6 +178,12 @@
     position: absolute;
     left: 0;
     top: 0;
+  }
+  .divider {
+    color: black;
+  }
+  .hdivider {
+    color: black;
   }
 }
 
@@ -213,4 +227,60 @@
   height: 1px;
   background-color: rgba(108, 108, 108, 0.3);
   margin: 1rem 0;
+}
+
+.hdivider {
+  width: 1px;
+  height: 100%;
+  background-color: rgba(108, 108, 108, 0.3);
+  margin: 1rem 0;
+}
+
+.invoice-company-name {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.invoice-item-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.invoice-ammountinwords-value {
+  text-transform: uppercase;
+}
+
+.modal {
+  z-index: 4;
+  background-color: rgba(20, 20, 20, 1);
+  border: 1px solid rgba(108, 108, 108, 0.3);
+  border-radius: 12px;
+  padding: 1rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.modal button {
+  font-size: 1rem;
+  color: white;
+  width: 100%;
+  padding: 0.7rem 2rem;
+  border-radius: 12px;
+  background-color: rgba(72, 72, 72, 0.5);
+  border: 1px solid rgba(108, 108, 108, 0.3);
+  cursor: pointer;
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
 }
