@@ -1,18 +1,8 @@
 "use client";
 
-import { createContext, useState, useRef } from "react";
+import { createContext, useState } from "react";
 
 export const dataContext = createContext();
-const [Data, setData] = useState({
-  Date: "",
-  InvoiceNo: "",
-  Paymed: "",
-  Name: "",
-  Address: "",
-  PhoneNo: "",
-  DelName: "",
-  DelAddress: "",
-});
 const dataProvider = ({ children }) => {
   const initialState = [
     { name: "Cement A", id: 1, price: 100, count: 0 },
@@ -31,6 +21,16 @@ const dataProvider = ({ children }) => {
       let count = JSON.parse(localStorage.getItem("count"));
       return count ? count : initialState;
     }
+  });
+  const [Data, setData] = useState({
+    date: "",
+    invoiceno: "",
+    paymed: "",
+    name: "",
+    address: "",
+    phoneno: "",
+    delname: "",
+    deladdress: "",
   });
   const [price, setPrice] = useState(0);
 

@@ -1,40 +1,27 @@
 "use client";
 
+import { useContext, useRef, useState } from "react";
 import styles from "@/styles/page.module.css";
-import { useContext, useRef } from "react";
 import { dataContext } from "@/context/dataProvider";
 import { useRouter } from "next/navigation";
 function details() {
+  const { Data, setData } = useContext(dataContext);
   const router = useRouter();
-  const { Data } = useContext(dataContext);
-
   const handleClear = () => {
-    Object.keys(Data.current).forEach((key) => {
-      Data.current[key].value = "";
+    setData({
+      date: "",
+      invoiceno: "",
+      paymed: "",
+      name: "",
+      address: "",
+      phoneno: "",
+      delname: "",
+      deladdress: "",
     });
   };
 
-  const handleNext = (e) => {
-    e.preventDefault();
-    console.log(Data.current);
-    localStorage.setItem(
-      "data",
-      JSON.stringify({
-        Date: Data.current["Date"].value,
-        InvoiceNo: Data.current["InvoiceNo"].value,
-        Paymed: Data.current["Paymed"].value,
-        Name: Data.current["Name"].value,
-        Address: Data.current["Address"].value,
-        PhoneNo: Data.current["PhoneNo"].value,
-        DelName: Data.current["DelName"].value,
-        DelAddress: Data.current["DelAddress"].value,
-      })
-    );
-    // router.push("/preview");
-  };
-
   return (
-    <form className={styles.forms} onSubmit={handleNext}>
+    <form className={styles.forms}>
       <div
         className={styles["menu-title"]}
         style={{
@@ -49,8 +36,10 @@ function details() {
           autoComplete="off"
           type="date"
           placeholder="Date"
-          value={Data.Date}
-          ref={(el) => (Data.current["Date"] = el)}
+          value={Data.date}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, date: e.target.value }))
+          }
           required
         />
       </div>
@@ -60,15 +49,22 @@ function details() {
           autoComplete="off"
           type="text"
           placeholder="Invoice No"
-          value={Data.InvoiceNo}
+          value={Data.invoiceno}
           pattern="[0-9]+"
-          ref={(el) => (Data.current["InvoiceNo"] = el)}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, invoiceno: e.target.value }))
+          }
           required
         />
       </div>
       <div className={styles["form-item"]}>
         <label>Payment method:</label>
-        <select value={Data.Paymed} ref={(el) => (Data.current["Paymed"] = el)}>
+        <select
+          value={Data.paymed}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, paymed: e.target.value }))
+          }
+        >
           <option value="">Select a payment method</option>
           <option value="Cash">Cash</option>
           <option value="Card">Card</option>
@@ -82,9 +78,11 @@ function details() {
           autoComplete="off"
           type="text"
           placeholder="Buyer's Name"
-          value={Data.Name}
-          ref={(el) => (Data.current["Name"] = el)}
+          value={Data.name}
           pattern="^[a-zA-Z]+$"
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, name: e.target.value }))
+          }
           required
         />
       </div>
@@ -96,8 +94,10 @@ function details() {
           type="text"
           placeholder="Buyer Phone Number"
           pattern="[0-9]+"
-          value={Data.PhoneNo}
-          ref={(el) => (Data.current["PhoneNo"] = el)}
+          value={Data.phoneno}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, phoneno: e.target.value }))
+          }
           required
         />
       </div>
@@ -107,9 +107,11 @@ function details() {
           autoComplete="off"
           type="text"
           placeholder="Deliver Name"
-          value={Data.DelName}
+          value={Data.delname}
           pattern="^[a-zA-Z]+$"
-          ref={(el) => (Data.current["DelName"] = el)}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, delname: e.target.value }))
+          }
           required
         />
       </div>
@@ -118,8 +120,10 @@ function details() {
         <textarea
           type="address"
           placeholder="Buyer Address"
-          value={Data.Address}
-          ref={(el) => (Data.current["Address"] = el)}
+          value={Data.address}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, address: e.target.value }))
+          }
           required
         />
       </div>
@@ -128,8 +132,10 @@ function details() {
         <textarea
           type="address"
           placeholder="Delivery Address"
-          value={Data.DelAddress}
-          ref={(el) => (Data.current["DelAddress"] = el)}
+          value={Data.deladdress}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, deladdress: e.target.value }))
+          }
           required
         />
       </div>
