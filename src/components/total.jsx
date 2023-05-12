@@ -7,10 +7,9 @@ import { dataContext } from "@/context/dataProvider";
 import { useRouter } from "next/navigation";
 
 const total = ({ invoice }) => {
-  console.log(invoice);
   const router = useRouter();
   // let [isOpen, setIsOpen] = useState(false);
-  const { count, setCount, price, setPrice, initialState, tax, setTax } =
+  const { count, setCount, price, setPrice, handleItems, tax, setTax } =
     useContext(dataContext);
   useEffect(() => {
     let total = 0;
@@ -22,7 +21,7 @@ const total = ({ invoice }) => {
   }, [count]);
 
   const handleClear = () => {
-    setCount(initialState);
+    handleItems();
   };
 
   const handleNext = () => {

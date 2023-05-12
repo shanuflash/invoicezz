@@ -3,25 +3,7 @@ import { dataContext } from "@/context/dataProvider";
 import styles from "../../styles/page.module.css";
 import { useContext, useEffect } from "react";
 
-// const initialState = {
-//   count: 0,
-// };
-
-// const reducer = (state, action) => {
-//   switch (action.type) {
-//     case "INCREMENT":
-//       return { ...state, count: state.count + 1 };
-//     case "DECREMENT":
-//       return { ...state, count: state.count - 1 };
-//     case "RESET":
-//       return { ...state, count: 0 };
-//     default:
-//       return state;
-//   }
-// };
-
 const menuItem = ({ id }) => {
-  // const [state, dispatch] = useReducer(reducer, initialState);
   const { count, setCount } = useContext(dataContext);
   const increment = () => {
     setCount((prev) => {

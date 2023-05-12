@@ -14,7 +14,8 @@ function details() {
       paymed: "",
       name: "",
       address: "",
-      phoneno: "",
+      gstin: "",
+      // phoneno: "",
       delname: "",
       deladdress: "",
     });
@@ -48,7 +49,7 @@ function details() {
           required
         />
       </div>
-      <div className={styles["form-item"]}>
+      {/* <div className={styles["form-item"]}>
         <label>Invoice No:</label>
         <input
           autoComplete="off"
@@ -59,9 +60,9 @@ function details() {
           onChange={(e) =>
             setData((prev) => ({ ...prev, invoiceno: e.target.value }))
           }
-          required
+          // required
         />
-      </div>
+      </div> */}
       <div className={styles["form-item"]}>
         <label>Payment method:</label>
         <select
@@ -91,23 +92,8 @@ function details() {
           required
         />
       </div>
-
       <div className={styles["form-item"]}>
-        <label>Buyer's Phone Number</label>
-        <input
-          autoComplete="off"
-          type="text"
-          placeholder="Buyer Phone Number"
-          pattern="[0-9]+"
-          value={Data.phoneno}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, phoneno: e.target.value }))
-          }
-          required
-        />
-      </div>
-      <div className={styles["form-item"]}>
-        <label>Deliver Name</label>
+        <label>Delivery Name</label>
         <input
           autoComplete="off"
           type="text"
@@ -120,6 +106,22 @@ function details() {
           required
         />
       </div>
+
+      {/* <div className={styles["form-item"]}>
+        <label>Buyer's Phone Number</label>
+        <input
+          autoComplete="off"
+          type="text"
+          placeholder="Buyer Phone Number"
+          pattern="[0-9]+"
+          value={Data.phoneno}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, phoneno: e.target.value }))
+          }
+          required
+        />
+      </div> */}
+
       <div className={styles["form-item"]}>
         <label>Buyer's Address</label>
         <textarea
@@ -140,6 +142,20 @@ function details() {
           value={Data.deladdress}
           onChange={(e) =>
             setData((prev) => ({ ...prev, deladdress: e.target.value }))
+          }
+          required
+        />
+      </div>
+      <div className={styles["form-item"]}>
+        <label>Buyer's GSTIN</label>
+        <input
+          autoComplete="off"
+          type="text"
+          placeholder="Buyer's GSTIN"
+          // pattern="[0-9]+"
+          value={Data.gstin}
+          onChange={(e) =>
+            setData((prev) => ({ ...prev, gstin: e.target.value }))
           }
           required
         />

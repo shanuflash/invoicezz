@@ -372,3 +372,40 @@
 .invoice-tax {
   width: 100%;
 }
+
+.history {
+  display: flex;
+  padding: 1rem;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+}
+
+.history-item {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  /* flex-direction: column; */
+  gap: 0.5rem;
+  /* justify-content: space-between; */
+  padding: 1rem 2rem;
+  /* background-color: rgba(255, 255, 255, 1); */
+
+  background-color: rgba(72, 72, 72, 0.5);
+  /* color: black; */
+  border: 1px solid rgba(108, 108, 108, 0.3);
+  border-radius: 12px;
+}
+
+.item-invoiceno {
+  width: 100%;
+  /* width: fit-content; */
+  font-size: 1.2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(108, 108, 108, 1);
+}
+
+.item-data {
+  width: 48%;
+}

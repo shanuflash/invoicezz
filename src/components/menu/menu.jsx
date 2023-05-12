@@ -5,8 +5,9 @@ const menu = () => {
   return (
     <div className={styles.menu}>
       <div className={styles["menu-title"]}>Add items to your bill:</div>
+      {/* search */}
       <div className={styles["menu-container"]}>
-        {Array.from({ length: 4 }).map((_, index) => (
+        {Array.from({ length: 5 }).map((_, index) => (
           <MenuItem id={index} key={index} />
         ))}
       </div>

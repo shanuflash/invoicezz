@@ -1,34 +1,56 @@
 "use client";
 
-import { createContext, useState } from "react";
+import { useSupabase } from "@/app/supabase-provider";
+import { createContext, useEffect, useState } from "react";
 
 export const dataContext = createContext();
 const dataProvider = ({ children }) => {
-  const initialState = [
-    { name: "Cement A", id: 1, price: 100, count: 0 },
-    { name: "Cement B", id: 2, price: 300, count: 0 },
-    { name: "Cement C", id: 3, price: 350, count: 0 },
-    { name: "Cement D", id: 4, price: 200, count: 0 },
-    { name: "Cement E", id: 5, price: 175, count: 0 },
-    // { name: "Cement F", id: 6, price: 225, count: 0 },
-    // { name: "Cement G", id: 7, price: 125, count: 0 },
-    // { name: "Cement H", id: 8, price: 100, count: 0 },
-    // { name: "Cement I", id: 9, price: 75, count: 0 },
-    // { name: "Cement J", id: 10, price: 100, count: 0 },
-  ];
+  const { supabase } = useSupabase();
+
   const [tax, setTax] = useState(0);
-  const [count, setCount] = useState(initialState);
+  const [count, setCount] = useState(
+    Array(10).fill({
+      name: "Loading...",
+      id: " Loading...",
+      price: " Loading...",
+      count: 0,
+    })
+  );
   const [Data, setData] = useState({
     date: "",
     invoiceno: "",
     paymed: "",
     name: "",
     address: "",
-    phoneno: "",
+    gstin: "",
+    // phoneno: "",
     delname: "",
     deladdress: "",
   });
   const [price, setPrice] = useState(0);
+
+  const handleItems = async () => {
+    let { data: inventory, error } = await supabase
+      .from("inventory")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) {
+      setCount(
+        Array(10).fill({
+          name: "Failed to load",
+          id: " Failed to load",
+          price: " Failed to load",
+          count: 0,
+        })
+      );
+      console.log(error);
+    } else setCount(inventory);
+  };
+
+  useEffect(() => {
+    handleItems();
+  }, []);
 
   return (
     <dataContext.Provider
@@ -41,7 +63,7 @@ const dataProvider = ({ children }) => {
         setCount,
         price,
         setPrice,
-        initialState,
+        handleItems,
       }}
     >
       {children}

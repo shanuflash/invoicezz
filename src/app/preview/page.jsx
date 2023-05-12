@@ -1,20 +1,53 @@
 "use client";
 import { dataContext } from "@/context/dataProvider";
 import styles from "@/styles/page.module.css";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Total from "@/components/total";
 import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
 import { useRouter } from "next/navigation";
+import { useSupabase } from "../supabase-provider";
 
 const preview = () => {
   const { count, price, Data, tax } = useContext(dataContext);
+  console.log(count);
+  const { supabase } = useSupabase();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  const [invoiceno, setInvoiceno] = useState("<generating>");
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setIsOpen(true);
   };
+
+  const handleInvoiceno = async () => {
+    const { data: olddata, error: olderror } = await supabase
+      .from("history")
+      .select("invoiceno")
+      .order("invoiceno", { ascending: false })
+      .limit(1);
+    setInvoiceno(olddata[0].invoiceno + 1);
+  };
+
+  useEffect(() => {
+    handleInvoiceno();
+  }, []);
+
+  const handlePrint = async () => {
+    setIsOpen(false);
+    window.print();
+    const { data, error } = await supabase.from("history").insert([
+      {
+        ...Data,
+        total: price + tax,
+        invoiceno: Number(olddata[0].invoiceno + 1),
+        items: count,
+      },
+    ]);
+    if (error) console.log(error);
+    else console.log(data);
+  };
+
   return (
     <>
       <div className={isOpen ? styles.backdrop : styles.backdropoff} />
@@ -32,14 +65,7 @@ const preview = () => {
           </Dialog.Description>
 
           <button onClick={() => setIsOpen(false)}>Cancel</button>
-          <button
-            onClick={() => {
-              setIsOpen(false);
-              window.print();
-            }}
-          >
-            Generate
-          </button>
+          <button onClick={handlePrint}>Generate</button>
         </Dialog.Panel>
       </Dialog>
       <div className={styles.menu}>
@@ -64,7 +90,7 @@ const preview = () => {
               Date: {new Date().toLocaleDateString("en-IN")}
             </div>
             <div className={styles["invoice-number"]}>
-              Invoice No: {Data.invoiceno}
+              Invoice No: {invoiceno}
             </div>
             <div className={styles["invoice-method"]}>
               Payment Method: {Data.paymed}
