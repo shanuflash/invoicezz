@@ -7,10 +7,10 @@ import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import { useSupabase } from "../supabase-provider";
+import Link from "next/link";
 
 const preview = () => {
   const { count, price, Data, tax } = useContext(dataContext);
-  console.log(count);
   const { supabase } = useSupabase();
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
@@ -206,13 +206,10 @@ const preview = () => {
             </div>
           </div> */}
         </div>
-        <div className={styles["button-container"]}>
-          <button
-            style={{ width: "auto" }}
-            onClick={() => router.push("/details")}
-          >
+        <div className={`${styles["button-container"]} ${styles.button}`}>
+          <Link href="/details" style={{ width: "auto" }}>
             Previous
-          </button>
+          </Link>
           <button style={{ width: "auto" }} onClick={handleGenerate}>
             Generate
           </button>

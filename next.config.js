@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  trailingSlash: true,
+  experimental: {
+    scrollRestoration: true,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

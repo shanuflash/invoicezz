@@ -4,6 +4,7 @@ import { useContext, useRef, useState } from "react";
 import styles from "@/styles/page.module.css";
 import { dataContext } from "@/context/dataProvider";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 function details() {
   const { Data, setData } = useContext(dataContext);
   const router = useRouter();
@@ -161,10 +162,10 @@ function details() {
         />
       </div>
       <div className={styles["button-container"]}>
-        <div>
-          <button style={{ width: "auto" }} onClick={() => router.push("/")}>
+        <div className={styles.button}>
+          <Link style={{ width: "auto" }} href="/">
             Previous
-          </button>
+          </Link>
         </div>
         <div style={{ display: "flex", gap: "1rem" }}>
           <button style={{ width: "auto" }} onClick={handleClear}>
