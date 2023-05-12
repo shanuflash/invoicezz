@@ -23,8 +23,10 @@
   border-radius: 12px;
 }
 
-.nav-title a {
-  margin: -0.5rem;
+.nav-title a,
+.nav-title button {
+  margin: -0.5rem 0 -0.5rem 0.5rem !important;
+  width: auto !important;
   font-size: 1rem;
   color: white;
   padding: 0.5rem 2rem;
@@ -32,6 +34,13 @@
   background-color: rgba(72, 72, 72, 0.5);
   border: 1px solid rgba(108, 108, 108, 0.3);
   cursor: pointer;
+}
+
+.logo {
+  font-size: 1rem;
+  padding: 0.5rem !important;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 .content {
@@ -233,9 +242,13 @@
 }
 
 .invoice-item-container {
+  margin-top: 0.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
+}
+.invoice-ammountinwords {
   width: 100%;
 }
 
@@ -276,6 +289,7 @@
 } */
 
 .forms {
+  align-self: center;
   box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
@@ -333,5 +347,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
+}
+
+.form {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  gap: 1rem;
+
+  height: auto;
+  width: 100vw;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.form > button {
+  width: 48%;
+}
+
+.invoice-tax {
   width: 100%;
 }
