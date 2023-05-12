@@ -6,7 +6,7 @@ export default function Home() {
     <>
       {/* <Details /> */}
       <Menu />
-      <Total />
+      <Total invoice={false} />
       {/* <Preview /> */}
     </>
   );

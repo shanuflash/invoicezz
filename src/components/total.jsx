@@ -7,9 +7,10 @@ import { dataContext } from "@/context/dataProvider";
 import { useRouter } from "next/navigation";
 
 const total = ({ invoice }) => {
+  console.log(invoice);
   const router = useRouter();
   // let [isOpen, setIsOpen] = useState(false);
-  const { count, setCount, price, setPrice, initialState } =
+  const { count, setCount, price, setPrice, initialState, tax, setTax } =
     useContext(dataContext);
   useEffect(() => {
     let total = 0;
@@ -17,6 +18,7 @@ const total = ({ invoice }) => {
       total += item.price * item.count;
     });
     setPrice(total);
+    setTax(total * 2 * 0.14);
   }, [count]);
 
   const handleClear = () => {
@@ -74,7 +76,11 @@ const total = ({ invoice }) => {
           <div className={styles["total-title"]}>
             Total:{" "}
             <span className={styles["total-price"]}>
-              ₹{price.toLocaleString("en-IN")}
+              {invoice ? (
+                <>₹{(price + tax).toLocaleString("en-IN")}</>
+              ) : (
+                <>₹{price.toLocaleString("en-IN")}</>
+              )}
             </span>
           </div>
         </div>

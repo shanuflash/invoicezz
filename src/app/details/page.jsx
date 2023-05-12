@@ -146,7 +146,7 @@ function details() {
       </div>
       <div className={styles["button-container"]}>
         <div>
-          <button style={{ width: "auto" }} onClick={() => router.back()}>
+          <button style={{ width: "auto" }} onClick={() => router.push("/")}>
             Previous
           </button>
         </div>

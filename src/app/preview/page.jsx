@@ -5,10 +5,12 @@ import { useContext, useState } from "react";
 import Total from "@/components/total";
 import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
+import { useRouter } from "next/navigation";
 
 const preview = () => {
-  const { count, price, Data } = useContext(dataContext);
+  const { count, price, Data, tax } = useContext(dataContext);
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const handleGenerate = () => {
     setIsOpen(true);
@@ -93,6 +95,7 @@ const preview = () => {
               </div>
               <div className={styles["invoice-delivery-address"]}>
                 {Data.delname}
+                <br />
                 {Data.deladdress}
               </div>
               <div className={styles["invoice-delivery-method"]}>
@@ -127,16 +130,67 @@ const preview = () => {
               }
             })}
           </div>
-          [GST WIP]
-          <Total invoice />
-          <div className="invoice-ammountinworkds">
-            <div className="invoice-ammountinwords-title">Amount in Words:</div>
-            <div className="invoice-ammountinwords-value">
-              {numWords(price).toUpperCase()}
+          <div className={styles["invoice-item-container"]}>
+            <div className={styles["invoice-item"]}>
+              <div className={styles["invoice-value"]}>CGST 14%</div>
+              <div className={styles["invoice-value"]}></div>
+              <div className={styles["invoice-value"]}></div>
+              <div className={styles["invoice-value"]}></div>
+              <div className={styles["invoice-value"]}>{parseInt(tax / 2)}</div>
+            </div>
+            <div className={styles["invoice-item"]}>
+              <div className={styles["invoice-value"]}>SGST 14%</div>
+              <div className={styles["invoice-value"]}></div>
+              <div className={styles["invoice-value"]}></div>
+              <div className={styles["invoice-value"]}></div>
+              <div className={styles["invoice-value"]}>{parseInt(tax / 2)}</div>
             </div>
           </div>
+
+          <Total invoice />
+          <div className={styles["invoice-ammountinwords"]}>
+            <div className={styles["invoice-ammountinwords-title"]}>
+              Tax Amount in Words:
+            </div>
+            <div className={styles["invoice-ammountinwords-value"]}>
+              {numWords(parseInt(tax)).toUpperCase()}
+            </div>
+          </div>
+          <div className={styles["invoice-ammountinwords"]}>
+            <div className={styles["invoice-ammountinwords-title"]}>
+              Amount in Words:
+            </div>
+            <div className={styles["invoice-ammountinwords-value"]}>
+              {numWords(parseInt(price + tax)).toUpperCase()}
+            </div>
+          </div>
+          {/* <div className={styles["invoice-tax"]}>
+            <div className={styles["invoice-tax-title"]}>Tax:</div>
+            <div className={styles["invoice-tax-cgst"]}>
+              <div className={styles["invoice-tax-name"]}>CGST 14%</div>
+              <div className={styles["invoice-tax-value"]}>
+                {parseInt(tax / 2)}
+              </div>
+            </div>
+            <div className={styles["invoice-tax-sgst"]}>
+              <div className={styles["invoice-tax-name"]}>SGST 14%</div>
+              <div className={styles["invoice-tax-value"]}>
+                {parseInt(tax / 2)}
+              </div>
+            </div>
+          </div> */}
         </div>
-        <button onClick={handleGenerate}>handleGenerate</button>
+        <div className={styles["button-container"]}>
+          <button
+            style={{ width: "auto" }}
+            onClick={() => router.push("/details")}
+          >
+            Previous
+          </button>
+          <button style={{ width: "auto" }} onClick={handleGenerate}>
+            Generate
+          </button>
+        </div>
       </div>
     </>
   );

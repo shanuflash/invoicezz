@@ -6,7 +6,7 @@ export const dataContext = createContext();
 const dataProvider = ({ children }) => {
   const initialState = [
     { name: "Cement A", id: 1, price: 100, count: 0 },
-    { name: "Cement B", id: 2, price: 50, count: 0 },
+    { name: "Cement B", id: 2, price: 300, count: 0 },
     { name: "Cement C", id: 3, price: 350, count: 0 },
     { name: "Cement D", id: 4, price: 200, count: 0 },
     { name: "Cement E", id: 5, price: 175, count: 0 },
@@ -16,6 +16,7 @@ const dataProvider = ({ children }) => {
     // { name: "Cement I", id: 9, price: 75, count: 0 },
     // { name: "Cement J", id: 10, price: 100, count: 0 },
   ];
+  const [tax, setTax] = useState(0);
   const [count, setCount] = useState(initialState);
   const [Data, setData] = useState({
     date: "",
@@ -32,6 +33,8 @@ const dataProvider = ({ children }) => {
   return (
     <dataContext.Provider
       value={{
+        tax,
+        setTax,
         Data,
         setData,
         count,
