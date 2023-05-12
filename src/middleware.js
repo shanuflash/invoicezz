@@ -10,7 +10,13 @@ export async function middleware(req) {
     data: { session },
   } = await supabase.auth.getSession();
   console.log(session);
-  if (!session && pathname === "/") {
+  if (
+    !session &&
+    (pathname === "/" ||
+      pathname === "/details" ||
+      pathname === "/preview" ||
+      pathname === "/history")
+  ) {
     const url = new URL(req.url);
     url.pathname = "/login";
     console.log("redirect1");
