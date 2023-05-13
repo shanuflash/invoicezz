@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSupabase } from "../supabase-provider";
 import styles from "@/styles/page.module.css";
 
-const page = () => {
+const history = () => {
   const { supabase } = useSupabase();
   const [data, setData] = useState([]);
 
@@ -56,4 +56,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default history;
