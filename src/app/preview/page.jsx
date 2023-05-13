@@ -38,7 +38,7 @@ const preview = () => {
       {
         ...Data,
         total: price + tax,
-        invoiceno: Number(invoiceno + 1),
+        invoiceno: Number(invoiceno),
         items: count,
       },
     ]);
