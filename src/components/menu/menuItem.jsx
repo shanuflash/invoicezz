@@ -6,18 +6,20 @@ import { useContext, useEffect } from "react";
 const menuItem = ({ id }) => {
   const { count, setCount } = useContext(dataContext);
   const increment = () => {
-    setCount((prev) => {
-      return prev.map((item) => {
-        if (item.id === Number(id + 1)) {
-          return { ...item, count: Number(item.count) + 1 };
-        }
-        return item;
+    if (count[id]?.stock > count[id]?.count) {
+      setCount((prev) => {
+        return prev.map((item) => {
+          if (item.id === Number(id + 1)) {
+            return { ...item, count: Number(item.count) + 1 };
+          }
+          return item;
+        });
       });
-    });
+    }
   };
 
   const decrement = () => {
-    if (count[id]?.count > 0)
+    if (count[id]?.count > 0 && count[id]?.stock > 0)
       setCount((prev) => {
         return prev.map((item) => {
           if (item.id === Number(id + 1)) {
@@ -26,6 +28,19 @@ const menuItem = ({ id }) => {
           return item;
         });
       });
+  };
+
+  const handleInput = (e) => {
+    if (count[id]?.stock >= e.target.value && e.target.value >= 0) {
+      setCount((prev) => {
+        return prev.map((item) => {
+          if (item.id === Number(id + 1)) {
+            return { ...item, count: e.target.value };
+          }
+          return item;
+        });
+      });
+    }
   };
 
   return (
@@ -38,41 +53,35 @@ const menuItem = ({ id }) => {
       </div>
       <div className={styles["menu-right"]}>
         <div className={styles["menu-item-price"]}>₹{count[id]?.price}</div>
-        <div className={styles["menu-item-counter"]}>
-          <div
-            className={styles["menu-item-counter-button"]}
-            onClick={decrement}
-          >
-            -
+        {count[id]?.stock > 0 ? (
+          <div className={styles["menu-item-counter"]}>
+            <div
+              className={styles["menu-item-counter-button"]}
+              onClick={decrement}
+            >
+              -
+            </div>
+            <input
+              className={styles["menu-item-counter-value"]}
+              style={{
+                width: `${count[id]?.count.toString().length + 0.5}ch`,
+              }}
+              type="number"
+              name="count"
+              id="count"
+              value={count[id]?.count}
+              onChange={handleInput}
+            />
+            <div
+              className={styles["menu-item-counter-button"]}
+              onClick={increment}
+            >
+              +
+            </div>
           </div>
-          <input
-            className={styles["menu-item-counter-value"]}
-            style={{ width: `${count[id]?.count.toString().length + 0.5}ch` }}
-            type="number"
-            name="count"
-            id="count"
-            value={count[id]?.count}
-            onChange={(e) => {
-              setCount((prev) => {
-                return prev.map((item) => {
-                  if (item.id === Number(id + 1)) {
-                    return { ...item, count: e.target.value };
-                  }
-                  return item;
-                });
-              });
-            }}
-          />
-          {/* <div className={styles["menu-item-counter-value"]}>
-            {count[id]?.count}
-          </div> */}
-          <div
-            className={styles["menu-item-counter-button"]}
-            onClick={increment}
-          >
-            +
-          </div>
-        </div>
+        ) : (
+          <>No stock</>
+        )}
       </div>
     </div>
   );

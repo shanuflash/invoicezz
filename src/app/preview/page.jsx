@@ -5,7 +5,6 @@ import { useContext, useEffect, useState } from "react";
 import Total from "@/components/total";
 import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
-import { useRouter } from "next/navigation";
 import { useSupabase } from "../supabase-provider";
 import Link from "next/link";
 
@@ -13,7 +12,6 @@ const preview = () => {
   const { count, price, Data, tax } = useContext(dataContext);
   const { supabase } = useSupabase();
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
   const [invoiceno, setInvoiceno] = useState("<generating>");
 
   const handleGenerate = async () => {
@@ -44,6 +42,18 @@ const preview = () => {
         items: count,
       },
     ]);
+
+    count.forEach(async (item) => {
+      if (item.count > 0) {
+        const { data: data1, error: error1 } = await supabase
+          .from("inventory")
+          .update({ stock: item.stock - item.count })
+          .eq("id", item.id);
+        if (error1) console.log(error1);
+        else console.log(data1);
+      }
+    });
+
     if (error) console.log(error);
     else console.log(data);
   };

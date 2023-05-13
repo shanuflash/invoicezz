@@ -86,7 +86,6 @@ function details() {
           type="text"
           placeholder="Buyer's Name"
           value={Data.name}
-          pattern="^[a-zA-Z]+$"
           onChange={(e) =>
             setData((prev) => ({ ...prev, name: e.target.value }))
           }
@@ -100,7 +99,6 @@ function details() {
           type="text"
           placeholder="Deliver Name"
           value={Data.delname}
-          pattern="^[a-zA-Z]+$"
           onChange={(e) =>
             setData((prev) => ({ ...prev, delname: e.target.value }))
           }
