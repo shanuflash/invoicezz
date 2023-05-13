@@ -23,6 +23,7 @@ const nav = () => {
         </Link>
         {pathname !== "/login" && (
           <div>
+            <Link href="/dashboard">Dashboard</Link>
             <Link href="/history">History</Link>
             <button onClick={handleLogout}>Logout</button>
           </div>
