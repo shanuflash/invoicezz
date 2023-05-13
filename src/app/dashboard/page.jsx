@@ -1,70 +1,19 @@
-"use client";
-import { useEffect, useState } from "react";
-import { useSupabase } from "../supabase-provider";
 import styles from "@/styles/page.module.css";
 
+import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { headers, cookies } from "next/headers";
+import Buttons from "./buttons";
 export const revalidate = 0;
 
-const dashboard = () => {
-  const { supabase } = useSupabase();
-  const [data, setData] = useState([]);
-
-  const handleData = async () => {
-    const { data, error } = await supabase
-      .from("inventory")
-      .select("*")
-      .order("id", { ascending: true });
-    if (error) console.log(error);
-    else {
-      setData(data);
-    }
-  };
-
-  const handleUpdate = async () => {
-    data.forEach(async (item) => {
-      const { data, error } = await supabase
-        .from("inventory")
-        .update({ stock: item.stock })
-        .eq("id", item.id);
-    });
-    handleData();
-  };
-
-  const handleDelete = async (id) => {
-    const { data, error } = await supabase
-      .from("inventory")
-      .delete()
-      .eq("id", id);
-    if (error) console.log(error);
-    else handleData();
-  };
-
-  const increment = (id) => {
-    setData((prev) => {
-      return prev.map((item) => {
-        if (item.id === Number(id + 1)) {
-          return { ...item, stock: Number(item.stock) + 1 };
-        }
-        return item;
-      });
-    });
-  };
-
-  const decrement = (id) => {
-    if (data[id]?.stock > 0)
-      setData((prev) => {
-        return prev.map((item) => {
-          if (item.id === Number(id + 1)) {
-            return { ...item, stock: Number(item.stock) - 1 };
-          }
-          return item;
-        });
-      });
-  };
-
-  useEffect(() => {
-    handleData();
-  }, []);
+const dashboard = async () => {
+  const supabase = createServerComponentSupabaseClient({
+    headers,
+    cookies,
+  });
+  const { data, error } = await supabase
+    .from("inventory")
+    .select("*")
+    .order("id", { ascending: true });
 
   return (
     <div className={styles["menu"]}>
@@ -80,35 +29,10 @@ const dashboard = () => {
             </div>
             <div className={styles["menu-right"]}>
               <div className={styles["menu-item-price"]}>₹{item?.price}</div>
-              <div className={styles["menu-item-counter"]}>
-                <div
-                  className={styles["menu-item-counter-button"]}
-                  onClick={() => decrement(id)}
-                >
-                  -
-                </div>
-                <input
-                  className={styles["menu-item-counter-value"]}
-                  style={{
-                    width: `${item?.stock.toString().length + 0.5}ch`,
-                  }}
-                  type="number"
-                  name="count"
-                  id="count"
-                  value={item?.stock}
-                  // onChange={handleInput}
-                />
-                <div
-                  className={styles["menu-item-counter-button"]}
-                  onClick={() => increment(id)}
-                >
-                  +
-                </div>
-              </div>
+              <Buttons itemdata={data[id]} />
             </div>
           </div>
         ))}
-        <button onClick={handleUpdate}>save</button>
       </div>
     </div>
   );

@@ -1,25 +1,19 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useSupabase } from "../supabase-provider";
 import styles from "@/styles/page.module.css";
 
-const history = () => {
-  const { supabase } = useSupabase();
-  const [data, setData] = useState([]);
+import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { headers, cookies } from "next/headers";
+export const revalidate = 0;
 
-  const fetch = async () => {
-    let { data, error } = await supabase
-      .from("history")
-      .select("*")
-      .order("invoiceno", { ascending: false });
-    if (error) console.log(error);
-    else setData(data);
-  };
+const history = async () => {
+  const supabase = createServerComponentSupabaseClient({
+    headers,
+    cookies,
+  });
+  const { data, error } = await supabase
+    .from("history")
+    .select("*")
+    .order("invoiceno", { ascending: false });
 
-  useEffect(() => {
-    fetch();
-  }, []);
   return (
     <div className={styles["history"]}>
       <div className={styles["menu-title"]} style={{ padding: "0" }}>
