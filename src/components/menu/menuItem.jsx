@@ -46,7 +46,12 @@ const menuItem = ({ id }) => {
   return (
     <div className={styles["menu-item"]}>
       <div className={styles["menu-left"]}>
-        <div className={styles["menu-item-title"]}>{count[id]?.name}</div>
+        <div className={styles["menu-item-title"]}>
+          {count[id]?.name}{" "}
+          <span style={{ fontSize: "0.8rem" }}>
+            {count[id]?.stock && <>{count[id]?.stock} left</>}
+          </span>
+        </div>
         <div className={styles["menu-item-description"]}>
           This Cement is very good
         </div>
