@@ -1,10 +1,11 @@
 "use client";
 import { dataContext } from "@/context/dataProvider";
-import styles from "../../styles/page.module.css";
+import styles from "@/styles/page.module.css";
 import { useContext, useEffect } from "react";
 
 const menuItem = ({ id }) => {
   const { count, setCount } = useContext(dataContext);
+
   const increment = () => {
     if (count[id]?.stock > count[id]?.count) {
       setCount((prev) => {
@@ -64,14 +65,14 @@ const menuItem = ({ id }) => {
       </div>
       <div className={styles["menu-right"]}>
         <div className={styles["menu-item-price"]}>₹{count[id]?.price}</div>
-        {count[id]?.stock > 0 ? (
-          <div className={styles["menu-item-counter"]}>
-            <div
-              className={styles["menu-item-counter-button"]}
-              onClick={decrement}
-            >
-              -
-            </div>
+        <div className={styles["menu-item-counter"]}>
+          <div
+            className={styles["menu-item-counter-button"]}
+            onClick={decrement}
+          >
+            -
+          </div>
+          {count[id]?.stock > 0 ? (
             <input
               className={styles["menu-item-counter-value"]}
               style={{
@@ -83,16 +84,16 @@ const menuItem = ({ id }) => {
               value={count[id]?.count}
               onChange={handleInput}
             />
-            <div
-              className={styles["menu-item-counter-button"]}
-              onClick={increment}
-            >
-              +
-            </div>
+          ) : (
+            <>No stock</>
+          )}
+          <div
+            className={styles["menu-item-counter-button"]}
+            onClick={increment}
+          >
+            +
           </div>
-        ) : (
-          <>No stock</>
-        )}
+        </div>
       </div>
     </div>
   );

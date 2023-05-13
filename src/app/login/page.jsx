@@ -16,7 +16,8 @@ function App() {
       email: user,
       password: password,
     });
-    router.push("/");
+    if (error) console.log(error);
+    else router.push("/");
   };
   return (
     <form className={styles["form"]} onSubmit={handleSubmit}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, useRef, useState } from "react";
+import { useContext } from "react";
 import styles from "@/styles/page.module.css";
 import { dataContext } from "@/context/dataProvider";
 import { useRouter } from "next/navigation";
@@ -50,20 +50,6 @@ function details() {
           required
         />
       </div>
-      {/* <div className={styles["form-item"]}>
-        <label>Invoice No:</label>
-        <input
-          autoComplete="off"
-          type="text"
-          placeholder="Invoice No"
-          value={Data.invoiceno}
-          pattern="[0-9]+"
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, invoiceno: e.target.value }))
-          }
-          // required
-        />
-      </div> */}
       <div className={styles["form-item"]}>
         <label>Payment method:</label>
         <select
@@ -105,22 +91,6 @@ function details() {
           required
         />
       </div>
-
-      {/* <div className={styles["form-item"]}>
-        <label>Buyer's Phone Number</label>
-        <input
-          autoComplete="off"
-          type="text"
-          placeholder="Buyer Phone Number"
-          pattern="[0-9]+"
-          value={Data.phoneno}
-          onChange={(e) =>
-            setData((prev) => ({ ...prev, phoneno: e.target.value }))
-          }
-          required
-        />
-      </div> */}
-
       <div className={styles["form-item"]}>
         <label>Buyer's Address</label>
         <textarea
