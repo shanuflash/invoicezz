@@ -7,9 +7,12 @@ import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
 import { useSupabase } from "../supabase-provider";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const preview = () => {
-  const { count, price, Data, tax } = useContext(dataContext);
+  const { count, price, setData, Data, tax, handleItems } =
+    useContext(dataContext);
+  const router = useRouter();
   const { supabase } = useSupabase();
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceno, setInvoiceno] = useState("<generating>");
@@ -55,7 +58,21 @@ const preview = () => {
     });
 
     if (error) console.log(error);
-    else console.log(data);
+    else {
+      setData({
+        date: "",
+        invoiceno: "",
+        paymed: "",
+        name: "",
+        address: "",
+        gstin: "",
+        // phoneno: "",
+        delname: "",
+        deladdress: "",
+      });
+      handleItems();
+      router.push("/");
+    }
   };
 
   return (
