@@ -46,13 +46,6 @@ const Home = () => {
     });
   };
 
-  useEffect(async () => {
-    const { count, error } = await supabase
-      .from("inventory")
-      .select("*", { count: "exact", head: true });
-    console.log(count);
-  }, []);
-
   return (
     <>
       <div className={styles.menu}>
@@ -63,7 +56,6 @@ const Home = () => {
               <div className={styles["menu-left"]}>
                 <div className={styles["menu-item-title"]}>
                   {item?.name}
-
                   <span style={{ fontSize: "0.8rem" }}>
                     {item?.stock ? (
                       <>
