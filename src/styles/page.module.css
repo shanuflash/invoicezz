@@ -24,7 +24,8 @@
 }
 
 .nav-title a,
-.nav-title button,.delete{
+.nav-title button,
+.delete {
   margin: -0.5rem 0 -0.5rem 0.5rem !important;
   width: auto !important;
   font-size: 1rem;
@@ -329,9 +330,12 @@
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
+.modal-item {
+  width: 100% !important;
+}
+
 .form-item > input {
   font-family: inherit;
-
 }
 
 .form-item > textarea {

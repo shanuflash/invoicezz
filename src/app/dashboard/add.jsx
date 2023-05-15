@@ -33,7 +33,7 @@ const add = () => {
       >
         <Dialog.Panel>
           <Dialog.Title>Item Details</Dialog.Title>
-          <div className={styles["form-item"]}>
+          <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
             <label>Name:</label>
             <input
               type="text"
@@ -43,7 +43,7 @@ const add = () => {
               }
             />
           </div>
-          <div className={styles["form-item"]}>
+          <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
             <label>Price:</label>
             <input
               type="number"
@@ -53,7 +53,7 @@ const add = () => {
               }
             />
           </div>
-          <div className={styles["form-item"]}>
+          <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
             <label>Stock:</label>
             <input
               type="number"

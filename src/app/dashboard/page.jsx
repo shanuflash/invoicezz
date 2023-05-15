@@ -4,6 +4,7 @@ import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-next
 import { headers, cookies } from "next/headers";
 import Add from "./add";
 import Buttons from "./buttons";
+import Price from "./price";
 export const revalidate = 0;
 
 const dashboard = async () => {
@@ -32,7 +33,7 @@ const dashboard = async () => {
               </div>
             </div>
             <div className={styles["menu-right"]}>
-              <div className={styles["menu-item-price"]}>₹{item?.price}</div>
+              <Price price={item?.price} id={item?.id} />
               <Buttons itemdata={data[id]} />
             </div>
           </div>
