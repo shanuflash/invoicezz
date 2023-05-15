@@ -15,9 +15,14 @@ const dashboard = async () => {
     .select("*")
     .order("id", { ascending: true });
 
+
+
   return (
     <div className={styles["menu"]}>
-      <div className={styles["menu-title"]}>Change the stock of items:</div>
+      <div className={styles["menu-title"]}>
+        Change the stock of items:
+
+      </div>
       <div className={styles["menu-container"]}>
         {data.map((item, id) => (
           <div className={styles["menu-item"]}>

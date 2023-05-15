@@ -24,7 +24,7 @@
 }
 
 .nav-title a,
-.nav-title button {
+.nav-title button,.delete{
   margin: -0.5rem 0 -0.5rem 0.5rem !important;
   width: auto !important;
   font-size: 1rem;
@@ -70,6 +70,8 @@
 }
 
 .menu-title {
+  display: flex;
+  justify-content: space-between;
   width: 100%;
   padding: 0 0 1rem 0;
 }
@@ -265,6 +267,7 @@
   position: fixed;
   top: 50%;
   left: 50%;
+  width: 30vw;
   transform: translate(-50%, -50%);
 }
 
@@ -306,6 +309,7 @@
 .form-item {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
   width: 48%;
 }
 
@@ -327,6 +331,7 @@
 }
 .form-item > input {
   font-family: inherit;
+
 }
 
 .form-item > textarea {
