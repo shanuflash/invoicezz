@@ -9,16 +9,16 @@ import { useRouter } from "next/navigation";
 const total = ({ invoice }) => {
   const router = useRouter();
 
-  const { count, price, setPrice, handleItems, tax, setTax } =
+  const { data, price, setPrice, handleItems, tax, setTax } =
     useContext(dataContext);
   useEffect(() => {
     let total = 0;
-    count.forEach((item) => {
+    data.forEach((item) => {
       total += item.price * item.count;
     });
     setPrice(total);
     setTax(total * 2 * 0.14);
-  }, [count]);
+  }, [data]);
 
   const handleClear = () => {
     handleItems();

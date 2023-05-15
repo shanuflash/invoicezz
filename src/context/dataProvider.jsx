@@ -8,7 +8,7 @@ const dataProvider = ({ children }) => {
   const { supabase } = useSupabase();
 
   const [tax, setTax] = useState(0);
-  const [count, setCount] = useState(
+  const [data, setData] = useState(
     Array(10).fill({
       name: "Loading...",
       id: " Loading...",
@@ -16,7 +16,7 @@ const dataProvider = ({ children }) => {
       count: 0,
     })
   );
-  const [Data, setData] = useState({
+  const [formData, setformData] = useState({
     date: "",
     invoiceno: "",
     paymed: "",
@@ -36,7 +36,7 @@ const dataProvider = ({ children }) => {
       .order("id", { ascending: true });
 
     if (error) {
-      setCount(
+      setData(
         Array(10).fill({
           name: "Failed to load",
           id: " Failed to load",
@@ -45,7 +45,7 @@ const dataProvider = ({ children }) => {
         })
       );
       console.log(error);
-    } else setCount(inventory);
+    } else setData(inventory);
   };
 
   useEffect(() => {
@@ -57,10 +57,10 @@ const dataProvider = ({ children }) => {
       value={{
         tax,
         setTax,
-        Data,
+        formData,
+        setformData,
+        data,
         setData,
-        count,
-        setCount,
         price,
         setPrice,
         handleItems,

@@ -1,29 +1,115 @@
+"use client";
 import styles from "@/styles/page.module.css";
-import MenuItem from "@/components/menuItem";
-import Total from "@/components/total";
-import Search from "@/components/search";
-import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { headers, cookies } from "next/headers";
-const Home = async () => {
-  const supabase = createServerComponentSupabaseClient({
-    headers,
-    cookies,
-  });
 
-  const { count, error } = await supabase
-    .from("inventory")
-    .select("*", { count: "exact", head: true });
-  
-  
+import Total from "@/components/total";
+import { useSupabase } from "./supabase-provider";
+import { useContext, useEffect } from "react";
+import { dataContext } from "@/context/dataProvider";
+const Home = () => {
+  const { supabase } = useSupabase();
+  const { data, setData } = useContext(dataContext);
+
+  const increment = (id) => {
+    setData((prev) => {
+      return prev.map((item) => {
+        if (item.id === Number(id) && item.stock > item.count) {
+          return { ...item, count: Number(item.count) + 1 };
+        }
+        return item;
+      });
+    });
+  };
+
+  const decrement = (id) => {
+    setData((prev) => {
+      return prev.map((item) => {
+        if (item.id === Number(id) && item.count > 0 && item.stock > 0) {
+          return { ...item, count: Number(item.count) - 1 };
+        }
+        return item;
+      });
+    });
+  };
+
+  const handleInput = (e, id) => {
+    setData((prev) => {
+      return prev.map((item) => {
+        if (
+          item.id === Number(id) &&
+          item.stock >= e.target.value &&
+          e.target.value >= 0
+        ) {
+          return { ...item, count: e.target.value };
+        }
+        return item;
+      });
+    });
+  };
+
+  useEffect(async () => {
+    const { count, error } = await supabase
+      .from("inventory")
+      .select("*", { count: "exact", head: true });
+    console.log(count);
+  }, []);
 
   return (
     <>
       <div className={styles.menu}>
-        <Search/>
         <div className={styles["menu-title"]}>Add items to your bill:</div>
         <div className={styles["menu-container"]}>
-          {Array.from({ length: count }, (_, index) => (
-            <MenuItem id={index} key={index} />
+          {data.map((item) => (
+            <div className={styles["menu-item"]}>
+              <div className={styles["menu-left"]}>
+                <div className={styles["menu-item-title"]}>
+                  {item?.name}
+
+                  <span style={{ fontSize: "0.8rem" }}>
+                    {item?.stock ? (
+                      <>
+                        {" - "}
+                        {item?.stock} left
+                      </>
+                    ) : null}
+                  </span>
+                </div>
+                <div className={styles["menu-item-description"]}>
+                  This Cement is very good
+                </div>
+              </div>
+              <div className={styles["menu-right"]}>
+                <div className={styles["menu-item-price"]}>₹{item?.price}</div>
+                <div className={styles["menu-item-counter"]}>
+                  <div
+                    className={styles["menu-item-counter-button"]}
+                    onClick={() => decrement(item.id)}
+                  >
+                    -
+                  </div>
+                  {item?.stock > 0 ? (
+                    <input
+                      className={styles["menu-item-counter-value"]}
+                      style={{
+                        width: `${item?.count.toString().length + 0.5}ch`,
+                      }}
+                      type="number"
+                      name="count"
+                      id="count"
+                      value={item?.count}
+                      onChange={(e) => handleInput(e, item.id)}
+                    />
+                  ) : (
+                    <>No stock</>
+                  )}
+                  <div
+                    className={styles["menu-item-counter-button"]}
+                    onClick={() => increment(item.id)}
+                  >
+                    +
+                  </div>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
       </div>

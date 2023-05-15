@@ -16,12 +16,13 @@ const dashboard = async () => {
     .from("inventory")
     .select("*")
     .order("id", { ascending: true });
+  console.log(data);
 
   return (
     <div className={styles["menu"]}>
       <div className={styles["menu-title"]}>
         Change the stock of items:
-        <Add />
+        <Add id={data.length} />
       </div>
       <div className={styles["menu-container"]}>
         {data.map((item, id) => (

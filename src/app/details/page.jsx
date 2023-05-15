@@ -6,7 +6,7 @@ import { dataContext } from "@/context/dataProvider";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 function details() {
-  const { Data, setData } = useContext(dataContext);
+  const { formData, setformData } = useContext(dataContext);
   const router = useRouter();
   const handleClear = () => {
     setData({
@@ -43,9 +43,9 @@ function details() {
           autoComplete="off"
           type="date"
           placeholder="Date"
-          value={Data.date}
+          value={formData.date}
           onChange={(e) =>
-            setData((prev) => ({ ...prev, date: e.target.value }))
+            setformData((prev) => ({ ...prev, date: e.target.value }))
           }
           required
         />
@@ -53,9 +53,9 @@ function details() {
       <div className={styles["form-item"]}>
         <label>Payment method:</label>
         <select
-          value={Data.paymed}
+          value={formData.paymed}
           onChange={(e) =>
-            setData((prev) => ({ ...prev, paymed: e.target.value }))
+            setformData((prev) => ({ ...prev, paymed: e.target.value }))
           }
         >
           <option value="">Select a payment method</option>
@@ -71,9 +71,9 @@ function details() {
           autoComplete="off"
           type="text"
           placeholder="Buyer's Name"
-          value={Data.name}
+          value={formData.name}
           onChange={(e) =>
-            setData((prev) => ({ ...prev, name: e.target.value }))
+            setformData((prev) => ({ ...prev, name: e.target.value }))
           }
           required
         />
@@ -84,9 +84,9 @@ function details() {
           autoComplete="off"
           type="text"
           placeholder="Deliver Name"
-          value={Data.delname}
+          value={formData.delname}
           onChange={(e) =>
-            setData((prev) => ({ ...prev, delname: e.target.value }))
+            setformData((prev) => ({ ...prev, delname: e.target.value }))
           }
           required
         />
@@ -96,9 +96,9 @@ function details() {
         <textarea
           type="address"
           placeholder="Buyer Address"
-          value={Data.address}
+          value={formData.address}
           onChange={(e) =>
-            setData((prev) => ({ ...prev, address: e.target.value }))
+            setformData((prev) => ({ ...prev, address: e.target.value }))
           }
           required
         />
@@ -108,9 +108,9 @@ function details() {
         <textarea
           type="address"
           placeholder="Delivery Address"
-          value={Data.deladdress}
+          value={formData.deladdress}
           onChange={(e) =>
-            setData((prev) => ({ ...prev, deladdress: e.target.value }))
+            setformData((prev) => ({ ...prev, deladdress: e.target.value }))
           }
           required
         />
@@ -122,9 +122,9 @@ function details() {
           type="text"
           placeholder="Buyer's GSTIN"
           // pattern="[0-9]+"
-          value={Data.gstin}
+          value={formData.gstin}
           onChange={(e) =>
-            setData((prev) => ({ ...prev, gstin: e.target.value }))
+            setformData((prev) => ({ ...prev, gstin: e.target.value }))
           }
           required
         />

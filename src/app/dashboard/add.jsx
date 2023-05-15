@@ -4,15 +4,17 @@ import styles from "@/styles/page.module.css";
 import { useSupabase } from "../supabase-provider";
 import { Dialog } from "@headlessui/react";
 import { useRouter } from "next/navigation";
+export const revalidate = 0;
 
 const add = () => {
-  const [newdata, setnewData] = useState({ name: "", price: "", stock: "" });
+  const [newdata, setnewData] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const { supabase } = useSupabase();
   const router = useRouter();
 
   const handleAdd = async () => {
-    await supabase.from("inventory").insert(newdata);
+    const { error } = await supabase.from("inventory").insert(newdata);
+    console.log(error);
     setIsOpen(false);
     router.refresh();
   };
@@ -20,6 +22,7 @@ const add = () => {
   const handlegenerate = async () => {
     setIsOpen(true);
   };
+
   return (
     <div>
       <buttons className={styles["delete"]} onClick={handlegenerate}>

@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 const price = ({ price, id }) => {
   const { supabase } = useSupabase();
   const [data, setData] = useState(price);
-  console.log(id);
 
   const handleInput = (e) => {
     setData(e.target.value);

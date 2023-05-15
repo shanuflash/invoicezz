@@ -2,9 +2,7 @@
 import { useEffect, useState } from "react";
 import styles from "@/styles/page.module.css";
 import { useSupabase } from "../supabase-provider";
-import { Dialog } from "@headlessui/react";
 import { useRouter } from "next/navigation";
-import Add from "./add";
 
 const buttons = ({ itemdata }) => {
   const router = useRouter();
@@ -16,8 +14,6 @@ const buttons = ({ itemdata }) => {
       .from("inventory")
       .update({
         stock: data.stock,
-        // price: data.price,
-        // name: data.name,
       })
       .eq("id", data.id);
   };

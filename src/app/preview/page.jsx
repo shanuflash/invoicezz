@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const preview = () => {
-  const { count, price, setData, Data, tax, handleItems } =
+  const { data, price, setformData, formData, tax, handleItems } =
     useContext(dataContext);
   const router = useRouter();
   const { supabase } = useSupabase();
@@ -39,14 +39,14 @@ const preview = () => {
     window.print();
     const { data, error } = await supabase.from("history").insert([
       {
-        ...Data,
+        ...formData,
         total: price + tax,
         invoiceno: Number(invoiceno),
         items: count,
       },
     ]);
 
-    count.forEach(async (item) => {
+    data.forEach(async (item) => {
       if (item.count > 0) {
         const { data: data1, error: error1 } = await supabase
           .from("inventory")
@@ -59,7 +59,7 @@ const preview = () => {
 
     if (error) console.log(error);
     else {
-      setData({
+      setformData({
         date: "",
         invoiceno: "",
         paymed: "",
@@ -120,7 +120,7 @@ const preview = () => {
               Invoice No: {invoiceno}
             </div>
             <div className={styles["invoice-method"]}>
-              Payment Method: {Data.paymed}
+              Payment Method: {formData.paymed}
             </div>
           </div>
           {/*  */}
@@ -131,9 +131,11 @@ const preview = () => {
               <div className={styles["invoice-buyer-title"]}>
                 Buyer: (Name and Address)
               </div>
-              <div className={styles["invoice-buyer-name"]}>{Data.name}</div>
+              <div className={styles["invoice-buyer-name"]}>
+                {formData.name}
+              </div>
               <div className={styles["invoice-buyer-address"]}>
-                {Data.address}
+                {formData.address}
               </div>
               <div className={styles["invoice-buyer-contact"]}>
                 GSTIN: {/*fill*/}
@@ -147,9 +149,9 @@ const preview = () => {
                 Delivery Address:
               </div>
               <div className={styles["invoice-delivery-address"]}>
-                {Data.delname}
+                {formData.delname}
                 <br />
-                {Data.deladdress}
+                {formData.deladdress}
               </div>
               <div className={styles["invoice-delivery-method"]}>
                 Despatched through: {/*fill*/}
@@ -167,7 +169,7 @@ const preview = () => {
               <div className={styles["invoice-title-text"]}>Price</div>
               <div className={styles["invoice-title-text"]}>Amount</div>
             </div>
-            {count?.map((item) => {
+            {data?.map((item) => {
               if (item.count > 0) {
                 return (
                   <div className={styles["invoice-item"]}>
