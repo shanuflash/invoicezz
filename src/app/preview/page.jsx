@@ -22,7 +22,7 @@ const preview = () => {
   };
 
   const handleInvoiceno = async () => {
-    const { data: olddata, error: olderror } = await supabase
+    const { data: olddata } = await supabase
       .from("history")
       .select("invoiceno")
       .order("invoiceno", { ascending: false })

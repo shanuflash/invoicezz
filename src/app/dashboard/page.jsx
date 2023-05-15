@@ -2,6 +2,7 @@ import styles from "@/styles/page.module.css";
 
 import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { headers, cookies } from "next/headers";
+import Add from "./add";
 import Buttons from "./buttons";
 export const revalidate = 0;
 
@@ -15,13 +16,11 @@ const dashboard = async () => {
     .select("*")
     .order("id", { ascending: true });
 
-
-
   return (
     <div className={styles["menu"]}>
       <div className={styles["menu-title"]}>
         Change the stock of items:
-
+        <Add />
       </div>
       <div className={styles["menu-container"]}>
         {data.map((item, id) => (
