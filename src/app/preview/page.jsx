@@ -37,12 +37,12 @@ const preview = () => {
   const handlePrint = async () => {
     setIsOpen(false);
     window.print();
-    const { data, error } = await supabase.from("history").insert([
+    const { error } = await supabase.from("history").insert([
       {
         ...formData,
         total: price + tax,
         invoiceno: Number(invoiceno),
-        items: count,
+        items: data,
       },
     ]);
 

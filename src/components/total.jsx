@@ -25,7 +25,7 @@ const total = ({ invoice }) => {
   };
 
   const handleNext = () => {
-    localStorage.setItem("count", JSON.stringify(count));
+    localStorage.setItem("count", JSON.stringify(data));
     router.push("/details");
   };
 

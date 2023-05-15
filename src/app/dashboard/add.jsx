@@ -25,9 +25,9 @@ const add = () => {
 
   return (
     <div>
-      <buttons className={styles["delete"]} onClick={handlegenerate}>
+      <button className={styles["delete"]} onClick={handlegenerate}>
         Add Item
-      </buttons>
+      </button>
       <div className={isOpen ? styles.backdrop : styles.backdropoff} />
       <Dialog
         className={styles.modal}

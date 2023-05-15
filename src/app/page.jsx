@@ -51,8 +51,8 @@ const Home = () => {
       <div className={styles.menu}>
         <div className={styles["menu-title"]}>Add items to your bill:</div>
         <div className={styles["menu-container"]}>
-          {data.map((item) => (
-            <div className={styles["menu-item"]}>
+          {data.map((item, i) => (
+            <div className={styles["menu-item"]} key={i}>
               <div className={styles["menu-left"]}>
                 <div className={styles["menu-item-title"]}>
                   {item?.name}
