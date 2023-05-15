@@ -429,3 +429,23 @@
   border: 1px solid rgba(108, 108, 108, 0.3);
   cursor: pointer;
 }
+
+.invoice-declaration {
+  width: 100%;
+  display: flex;
+}
+.invoice-declaration-item {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.invoice-declaration-item:nth-child(2) {
+  text-align: right;
+}
+
+.invoice-declaration-signature {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}

@@ -8,6 +8,7 @@ import { Dialog } from "@headlessui/react";
 import { useSupabase } from "../supabase-provider";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const preview = () => {
   const { data, price, setformData, formData, tax, handleItems } =
@@ -138,7 +139,7 @@ const preview = () => {
                 {formData.address}
               </div>
               <div className={styles["invoice-buyer-contact"]}>
-                GSTIN: {/*fill*/}
+                GSTIN: {formData.gstin}
               </div>
             </div>
           </div>
@@ -203,6 +204,8 @@ const preview = () => {
           </div>
 
           <Total invoice />
+          <div className={styles.divider} />
+
           <div className={styles["invoice-ammountinwords"]}>
             <div className={styles["invoice-ammountinwords-title"]}>
               Tax Amount in Words:
@@ -219,21 +222,31 @@ const preview = () => {
               {numWords(parseInt(price + tax)).toUpperCase()}
             </div>
           </div>
-          {/* <div className={styles["invoice-tax"]}>
-            <div className={styles["invoice-tax-title"]}>Tax:</div>
-            <div className={styles["invoice-tax-cgst"]}>
-              <div className={styles["invoice-tax-name"]}>CGST 14%</div>
-              <div className={styles["invoice-tax-value"]}>
-                {parseInt(tax / 2)}
+          <div className={styles.divider} />
+
+          <div className={styles["invoice-declaration"]}>
+            <div className={styles["invoice-declaration-item"]}>
+              <div className={styles["invoice-declaration-title"]}>
+                Declaration:
+              </div>
+              We Declare that this invoice shows the actual price of the goods
+              described and that all particulars are true and correct.
+            </div>
+            <div className={styles["invoice-declaration-item"]}>
+              <div className={styles["invoice-declaration-title"]}>
+                For SARAVANAN TRADERS
+                <div className={styles["invoice-declaration-signature"]}>
+                  <Image
+                    src="/sign.png"
+                    width={100}
+                    height={50}
+                    alt="Signature"
+                  />
+                  Authorised Signatory
+                </div>
               </div>
             </div>
-            <div className={styles["invoice-tax-sgst"]}>
-              <div className={styles["invoice-tax-name"]}>SGST 14%</div>
-              <div className={styles["invoice-tax-value"]}>
-                {parseInt(tax / 2)}
-              </div>
-            </div>
-          </div> */}
+          </div>
         </div>
         <div className={`${styles["button-container"]} ${styles.button}`}>
           <Link href="/details" style={{ width: "auto" }}>
