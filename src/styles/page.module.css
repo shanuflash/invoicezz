@@ -18,8 +18,8 @@
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  background-color: rgba(72, 72, 72, 0.5);
-  border: 1px solid rgba(108, 108, 108, 0.3);
+  background-color: var(--secondary);
+  color: var();
   border-radius: 12px;
 }
 
@@ -29,11 +29,10 @@
   margin: -0.5rem 0 -0.5rem 0.5rem !important;
   width: auto !important;
   font-size: 1rem;
-  color: white;
+  color: var(--secondary);
   padding: 0.5rem 2rem;
   border-radius: 12px;
-  background-color: rgba(72, 72, 72, 0.5);
-  border: 1px solid rgba(108, 108, 108, 0.3);
+  background-color: var(--secondary-button);
   cursor: pointer;
 }
 
@@ -42,6 +41,7 @@
   padding: 0.5rem !important;
   background-color: transparent !important;
   border: none !important;
+  color: var(--primary) !important;
 }
 
 .content {
@@ -51,9 +51,9 @@
   align-items: center;
   min-width: 100vw;
   min-height: 88.9vh; /* test */
-  background-color: rgba(20, 20, 20, 0.5);
+  background-color: var(--secondary);
   border: 1px solid rgba(108, 108, 108, 0.3);
-  border-radius: 12px;
+  border-radius: 12px 12px 0 0;
 }
 
 .menu-container {
@@ -83,9 +83,8 @@
   padding: 1rem 2rem;
   /* background-color: rgba(255, 255, 255, 1); */
 
-  background-color: rgba(72, 72, 72, 0.5);
   /* color: black; */
-  border: 1px solid rgba(108, 108, 108, 0.3);
+  border: 1px solid var(--primary-button);
   border-radius: 12px;
 }
 
@@ -119,8 +118,8 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background-color: rgba(20, 20, 20, 0.5);
-  border: 1px solid rgba(108, 108, 108, 0.3);
+  background-color: var(--primary-button);
+  color: var(--secondary);
   cursor: pointer;
 }
 
@@ -138,7 +137,11 @@
   /* width: 40px; */
   background: none;
   border: none;
-  color: white;
+  color: var(--primary);
+}
+
+.menu-item-counter-value:focus {
+  outline-color: var(--primary-button);
 }
 
 .total {
@@ -195,8 +198,8 @@
   display: flex;
   justify-content: space-evenly;
   padding: 1rem 0;
-  background-color: rgba(72, 72, 72, 0.5);
   border: 1px solid rgba(108, 108, 108, 0.3);
+
   border-radius: 12px;
 }
 
@@ -261,8 +264,8 @@
 
 .modal {
   z-index: 4;
-  background-color: rgba(20, 20, 20, 1);
-  border: 1px solid rgba(108, 108, 108, 0.3);
+  background-color: var(--secondary);
+
   border-radius: 12px;
   padding: 1rem;
   position: fixed;
@@ -320,7 +323,7 @@
   padding: 0.5rem;
   border-radius: 12px;
   /* border: 1px solid #ccc; */
-  border: none;
+  border: 1px solid var(--primary);
   outline: none;
   font-size: 1rem;
 }
@@ -340,7 +343,7 @@
 
 .form-item > textarea {
   font-size: 1rem;
-
+  border: 1px solid var(--primary);
   resize: none;
   font-family: inherit;
   width: 100%;
@@ -348,7 +351,6 @@
   padding: 0.5rem;
   margin: 0.5rem 0;
   border-radius: 12px;
-  border: none;
 }
 
 .button-container {
@@ -394,14 +396,11 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  /* flex-direction: column; */
-  gap: 0.5rem;
-  /* justify-content: space-between; */
-  padding: 1rem 2rem;
-  /* background-color: rgba(255, 255, 255, 1); */
 
-  background-color: rgba(72, 72, 72, 0.5);
-  /* color: black; */
+  gap: 0.5rem;
+
+  padding: 1rem 2rem;
+
   border: 1px solid rgba(108, 108, 108, 0.3);
   border-radius: 12px;
 }
@@ -412,7 +411,7 @@
   font-size: 1.2rem;
   padding: 0.5rem 1rem;
   border-radius: 12px;
-  border: 1px solid rgba(108, 108, 108, 1);
+  background-color: rgba(108, 108, 108, 0.3);
 }
 
 .item-data {
@@ -425,8 +424,8 @@
   width: 100%;
   padding: 0.7rem 2rem;
   border-radius: 12px;
-  background-color: rgba(72, 72, 72, 0.5);
-  border: 1px solid rgba(108, 108, 108, 0.3);
+  background-color: var(--primary);
+
   cursor: pointer;
 }
 

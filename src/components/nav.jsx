@@ -22,7 +22,7 @@ const nav = () => {
     <div className={styles.nav}>
       <div className={styles["nav-title"]}>
         <Link href="/" onClick={handleItems} className={styles.logo}>
-          {"<"}Bill Generator{"/>"}
+          {"<"}SARAVANAN TRADERS{"/>"}
         </Link>
         {pathname !== "/login" && (
           <div>
