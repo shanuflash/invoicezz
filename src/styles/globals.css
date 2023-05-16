@@ -1,9 +1,21 @@
 :root {
-  --primary: #00171f;
+  /* --primary: #00171f;
   --secondary: #ffffff;
   --secondary-button: #007ea7;
   --primary-button: #00a8e8;
-  --ascent: #007ea7;
+  --ascent: #007ea7; */
+
+  /* --primary: #ffffff;
+  --secondary: #00171f;
+  --secondary-button: #00a8e8;
+  --primary-button: #007ea7;
+  --ascent: #00a8e8; */
+
+  --black: #000000;
+  --black-light: #13171a;
+  --bg: #dfecf1;
+  --blue: #d0e1e9;
+  --ascent: #00a8e8;
 }
 
 * {
@@ -12,7 +24,7 @@
 
 html,
 body {
-  background-color: var(--secondary);
+  background-color: var(--bg);
   max-width: 100vw;
   overflow-x: hidden;
   overflow: overlay;
@@ -21,7 +33,7 @@ body {
 body {
   margin: 0;
   color: var(--primary);
-  background: var(--ascent);
+  background-color: var(--bg);
 }
 
 a {
@@ -51,17 +63,17 @@ input[type="number"] {
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: var(--ascent);
+  background-color: var(--black);
   border-radius: 4px;
 }
 
 button {
   font-size: 1rem;
-  color: var(--secondary);
+  color: var(--bg);
   width: 100%;
   padding: 0.7rem 2rem;
   border-radius: 12px;
-  background-color: var(--primary-button);
+  background-color: var(--black);
   border: none;
   cursor: pointer;
 }

@@ -1,3 +1,10 @@
+.testezz {
+  --black: #000000;
+  --black-light: #13171a;
+  --bg: #dfecf1;
+  --blue: #d0e1e9;
+  --ascent: #00a8e8;
+}
 .main {
   display: flex;
   flex-direction: column;
@@ -18,21 +25,31 @@
   display: flex;
   justify-content: space-between;
   padding: 1rem;
-  background-color: var(--secondary);
+  background-color: var(--black);
   color: var();
   border-radius: 12px;
 }
 
 .nav-title a,
-.nav-title button,
+.nav-title button {
+  margin: -0.5rem 0 -0.5rem 0.5rem !important;
+  width: auto !important;
+  font-size: 1rem;
+  color: var(--black-light);
+  padding: 0.5rem 2rem;
+  border-radius: 12px;
+  background-color: var(--bg);
+  cursor: pointer;
+}
+
 .delete {
   margin: -0.5rem 0 -0.5rem 0.5rem !important;
   width: auto !important;
   font-size: 1rem;
-  color: var(--secondary);
+  color: var(--blue);
   padding: 0.5rem 2rem;
   border-radius: 12px;
-  background-color: var(--secondary-button);
+  background-color: var(--black);
   cursor: pointer;
 }
 
@@ -41,7 +58,7 @@
   padding: 0.5rem !important;
   background-color: transparent !important;
   border: none !important;
-  color: var(--primary) !important;
+  color: var(--bg) !important;
 }
 
 .content {
@@ -51,8 +68,8 @@
   align-items: center;
   min-width: 100vw;
   min-height: 88.9vh; /* test */
-  background-color: var(--secondary);
-  border: 1px solid rgba(108, 108, 108, 0.3);
+  /* background-color: var(--blue); */
+  /* border: 1px solid rgba(108, 108, 108, 0.3); */
   border-radius: 12px 12px 0 0;
 }
 
@@ -66,7 +83,7 @@
   display: flex;
   flex-direction: column;
   min-width: 100vw;
-  padding: 1rem;
+  padding: 0 1rem;
   border-radius: 12px;
 }
 
@@ -84,7 +101,8 @@
   /* background-color: rgba(255, 255, 255, 1); */
 
   /* color: black; */
-  border: 1px solid var(--primary-button);
+  /* border: 1px solid var(--black-light); */
+  background-color: var(--blue);
   border-radius: 12px;
 }
 
@@ -118,8 +136,8 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background-color: var(--primary-button);
-  color: var(--secondary);
+  background-color: var(--black);
+  color: var(--bg);
   cursor: pointer;
 }
 
@@ -137,11 +155,11 @@
   /* width: 40px; */
   background: none;
   border: none;
-  color: var(--primary);
+  color: var(--black-light);
 }
 
 .menu-item-counter-value:focus {
-  outline-color: var(--primary-button);
+  outline-color: var(--black-light);
 }
 
 .total {
@@ -171,8 +189,12 @@
     margin-footer: 0mm;
   }
   .body {
-    padding-top: 72px;
-    padding-bottom: 72px;
+    /* padding-top: 72px;
+    padding-bottom: 72px; */
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
   }
   .body {
     visibility: hidden;
@@ -264,7 +286,7 @@
 
 .modal {
   z-index: 4;
-  background-color: var(--secondary);
+  background-color: var(--blue);
 
   border-radius: 12px;
   padding: 1rem;
@@ -322,9 +344,9 @@
   width: 100%;
   padding: 0.5rem;
   border-radius: 12px;
-  /* border: 1px solid #ccc; */
-  border: 1px solid var(--primary);
-  outline: none;
+  outline: 1px solid #00000056;
+  border: none;
+  background-color: var(--blue);
   font-size: 1rem;
 }
 
@@ -343,7 +365,9 @@
 
 .form-item > textarea {
   font-size: 1rem;
-  border: 1px solid var(--primary);
+  background-color: var(--blue);
+  outline: 1px solid #00000056;
+  border: none;
   resize: none;
   font-family: inherit;
   width: 100%;
@@ -386,7 +410,7 @@
 
 .history {
   display: flex;
-  padding: 1rem;
+  padding: 0 1rem;
   flex-direction: column;
   width: 100%;
   gap: 1rem;
@@ -396,12 +420,10 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-
   gap: 0.5rem;
-
   padding: 1rem 2rem;
-
-  border: 1px solid rgba(108, 108, 108, 0.3);
+  background-color: var(--blue);
+  /* border: 1px solid rgba(108, 108, 108, 0.3); */
   border-radius: 12px;
 }
 
@@ -411,7 +433,7 @@
   font-size: 1.2rem;
   padding: 0.5rem 1rem;
   border-radius: 12px;
-  background-color: rgba(108, 108, 108, 0.3);
+  border: 1px solid rgba(108, 108, 108, 0.3);
 }
 
 .item-data {
@@ -424,7 +446,7 @@
   width: 100%;
   padding: 0.7rem 2rem;
   border-radius: 12px;
-  background-color: var(--primary);
+  background-color: var(--black);
 
   cursor: pointer;
 }
