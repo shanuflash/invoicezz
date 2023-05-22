@@ -19,6 +19,7 @@ function details() {
       // phoneno: "",
       delname: "",
       deladdress: "",
+      disthro:"",
     });
   };
 
@@ -112,6 +113,18 @@ function details() {
             value={formData.deladdress}
             onChange={(e) =>
               setformData((prev) => ({ ...prev, deladdress: e.target.value }))
+            }
+            required
+          />
+        </div>
+        <div className={styles["form-item"]}>
+          <label>Dispatched Through</label>
+          <input
+            type="text"
+            placeholder="Dispatched Through"
+            value={formData.disthro}
+            onChange={(e) =>
+              setformData((prev) => ({ ...prev, disthro: e.target.value }))
             }
             required
           />

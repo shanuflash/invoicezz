@@ -65,6 +65,14 @@ const add = () => {
                 setnewData((prev) => ({ ...prev, stock: e.target.value }))
               }
             />
+            <label>GST:</label>
+            <input
+              type="number"
+              placeholder="GST"
+              onChange={(e) =>
+                setnewData((prev) => ({ ...prev, stock: e.target.value }))
+              }
+            />
           </div>
           <button onClick={() => setIsOpen(false)}>Cancel</button>
           <button onClick={handleAdd}>Add Item</button>
