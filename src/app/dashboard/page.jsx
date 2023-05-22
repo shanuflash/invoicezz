@@ -30,7 +30,7 @@ const dashboard = async () => {
             <div className={styles["menu-left"]}>
               <div className={styles["menu-item-title"]}>{item?.name}</div>
               <div className={styles["menu-item-description"]}>
-                {/* This Cement is very good */}
+                {item.type.toUpperCase()}
               </div>
             </div>
             <div className={styles["menu-right"]}>
