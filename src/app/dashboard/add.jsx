@@ -8,6 +8,7 @@ export const revalidate = 0;
 
 const add = () => {
   const [newdata, setnewData] = useState();
+  const [type, setType] = useState();
   const [isOpen, setIsOpen] = useState(false);
   const { supabase } = useSupabase();
   const router = useRouter();
@@ -18,6 +19,15 @@ const add = () => {
     setIsOpen(false);
     router.refresh();
   };
+
+  const handleType = async () => {
+    const { data } = await supabase.from("types").select("name");
+    setType(data);
+  };
+
+  useEffect(() => {
+    handleType();
+  }, []);
 
   const handlegenerate = async () => {
     setIsOpen(true);
@@ -65,6 +75,18 @@ const add = () => {
                 setnewData((prev) => ({ ...prev, stock: e.target.value }))
               }
             />
+          </div>
+          <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
+            <label>Type:</label>
+            <select
+              onChange={(e) =>
+                setnewData((prev) => ({ ...prev, type: e.target.value }))
+              }
+            >
+              {type?.map((item) => (
+                <option value={item.name}>{item.name}</option>
+              ))}
+            </select>
           </div>
           <button onClick={() => setIsOpen(false)}>Cancel</button>
           <button onClick={handleAdd}>Add Item</button>
