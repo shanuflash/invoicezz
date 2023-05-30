@@ -22,15 +22,21 @@ const dashboard = async () => {
     <div className={styles["menu"]}>
       <div className={styles["menu-title"]}>
         Change the stock of items:
-        <Add id={data.length} />
+        <Add />
       </div>
       <div className={styles["menu-container"]}>
         {data.map((item, id) => (
           <div className={styles["menu-item"]}>
             <div className={styles["menu-left"]}>
-              <div className={styles["menu-item-title"]}>{item?.name}</div>
+              <div className={styles["menu-item-title"]}>
+                {item?.name}
+                <span style={{ fontSize: "0.8rem" }}>
+                  {" - "}
+                  ID {item?.id}
+                </span>
+              </div>
               <div className={styles["menu-item-description"]}>
-                {item.type.toUpperCase()}
+                {item?.type?.toUpperCase()}
               </div>
             </div>
             <div className={styles["menu-right"]}>

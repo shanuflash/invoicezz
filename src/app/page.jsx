@@ -54,6 +54,10 @@ const Home = () => {
           {data.map((item, i) => (
             <div className={styles["menu-item"]} key={i}>
               <div className={styles["menu-left"]}>
+                <div className={styles["menu-item-title-id"]}>
+                  ID {item?.id} {" - "}
+                  {item.type.toUpperCase()}
+                </div>
                 <div className={styles["menu-item-title"]}>
                   {item?.name}
                   <span style={{ fontSize: "0.8rem" }}>
@@ -64,9 +68,6 @@ const Home = () => {
                       </>
                     ) : null}
                   </span>
-                </div>
-                <div className={styles["menu-item-description"]}>
-                  This Cement is very good
                 </div>
               </div>
               <div className={styles["menu-right"]}>

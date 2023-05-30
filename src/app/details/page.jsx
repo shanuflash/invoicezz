@@ -19,7 +19,7 @@ function details() {
       // phoneno: "",
       delname: "",
       deladdress: "",
-      disthro:"",
+      disthro: "",
     });
   };
 

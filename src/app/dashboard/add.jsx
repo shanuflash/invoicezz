@@ -23,6 +23,7 @@ const add = () => {
   const handleType = async () => {
     const { data } = await supabase.from("types").select("name");
     setType(data);
+    setnewData((prev) => ({ ...prev, type: data[0].name }));
   };
 
   useEffect(() => {
@@ -39,6 +40,7 @@ const add = () => {
         Add Item
       </button>
       <div className={isOpen ? styles.backdrop : styles.backdropoff} />
+
       <Dialog
         className={styles.modal}
         open={isOpen}
@@ -46,50 +48,68 @@ const add = () => {
       >
         <Dialog.Panel>
           <Dialog.Title>Item Details</Dialog.Title>
-          <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
-            <label>Name:</label>
-            <input
-              type="text"
-              placeholder="Name"
-              onChange={(e) =>
-                setnewData((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
-          </div>
-          <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
-            <label>Price:</label>
-            <input
-              type="number"
-              placeholder="Price"
-              onChange={(e) =>
-                setnewData((prev) => ({ ...prev, price: e.target.value }))
-              }
-            />
-          </div>
-          <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
-            <label>Stock:</label>
-            <input
-              type="number"
-              placeholder="Stock"
-              onChange={(e) =>
-                setnewData((prev) => ({ ...prev, stock: e.target.value }))
-              }
-            />
-          </div>
-          <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
-            <label>Type:</label>
-            <select
-              onChange={(e) =>
-                setnewData((prev) => ({ ...prev, type: e.target.value }))
-              }
-            >
-              {type?.map((item) => (
-                <option value={item.name}>{item.name}</option>
-              ))}
-            </select>
-          </div>
-          <button onClick={() => setIsOpen(false)}>Cancel</button>
-          <button onClick={handleAdd}>Add Item</button>
+          <form className={`${styles["modal-form"]}`} onSubmit={handleAdd}>
+            <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
+              <label>Name:</label>
+              <input
+                required
+                type="text"
+                placeholder="Name"
+                onChange={(e) =>
+                  setnewData((prev) => ({ ...prev, name: e.target.value }))
+                }
+              />
+            </div>
+            <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
+              <label>Price:</label>
+              <input
+                required
+                type="number"
+                placeholder="Price"
+                onChange={(e) =>
+                  setnewData((prev) => ({ ...prev, price: e.target.value }))
+                }
+              />
+            </div>
+            <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
+              <label>Stock:</label>
+              <input
+                required
+                type="number"
+                placeholder="Stock"
+                onChange={(e) =>
+                  setnewData((prev) => ({ ...prev, stock: e.target.value }))
+                }
+              />
+            </div>
+            <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
+              <label>ID:</label>
+              <input
+                type="text"
+                placeholder="ID"
+                onChange={(e) =>
+                  setnewData((prev) => ({ ...prev, id: e.target.value }))
+                }
+              />
+            </div>
+            <div className={`${styles["form-item"]} ${styles["modal-item"]}`}>
+              <label>Type:</label>
+              <select
+                required
+                onChange={(e) =>
+                  setnewData((prev) => ({ ...prev, type: e.target.value }))
+                }
+              >
+                {type?.map((item) => (
+                  <option value={item.name}>{item.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className={`${styles["nav-button-container"]}`}>
+              <button onClick={() => setIsOpen(false)}>Cancel</button>
+              <button type="submit">Add Item</button>
+            </div>
+          </form>
         </Dialog.Panel>
       </Dialog>
     </div>

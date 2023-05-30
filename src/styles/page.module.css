@@ -470,3 +470,26 @@
   flex-direction: column;
   align-items: flex-end;
 }
+
+.nav-button-container {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.nav-button-container button {
+  width: 100%;
+}
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.menu-item-title-id {
+  font-weight: 600;
+  border: 1px solid rgba(108, 108, 108, 0.3);
+  border-radius: 12px;
+  padding: 0.2rem 0.5rem;
+  background-color: var(--bg);
+}
