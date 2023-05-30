@@ -13,6 +13,7 @@ function details() {
       date: "",
       invoiceno: "",
       paymed: "",
+      payref: "",
       name: "",
       address: "",
       gstin: "",
@@ -66,6 +67,31 @@ function details() {
             <option value="UPI">UPI</option>
             <option value="Cheque">Cheque</option>
           </select>
+        </div>
+        <div className={styles["form-item"]}>
+          <label>Buyer's GSTIN</label>
+          <input
+            autoComplete="off"
+            type="text"
+            placeholder="Buyer's GSTIN"
+            value={formData.gstin}
+            onChange={(e) =>
+              setformData((prev) => ({ ...prev, gstin: e.target.value }))
+            }
+            required
+          />
+        </div>
+        <div className={styles["form-item"]}>
+          <label>Payment References</label>
+          <input
+            autoComplete="off"
+            type="text"
+            placeholder="Card/UPI/Chq No."
+            value={formData.payref}
+            onChange={(e) =>
+              setformData((prev) => ({ ...prev, payref: e.target.value }))
+            }
+          />
         </div>
         <div className={styles["form-item"]}>
           <label>Buyer's Name</label>
@@ -125,20 +151,6 @@ function details() {
             value={formData.disthro}
             onChange={(e) =>
               setformData((prev) => ({ ...prev, disthro: e.target.value }))
-            }
-            required
-          />
-        </div>
-        <div className={styles["form-item"]}>
-          <label>Buyer's GSTIN</label>
-          <input
-            autoComplete="off"
-            type="text"
-            placeholder="Buyer's GSTIN"
-            // pattern="[0-9]+"
-            value={formData.gstin}
-            onChange={(e) =>
-              setformData((prev) => ({ ...prev, gstin: e.target.value }))
             }
             required
           />

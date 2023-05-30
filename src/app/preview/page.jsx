@@ -126,6 +126,7 @@ const preview = () => {
               <div className={styles["invoice-method"]}>
                 Payment Method: {formData.paymed}
               </div>
+              <div>Payment Reference: {formData.payref}</div>
             </div>
             {/*  */}
             <div className={styles.divider} />
