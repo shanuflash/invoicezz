@@ -37,7 +37,7 @@ const dataProvider = ({ children }) => {
 
     if (error) {
       setData(
-        Array(10).fill({
+        Array(4).fill({
           name: "Failed to load",
           id: " Failed to load",
           price: " Failed to load",
