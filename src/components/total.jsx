@@ -13,7 +13,7 @@ const total = ({ invoice }) => {
     useContext(dataContext);
   useEffect(() => {
     let total = 0;
-    data.forEach((item) => {
+    data?.forEach((item) => {
       total += item.price * item.count;
     });
     setPrice(total);

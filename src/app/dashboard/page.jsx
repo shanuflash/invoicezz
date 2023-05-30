@@ -28,15 +28,20 @@ const dashboard = async () => {
         {data.map((item, id) => (
           <div className={styles["menu-item"]}>
             <div className={styles["menu-left"]}>
+              <div className={styles["menu-item-title-id"]}>
+                ID {item?.id} {" - "}
+                {item?.type?.toUpperCase()}
+              </div>
               <div className={styles["menu-item-title"]}>
                 {item?.name}
                 <span style={{ fontSize: "0.8rem" }}>
-                  {" - "}
-                  ID {item?.id}
+                  {item?.stock ? (
+                    <>
+                      {" - "}
+                      {item?.stock} left
+                    </>
+                  ) : null}
                 </span>
-              </div>
-              <div className={styles["menu-item-description"]}>
-                {item?.type?.toUpperCase()}
               </div>
             </div>
             <div className={styles["menu-right"]}>

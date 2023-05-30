@@ -2,11 +2,9 @@
 import styles from "@/styles/page.module.css";
 
 import Total from "@/components/total";
-import { useSupabase } from "./supabase-provider";
 import { useContext, useEffect } from "react";
 import { dataContext } from "@/context/dataProvider";
 const Home = () => {
-  const { supabase } = useSupabase();
   const { data, setData } = useContext(dataContext);
 
   const increment = (id) => {
@@ -51,12 +49,12 @@ const Home = () => {
       <div className={styles.menu}>
         <div className={styles["menu-title"]}>Add items to your bill:</div>
         <div className={styles["menu-container"]}>
-          {data.map((item, i) => (
+          {data?.map((item, i) => (
             <div className={styles["menu-item"]} key={i}>
               <div className={styles["menu-left"]}>
                 <div className={styles["menu-item-title-id"]}>
                   ID {item?.id} {" - "}
-                  {item.type.toUpperCase()}
+                  {item?.type?.toUpperCase()}
                 </div>
                 <div className={styles["menu-item-title"]}>
                   {item?.name}
