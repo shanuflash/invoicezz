@@ -8,25 +8,8 @@ const dataProvider = ({ children }) => {
   const { supabase } = useSupabase();
 
   const [tax, setTax] = useState(0);
-  const [data, setData] =
-    useState();
-    // Array(10).fill({
-    //   name: "Loading...",
-    //   id: " Loading...",
-    //   price: " Loading...",
-    //   count: 0,
-    // })
-  const [formData, setformData] = useState({
-    date: "",
-    invoiceno: "",
-    paymed: "",
-    name: "",
-    address: "",
-    gstin: "",
-    // phoneno: "",
-    delname: "",
-    deladdress: "",
-  });
+  const [data, setData] = useState();
+
   const [price, setPrice] = useState(0);
 
   const handleItems = async () => {
@@ -57,8 +40,6 @@ const dataProvider = ({ children }) => {
       value={{
         tax,
         setTax,
-        formData,
-        setformData,
         data,
         setData,
         price,

@@ -1,12 +1,15 @@
 "use client";
 
-import { useContext } from "react";
 import styles from "@/styles/page.module.css";
-import { dataContext } from "@/context/dataProvider";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+
+import { useSelector, useDispatch } from "react-redux";
+import { empty, change } from "@/redux/formSlice";
+
 function details() {
-  const { formData, setformData } = useContext(dataContext);
+  const dispatch = useDispatch();
+  const formData = useSelector((state) => state.form);
   const router = useRouter();
   const handleClear = () => {
     setData({
@@ -17,7 +20,6 @@ function details() {
       name: "",
       address: "",
       gstin: "",
-      // phoneno: "",
       delname: "",
       deladdress: "",
       disthro: "",
@@ -48,7 +50,7 @@ function details() {
             placeholder="Date"
             value={formData.date}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, date: e.target.value }))
+              dispatch(change({ name: "date", value: e.target.value }))
             }
             required
           />
@@ -58,7 +60,7 @@ function details() {
           <select
             value={formData.paymed}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, paymed: e.target.value }))
+              dispatch(change({ name: "paymed", value: e.target.value }))
             }
           >
             <option value="">Select a payment method</option>
@@ -76,7 +78,7 @@ function details() {
             placeholder="Buyer's GSTIN"
             value={formData.gstin}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, gstin: e.target.value }))
+              dispatch(change({ name: "gstin", value: e.target.value }))
             }
             required
           />
@@ -89,7 +91,7 @@ function details() {
             placeholder="Card/UPI/Chq No."
             value={formData.payref}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, payref: e.target.value }))
+              dispatch(change({ name: "payref", value: e.target.value }))
             }
           />
         </div>
@@ -101,7 +103,7 @@ function details() {
             placeholder="Buyer's Name"
             value={formData.name}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, name: e.target.value }))
+              dispatch(change({ name: "name", value: e.target.value }))
             }
             required
           />
@@ -114,7 +116,7 @@ function details() {
             placeholder="Deliver Name"
             value={formData.delname}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, delname: e.target.value }))
+              dispatch(change({ name: "delname", value: e.target.value }))
             }
             required
           />
@@ -126,7 +128,7 @@ function details() {
             placeholder="Buyer Address"
             value={formData.address}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, address: e.target.value }))
+              dispatch(change({ name: "address", value: e.target.value }))
             }
             required
           />
@@ -138,7 +140,7 @@ function details() {
             placeholder="Delivery Address"
             value={formData.deladdress}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, deladdress: e.target.value }))
+              dispatch(change({ name: "deladdress", value: e.target.value }))
             }
             required
           />
@@ -150,7 +152,7 @@ function details() {
             placeholder="Dispatched Through"
             value={formData.disthro}
             onChange={(e) =>
-              setformData((prev) => ({ ...prev, disthro: e.target.value }))
+              dispatch(change({ name: "disthro", value: e.target.value }))
             }
             required
           />
@@ -162,7 +164,11 @@ function details() {
             </Link>
           </div>
           <div style={{ display: "flex", gap: "1rem" }}>
-            <button style={{ width: "auto" }} onClick={handleClear}>
+            <button
+              type="button"
+              style={{ width: "auto" }}
+              onClick={() => dispatch(empty())}
+            >
               Clear
             </button>
             <button style={{ width: "auto" }} type="submit">

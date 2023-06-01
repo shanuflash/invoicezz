@@ -10,10 +10,16 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
+import { useDispatch, useSelector } from "react-redux";
+import { empty } from "@/redux/formSlice";
+
 const preview = () => {
-  const { data, price, setformData, formData, tax, handleItems } =
-    useContext(dataContext);
+  const dispatch = useDispatch();
+  const formData = useSelector((state) => state.form);
+
+  const { data, price, tax, handleItems } = useContext(dataContext);
   const router = useRouter();
+  
   const { supabase } = useSupabase();
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceno, setInvoiceno] = useState("<generating>");
@@ -61,17 +67,7 @@ const preview = () => {
 
     if (error) console.log(error);
     else {
-      setformData({
-        date: "",
-        invoiceno: "",
-        paymed: "",
-        name: "",
-        address: "",
-        gstin: "",
-        // phoneno: "",
-        delname: "",
-        deladdress: "",
-      });
+      dispatch(empty());
       handleItems();
       document.title = "Bill Generator";
       router.push("/");

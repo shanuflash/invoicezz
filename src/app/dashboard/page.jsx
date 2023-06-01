@@ -16,7 +16,6 @@ const dashboard = async () => {
     .from("inventory")
     .select("*")
     .order("id", { ascending: true });
-  console.log(data);
 
   return (
     <div className={styles["menu"]}>

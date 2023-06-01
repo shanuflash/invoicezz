@@ -2,9 +2,11 @@ import "../styles/globals.css";
 import styles from "../styles/page.module.css";
 import Nav from "../components/nav";
 import DataProvider from "@/context/dataProvider";
+
 import SupabaseProvider from "./supabase-provider";
 
 import { Inter } from "next/font/google";
+import Providers from "@/redux/provider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,8 +23,10 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} ${styles.body}`}>
         <SupabaseProvider>
           <DataProvider>
-            <Nav />
-            <div className={styles.content}>{children}</div>
+            <Providers>
+              <Nav />
+              <div className={styles.content}>{children}</div>
+            </Providers>
           </DataProvider>
         </SupabaseProvider>
       </body>
