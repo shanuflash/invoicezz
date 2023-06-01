@@ -1,7 +1,7 @@
 import { supabase } from "@/app/supabase";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchData = createAsyncThunk("fetchTodos", async () => {
+export const fetchData = createAsyncThunk("fetchData", async () => {
   let { data, error } = await supabase
     .from("inventory")
     .select("*")

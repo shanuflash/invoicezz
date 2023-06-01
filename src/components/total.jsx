@@ -14,10 +14,6 @@ const total = ({ invoice }) => {
     handleItems();
   };
 
-  // const handleNext = () => {
-  //   router.push("/details");
-  // };
-
   return (
     <>
       <div className={styles.total}>
