@@ -9,7 +9,7 @@ import { decrement, fetchData, increment, input } from "@/redux/dataSlice";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.data);
+  const data = useSelector((state) => state.data.data);
 
   useEffect(() => {
     dispatch(fetchData());

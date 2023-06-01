@@ -17,7 +17,7 @@ export const formSlice = createSlice({
   name: "form",
   initialState,
   reducers: {
-    empty() {
+    empty: () => {
       return initialState;
     },
     change: (state, action) => {

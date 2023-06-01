@@ -11,28 +11,47 @@ export const fetchData = createAsyncThunk("fetchTodos", async () => {
 
 const dataSlice = createSlice({
   name: "data",
-  initialState: [],
+  initialState: {
+    data: [],
+    price: 0,
+    tax: 0,
+  },
   reducers: {
     increment: (state, action) => {
-      const index = state.findIndex((item) => item.id == action.payload);
-      if (state[index].stock > state[index].count) state[index].count++;
+      const index = state.data.findIndex((item) => item.id == action.payload);
+      if (state.data[index].stock > state.data[index].count) {
+        state.data[index].count++;
+        state.price += state.data[index].price;
+        state.tax = state.price * 0.14;
+      }
     },
     decrement: (state, action) => {
-      const index = state.findIndex((item) => item.id == action.payload);
-      if (state[index].count > 0) state[index].count--;
+      const index = state.data.findIndex((item) => item.id == action.payload);
+      if (state.data[index].count > 0) {
+        state.data[index].count--;
+        state.price -= state.data[index].price;
+        state.tax = state.price * 0.14;
+      }
     },
     input: (state, action) => {
-      const index = state.findIndex((item) => item.id == action.payload.id);
+      const index = state.data.findIndex(
+        (item) => item.id == action.payload.id
+      );
+      const prev = state.data[index].count;
       if (
-        state[index].stock >= action.payload.value &&
+        state.data[index].stock >= action.payload.value &&
         action.payload.value >= 0
-      )
-        state[index].count = action.payload.value;
+      ) {
+        state.data[index].count = action.payload.value;
+        state.price += (action.payload.value - prev) * state.data[index].price;
+        state.tax = state.price * 0.14;
+      }
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchData.fulfilled, (_, action) => {
-      return action.payload;
+    builder.addCase(fetchData.fulfilled, (state, action) => {
+      console.log(action.payload);
+      state.data = action.payload;
     });
   },
 });

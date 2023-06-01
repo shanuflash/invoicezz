@@ -1,7 +1,6 @@
 import "../styles/globals.css";
 import styles from "../styles/page.module.css";
 import Nav from "../components/nav";
-import DataProvider from "@/context/dataProvider";
 
 import SupabaseProvider from "./supabase-provider";
 
@@ -23,10 +22,8 @@ export default function RootLayout({ children }) {
       <body className={`${inter.className} ${styles.body}`}>
         <SupabaseProvider>
           <Providers>
-            <DataProvider>
-              <Nav />
-              <div className={styles.content}>{children}</div>
-            </DataProvider>
+            <Nav />
+            <div className={styles.content}>{children}</div>
           </Providers>
         </SupabaseProvider>
       </body>

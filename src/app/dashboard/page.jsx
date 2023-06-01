@@ -5,6 +5,9 @@ import { headers, cookies } from "next/headers";
 import Add from "./add";
 import Buttons from "./buttons";
 import Price from "./price";
+
+//optimize with redux
+// import { store } from "@/redux/store";
 export const revalidate = 0;
 
 const dashboard = async () => {
@@ -12,6 +15,7 @@ const dashboard = async () => {
     headers,
     cookies,
   });
+
   const { data, error } = await supabase
     .from("inventory")
     .select("*")

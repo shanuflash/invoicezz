@@ -1,5 +1,5 @@
 "use client";
-import { dataContext } from "@/context/dataProvider";
+
 import styles from "@/styles/page.module.css";
 import { useContext, useEffect, useState } from "react";
 import Total from "@/components/total";
@@ -16,9 +16,9 @@ import { empty } from "@/redux/formSlice";
 const preview = () => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form);
-  const data = useSelector((state) => state.data);
-
-  const { price, tax } = useContext(dataContext);
+  const data = useSelector((state) => state.data.data);
+  const price = useSelector((state) => state.data.price);
+  const tax = useSelector((state) => state.data.tax);
   const router = useRouter();
 
   const { supabase } = useSupabase();

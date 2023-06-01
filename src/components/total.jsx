@@ -1,34 +1,22 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
 import styles from "../styles/page.module.css";
-import { dataContext } from "@/context/dataProvider";
+
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 
 const total = ({ invoice }) => {
-  const router = useRouter();
-  const data = useSelector((state) => state.data);
-
-  const { price, setPrice, tax, setTax } = useContext(dataContext);
-
-  useEffect(() => {
-    let total = 0;
-    data?.forEach((item) => {
-      total += item.price * item.count;
-    });
-    setPrice(total);
-    setTax(total * 2 * 0.14);
-  }, [data]);
+  const price = useSelector((state) => state.data.price);
+  const tax = useSelector((state) => state.data.tax);
 
   const handleClear = () => {
     handleItems();
   };
 
-  const handleNext = () => {
-    localStorage.setItem("count", JSON.stringify(data));
-    router.push("/details");
-  };
+  // const handleNext = () => {
+  //   router.push("/details");
+  // };
 
   return (
     <>
@@ -37,7 +25,7 @@ const total = ({ invoice }) => {
           {!invoice && (
             <>
               <button onClick={handleClear}>Clear</button>
-              <button onClick={handleNext}>Next</button>
+              <Link href="/details">Next</Link>
             </>
           )}
         </div>
