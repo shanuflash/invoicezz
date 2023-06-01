@@ -16,10 +16,11 @@ import { empty } from "@/redux/formSlice";
 const preview = () => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form);
+  const data = useSelector((state) => state.data);
 
-  const { data, price, tax, handleItems } = useContext(dataContext);
+  const { price, tax } = useContext(dataContext);
   const router = useRouter();
-  
+
   const { supabase } = useSupabase();
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceno, setInvoiceno] = useState("<generating>");
@@ -68,7 +69,7 @@ const preview = () => {
     if (error) console.log(error);
     else {
       dispatch(empty());
-      handleItems();
+      // refetch todo
       document.title = "Bill Generator";
       router.push("/");
     }

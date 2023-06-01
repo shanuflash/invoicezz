@@ -22,12 +22,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} ${styles.body}`}>
         <SupabaseProvider>
-          <DataProvider>
-            <Providers>
+          <Providers>
+            <DataProvider>
               <Nav />
               <div className={styles.content}>{children}</div>
-            </Providers>
-          </DataProvider>
+            </DataProvider>
+          </Providers>
         </SupabaseProvider>
       </body>
     </html>

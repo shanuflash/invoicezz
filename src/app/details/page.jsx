@@ -11,20 +11,6 @@ function details() {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form);
   const router = useRouter();
-  const handleClear = () => {
-    setData({
-      date: "",
-      invoiceno: "",
-      paymed: "",
-      payref: "",
-      name: "",
-      address: "",
-      gstin: "",
-      delname: "",
-      deladdress: "",
-      disthro: "",
-    });
-  };
 
   const handleNext = (e) => {
     e.preventDefault();

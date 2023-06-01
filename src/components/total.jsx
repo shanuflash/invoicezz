@@ -1,16 +1,17 @@
 "use client";
 
-import { Dialog } from "@headlessui/react";
 import { useContext, useEffect, useState } from "react";
 import styles from "../styles/page.module.css";
 import { dataContext } from "@/context/dataProvider";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 const total = ({ invoice }) => {
   const router = useRouter();
+  const data = useSelector((state) => state.data);
 
-  const { data, price, setPrice, handleItems, tax, setTax } =
-    useContext(dataContext);
+  const { price, setPrice, tax, setTax } = useContext(dataContext);
+
   useEffect(() => {
     let total = 0;
     data?.forEach((item) => {

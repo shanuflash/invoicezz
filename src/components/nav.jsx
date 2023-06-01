@@ -3,11 +3,8 @@ import Link from "next/link";
 import styles from "../styles/page.module.css";
 import { useSupabase } from "@/app/supabase-provider";
 import { usePathname, useRouter } from "next/navigation";
-import { useContext } from "react";
-import { dataContext } from "@/context/dataProvider";
 
 const nav = () => {
-  const { handleItems } = useContext(dataContext);
   const pathname = usePathname();
   const router = useRouter();
   const { supabase } = useSupabase();
@@ -21,7 +18,7 @@ const nav = () => {
   return (
     <div className={styles.nav}>
       <div className={styles["nav-title"]}>
-        <Link href="/" onClick={handleItems} className={styles.logo}>
+        <Link href="/" className={styles.logo}>
           {"<"}SARAVANAN TRADERS{"/>"}
         </Link>
         {pathname !== "/login" && (

@@ -2,47 +2,18 @@
 import styles from "@/styles/page.module.css";
 
 import Total from "@/components/total";
-import { useContext, useEffect } from "react";
-import { dataContext } from "@/context/dataProvider";
+import { useEffect } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { decrement, fetchData, increment, input } from "@/redux/dataSlice";
+
 const Home = () => {
-  const { data, setData } = useContext(dataContext);
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.data);
 
-  const increment = (id) => {
-    setData((prev) => {
-      return prev.map((item) => {
-        if (item.id === Number(id) && item.stock > item.count) {
-          return { ...item, count: Number(item.count) + 1 };
-        }
-        return item;
-      });
-    });
-  };
-
-  const decrement = (id) => {
-    setData((prev) => {
-      return prev.map((item) => {
-        if (item.id === Number(id) && item.count > 0 && item.stock > 0) {
-          return { ...item, count: Number(item.count) - 1 };
-        }
-        return item;
-      });
-    });
-  };
-
-  const handleInput = (e, id) => {
-    setData((prev) => {
-      return prev.map((item) => {
-        if (
-          item.id === Number(id) &&
-          item.stock >= e.target.value &&
-          e.target.value >= 0
-        ) {
-          return { ...item, count: e.target.value };
-        }
-        return item;
-      });
-    });
-  };
+  useEffect(() => {
+    dispatch(fetchData());
+  }, []);
 
   return (
     <>
@@ -73,7 +44,7 @@ const Home = () => {
                 <div className={styles["menu-item-counter"]}>
                   <div
                     className={styles["menu-item-counter-button"]}
-                    onClick={() => decrement(item.id)}
+                    onClick={() => dispatch(decrement(item.id))}
                   >
                     -
                   </div>
@@ -87,14 +58,16 @@ const Home = () => {
                       name="count"
                       id="count"
                       value={item?.count}
-                      onChange={(e) => handleInput(e, item.id)}
+                      onChange={(e) =>
+                        dispatch(input({ value: e.target.value, id: item.id }))
+                      }
                     />
                   ) : (
                     <>No stock</>
                   )}
                   <div
                     className={styles["menu-item-counter-button"]}
-                    onClick={() => increment(item.id)}
+                    onClick={() => dispatch(increment(item.id))}
                   >
                     +
                   </div>
