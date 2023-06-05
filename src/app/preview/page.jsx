@@ -1,11 +1,10 @@
 "use client";
 
 import styles from "@/styles/page.module.css";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Total from "@/components/total";
 import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
-import { cookies } from "next/headers";
 
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
