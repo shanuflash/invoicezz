@@ -6,7 +6,8 @@ import Total from "@/components/total";
 import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
 import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -22,7 +23,7 @@ const preview = () => {
   const tax = useSelector((state) => state.data.tax);
   const router = useRouter();
 
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = createClientComponentClient();
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceno, setInvoiceno] = useState("<generating>");
 
