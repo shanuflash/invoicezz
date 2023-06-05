@@ -6,6 +6,7 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import Add from "./add";
 import Buttons from "./buttons";
 import Price from "./price";
+import Type from "./type";
 
 // optimize with redux
 // import { store } from "@/redux/store";
@@ -22,6 +23,7 @@ const dashboard = async () => {
     <div className={styles["menu"]}>
       <div className={styles["menu-title"]}>
         Change the stock of items:
+        <Type />
         <Add />
       </div>
       <div className={styles["menu-container"]}>
