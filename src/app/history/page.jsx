@@ -1,14 +1,11 @@
 import styles from "@/styles/page.module.css";
 
-import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { headers, cookies } from "next/headers";
+import { cookies } from "next/headers";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 export const revalidate = 0;
 
 const history = async () => {
-  const supabase = createServerComponentSupabaseClient({
-    headers,
-    cookies,
-  });
+  const supabase = createServerComponentClient({ cookies });
 
   // payref: "",
   // disthro: "",

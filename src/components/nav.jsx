@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
 import styles from "../styles/page.module.css";
-import { useSupabase } from "@/app/supabase-provider";
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { usePathname, useRouter } from "next/navigation";
 
 const nav = () => {
   const pathname = usePathname();
   const router = useRouter();
-  const { supabase } = useSupabase();
+  const supabase = createClientComponentClient();
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     router.push("/login");

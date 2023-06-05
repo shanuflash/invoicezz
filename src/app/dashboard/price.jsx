@@ -1,10 +1,11 @@
 "use client";
 import styles from "@/styles/page.module.css";
-import { useSupabase } from "../supabase-provider";
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useState } from "react";
 
 const price = ({ price, id }) => {
-  const { supabase } = useSupabase();
+  const supabase = createClientComponentClient();
   const [data, setData] = useState(price);
 
   const handleInput = (e) => {

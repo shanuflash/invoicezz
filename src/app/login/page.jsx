@@ -1,14 +1,13 @@
 "use client";
 import { useState } from "react";
 import styles from "@/styles/page.module.css";
-export const revalidate = 5;
-import { useSupabase } from "../supabase-provider";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
 function App() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const { supabase } = useSupabase();
+  const supabase = createClientComponentClient();
   const router = useRouter();
   const handleSubmit = async (e) => {
     e.preventDefault();

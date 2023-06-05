@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "@/styles/page.module.css";
-import { useSupabase } from "../supabase-provider";
+
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
 const buttons = ({ itemdata }) => {
   const router = useRouter();
   const [data, setData] = useState(itemdata);
-  const { supabase } = useSupabase();
+  const supabase = createClientComponentClient();
 
   const update = async () => {
     await supabase
