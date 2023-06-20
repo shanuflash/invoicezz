@@ -6,50 +6,59 @@ import { useEffect, useState } from "react";
 
 const history = () => {
   const [Data, setData] = useState([]);
-  const [month, setMonth] = useState(0);
+  const [date, setDate] = useState({
+    from: "",
+    to: "",
+  });
   const supabase = createClientComponentClient();
 
   const getHistory = async () => {
-    if (month === 0) {
-      const { data } = await supabase
-        .from("history")
-        .select("*")
-        .order("invoiceno", { ascending: false });
-      setData(data);
-      return;
-    }
+    // if (date === 0) {
+    //   const { data } = await supabase
+    //     .from("history")
+    //     .select("*")
+    //     .order("invoiceno", { ascending: false });
+    //   setData(data);
+    //   return;
+    // }
     const { data } = await supabase
       .from("history")
       .select("*")
-      .gte("date", `2023-0${month}-01`)
-      .lt("date", `2023-0${month + 1}-01`)
+      .gte("date", date.from)
+      .lt("date", date.to)
       .order("invoiceno", { ascending: false });
     return setData(data);
   };
 
   useEffect(() => {
     getHistory();
-  }, [month]);
+  }, [date]);
 
-  const selectMonth = (e) => {
-    setMonth(e.target.value);
-  };
+  // const selectMonth = (e) => {
+  //   setMonth(e.target.value);
+  // };
 
   return (
     <div className={styles["history"]}>
       <div className={styles["menu-title"]} style={{ padding: "0" }}>
         History
       </div>
-      <select
-        className={styles["history-select"]}
-        name="month"
-        id="month"
-        onChange={selectMonth}
-      >
-        <option value="0">All</option>
-        <option value="5">may</option>
-        <option value="6">june</option>
-      </select>
+      <div className={styles["date-container"]}>
+        <input
+          type="date"
+          name="from"
+          onChange={(e) => {
+            setDate({ ...date, from: e.target.value });
+          }}
+        />
+        <input
+          type="date"
+          name="to"
+          onChange={(e) => {
+            setDate({ ...date, to: e.target.value });
+          }}
+        />
+      </div>
       {Data?.map((item) => (
         <div className={styles["history-item"]}>
           <div className={styles["item-invoiceno"]}>ID: {item.invoiceno}</div>

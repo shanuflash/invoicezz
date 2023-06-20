@@ -520,3 +520,19 @@
   border: none;
   cursor: pointer;
 }
+
+.date-container {
+  display: flex;
+  /* flex-direction: column; */
+  gap: 0.5rem;
+}
+
+.date-container input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 12px;
+  outline: 1px solid #00000056;
+  border: none;
+  background-color: var(--blue);
+  font-size: 1rem;
+}
