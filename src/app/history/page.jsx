@@ -13,14 +13,13 @@ const history = () => {
   const supabase = createClientComponentClient();
 
   const getHistory = async () => {
-    // if (date === 0) {
-    //   const { data } = await supabase
-    //     .from("history")
-    //     .select("*")
-    //     .order("invoiceno", { ascending: false });
-    //   setData(data);
-    //   return;
-    // }
+    if (date.from === "" || date.to === "") {
+      const { data } = await supabase
+        .from("history")
+        .select("*")
+        .order("invoiceno", { ascending: false });
+      return setData(data);
+    }
     const { data } = await supabase
       .from("history")
       .select("*")
@@ -33,10 +32,6 @@ const history = () => {
   useEffect(() => {
     getHistory();
   }, [date]);
-
-  // const selectMonth = (e) => {
-  //   setMonth(e.target.value);
-  // };
 
   return (
     <div className={styles["history"]}>
