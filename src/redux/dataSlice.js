@@ -29,8 +29,10 @@ const dataSlice = createSlice({
           state.tax[type] = 0;
         }
         state.price[type] += state.data[index].price;
-        state.price.total += state.data[index].price;
-        // state.tax[type] += state.price[type] * state.data[index].tax;
+        state.tax[type] += state.data[index].price * state.data[index].gst;
+        //optimize
+        state.price.total +=
+          state.data[index].price * (state.data[index].gst + 1);
       }
     },
     decrement: (state, action) => {
@@ -39,23 +41,36 @@ const dataSlice = createSlice({
         state.data[index].count--;
         const type = state.data[index].type;
         state.price[type] -= state.data[index].price;
-        state.price.total -= state.data[index].price;
-        // tax
+        state.tax[type] -= state.data[index].price * state.data[index].gst;
+        //optimize
+        state.price.total -=
+          state.data[index].price * (state.data[index].gst + 1);
       }
     },
     input: (state, action) => {
+      console.time("input");
+      const value = parseInt(action.payload.value);
       const index = state.data.findIndex(
         (item) => item.id == action.payload.id
       );
       const prev = state.data[index].count;
-      if (
-        state.data[index].stock >= action.payload.value &&
-        action.payload.value >= 0
-      ) {
-        state.data[index].count = action.payload.value;
-        // state.price += (action.payload.value - prev) * state.data[index].price;
-        // state.tax = state.price * 0.14;
+      if (state.data[index].stock >= value && value >= 0) {
+        const type = state.data[index].type;
+        if (!state.price[type]) {
+          state.price[type] = 0;
+          state.tax[type] = 0;
+        }
+        state.data[index].count = value;
+        //optimize
+        state.price[type] += (value - prev) * state.data[index].price;
+        state.tax[type] +=
+          (value - prev) * state.data[index].price * state.data[index].gst;
+        state.price.total +=
+          (value - prev) *
+          state.data[index].price *
+          (state.data[index].gst + 1);
       }
+      console.timeEnd("input");
     },
   },
   extraReducers: (builder) => {

@@ -13,9 +13,14 @@ const add = () => {
   const supabase = createClientComponentClient();
   const router = useRouter();
 
-  const handleAdd = async () => {
-    const { error } = await supabase.from("inventory").insert(newdata);
-    console.log(error);
+  const handleAdd = async (e) => {
+    e.preventDefault();
+    const { data } = await supabase
+      .from("types")
+      .select("gst")
+      .eq("name", newdata.type);
+    setnewData((prev) => ({ ...prev, gst: data[0].gst }));
+    await supabase.from("inventory").insert(newdata);
     setIsOpen(false);
     router.refresh();
   };
