@@ -172,45 +172,58 @@ const preview = () => {
                 <div className={styles["invoice-title-text"]}>Price</div>
                 <div className={styles["invoice-title-text"]}>Amount</div>
               </div>
-              {data?.map((item) => {
-                if (item.count > 0) {
+              {Object.keys(price).map((item) => {
+                if (price[item] > 0 && item !== "total") {
+                  const filteredData = data.filter((d) => d.type === item);
+                  const gst = filteredData[0]?.gst || 0;
                   return (
-                    <div className={styles["invoice-item"]}>
-                      <div className={styles["invoice-value"]}>{item.name}</div>
-                      <div className={styles["invoice-value"]}>123</div>
-                      <div className={styles["invoice-value"]}>
-                        {item.count}
-                      </div>
-                      <div className={styles["invoice-value"]}>
-                        {item.price}
-                      </div>
-                      <div className={styles["invoice-value"]}>
-                        {item.price * item.count}
+                    <div>
+                      <span>{item}</span>
+                      <div className={styles["invoice-item-container"]}>
+                        {filteredData?.map((item) => (
+                          <div className={styles["invoice-item"]}>
+                            <div className={styles["invoice-value"]}>
+                              {item.name}
+                            </div>
+                            <div className={styles["invoice-value"]}>123</div>
+                            <div className={styles["invoice-value"]}>
+                              {item.count}
+                            </div>
+                            <div className={styles["invoice-value"]}>
+                              {item.price}
+                            </div>
+                            <div className={styles["invoice-value"]}>
+                              {item.price * item.count}
+                            </div>
+                          </div>
+                        ))}
+                        <div className={styles["invoice-item"]}>
+                          <div className={styles["invoice-value"]}>
+                            CGST {(gst / 2).toFixed(2)}%
+                          </div>
+                          <div className={styles["invoice-value"]}></div>
+                          <div className={styles["invoice-value"]}></div>
+                          <div className={styles["invoice-value"]}></div>
+                          <div className={styles["invoice-value"]}>
+                            {parseInt(tax[item] / 2)}
+                          </div>
+                        </div>
+                        <div className={styles["invoice-item"]}>
+                          <div className={styles["invoice-value"]}>
+                            SGST {(gst / 2).toFixed(2)}%
+                          </div>
+                          <div className={styles["invoice-value"]}></div>
+                          <div className={styles["invoice-value"]}></div>
+                          <div className={styles["invoice-value"]}></div>
+                          <div className={styles["invoice-value"]}>
+                            {parseInt(tax[item] / 2)}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   );
                 }
               })}
-            </div>
-            <div className={styles["invoice-item-container"]}>
-              <div className={styles["invoice-item"]}>
-                <div className={styles["invoice-value"]}>CGST 14%</div>
-                <div className={styles["invoice-value"]}></div>
-                <div className={styles["invoice-value"]}></div>
-                <div className={styles["invoice-value"]}></div>
-                <div className={styles["invoice-value"]}>
-                  {parseInt(tax / 2)}
-                </div>
-              </div>
-              <div className={styles["invoice-item"]}>
-                <div className={styles["invoice-value"]}>SGST 14%</div>
-                <div className={styles["invoice-value"]}></div>
-                <div className={styles["invoice-value"]}></div>
-                <div className={styles["invoice-value"]}></div>
-                <div className={styles["invoice-value"]}>
-                  {parseInt(tax / 2)}
-                </div>
-              </div>
             </div>
             <Total invoice />
             <div className={styles.divider} />
