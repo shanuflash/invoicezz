@@ -4,6 +4,7 @@ import styles from "@/styles/page.module.css";
 import Total from "@/components/total";
 import { useEffect } from "react";
 
+
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, fetchData, increment, input } from "@/redux/dataSlice";
 
@@ -12,6 +13,7 @@ const Home = () => {
   const data = useSelector((state) => state.data.data);
 
   useEffect(() => {
+    // TODO: fix data reset on every page render
     dispatch(fetchData());
   }, []);
 

@@ -229,7 +229,8 @@ const preview = () => {
                     Amount in Words:
                   </div>
                   <div className={styles["invoice-ammountinwords-value"]}>
-                    {numWords(parseInt(price + tax)).toUpperCase()}
+                    //add tax
+                    {numWords(parseInt(price.total)).toUpperCase()}
                   </div>
                 </div>
               </div>

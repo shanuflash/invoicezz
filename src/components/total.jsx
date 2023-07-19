@@ -32,7 +32,7 @@ const total = ({ invoice }) => {
               {invoice ? (
                 <>₹{(price + tax).toLocaleString("en-IN")}</>
               ) : (
-                <>₹{price.toLocaleString("en-IN")}</>
+                <>₹{price.total}</>
               )}
             </span>
           </div>

@@ -14,6 +14,7 @@ function details() {
 
   const handleNext = (e) => {
     e.preventDefault();
+    
     router.push("/preview");
   };
 

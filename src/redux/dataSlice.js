@@ -13,24 +13,34 @@ const dataSlice = createSlice({
   name: "data",
   initialState: {
     data: [],
-    price: 0,
-    tax: 0,
+    price: {
+      total: 0,
+    },
+    tax: {},
   },
   reducers: {
     increment: (state, action) => {
       const index = state.data.findIndex((item) => item.id == action.payload);
       if (state.data[index].stock > state.data[index].count) {
         state.data[index].count++;
-        state.price += state.data[index].price;
-        state.tax = state.price * 0.14;
+        const type = state.data[index].type;
+        if (!state.price[type]) {
+          state.price[type] = 0;
+          state.tax[type] = 0;
+        }
+        state.price[type] += state.data[index].price;
+        state.price.total += state.data[index].price;
+        // state.tax[type] += state.price[type] * state.data[index].tax;
       }
     },
     decrement: (state, action) => {
       const index = state.data.findIndex((item) => item.id == action.payload);
       if (state.data[index].count > 0) {
         state.data[index].count--;
-        state.price -= state.data[index].price;
-        state.tax = state.price * 0.14;
+        const type = state.data[index].type;
+        state.price[type] -= state.data[index].price;
+        state.price.total -= state.data[index].price;
+        // tax
       }
     },
     input: (state, action) => {
@@ -43,14 +53,13 @@ const dataSlice = createSlice({
         action.payload.value >= 0
       ) {
         state.data[index].count = action.payload.value;
-        state.price += (action.payload.value - prev) * state.data[index].price;
-        state.tax = state.price * 0.14;
+        // state.price += (action.payload.value - prev) * state.data[index].price;
+        // state.tax = state.price * 0.14;
       }
     },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
-      console.log(action.payload);
       state.data = action.payload;
     });
   },
