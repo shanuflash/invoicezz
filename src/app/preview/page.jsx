@@ -199,7 +199,7 @@ const preview = () => {
                         ))}
                         <div className={styles["invoice-item"]}>
                           <div className={styles["invoice-value"]}>
-                            CGST {(gst / 2).toFixed(2)}%
+                            CGST {((gst * 100) / 2).toFixed(2)}%
                           </div>
                           <div className={styles["invoice-value"]}></div>
                           <div className={styles["invoice-value"]}></div>
@@ -210,7 +210,7 @@ const preview = () => {
                         </div>
                         <div className={styles["invoice-item"]}>
                           <div className={styles["invoice-value"]}>
-                            SGST {(gst / 2).toFixed(2)}%
+                            SGST {((gst * 100) / 2).toFixed(2)}%
                           </div>
                           <div className={styles["invoice-value"]}></div>
                           <div className={styles["invoice-value"]}></div>

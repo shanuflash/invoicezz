@@ -1,18 +1,14 @@
 "use client";
 
 import styles from "../styles/page.module.css";
-
-import { useRouter } from "next/navigation";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { clear } from "@/redux/dataSlice";
 import Link from "next/link";
 
 const total = ({ invoice }) => {
+  const dispatch = useDispatch();
   const price = useSelector((state) => state.data.price);
   const tax = useSelector((state) => state.data.tax);
-
-  const handleClear = () => {
-    handleItems();
-  };
 
   return (
     <>
@@ -20,7 +16,7 @@ const total = ({ invoice }) => {
         <div className={styles["total-left"]}>
           {!invoice && (
             <>
-              <button onClick={handleClear}>Clear</button>
+              <button onClick={() => dispatch(clear())}>Clear</button>
               <Link href="/details">Next</Link>
             </>
           )}

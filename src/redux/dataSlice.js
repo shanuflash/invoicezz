@@ -52,6 +52,15 @@ const dataSlice = createSlice({
         state.price.total += (count - prev) * price * (gst + 1);
       }
     },
+    clear: (state) => {
+      state.data.forEach((item) => {
+        item.count = 0;
+      });
+      state.price = {
+        total: 0,
+      };
+      state.tax = {};
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchData.fulfilled, (state, action) => {
@@ -60,6 +69,6 @@ const dataSlice = createSlice({
   },
 });
 
-export const { increment, decrement, input } = dataSlice.actions;
+export const { increment, decrement, input, clear } = dataSlice.actions;
 
 export default dataSlice.reducer;
