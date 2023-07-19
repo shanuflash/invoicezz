@@ -65,6 +65,14 @@ const dataSlice = createSlice({
   },
 });
 
+export const setupStore = () => {
+  const store = configureStore({
+    reducer: dataSlice.reducer,
+  });
+  store.dispatch(fetchData());
+  return store;
+};
+
 export const { increment, decrement, input } = dataSlice.actions;
 
 export default dataSlice.reducer;
