@@ -20,57 +20,37 @@ const dataSlice = createSlice({
   },
   reducers: {
     increment: (state, action) => {
-      const index = state.data.findIndex((item) => item.id == action.payload);
-      if (state.data[index].stock > state.data[index].count) {
-        state.data[index].count++;
-        const type = state.data[index].type;
-        if (!state.price[type]) {
-          state.price[type] = 0;
-          state.tax[type] = 0;
-        }
-        state.price[type] += state.data[index].price;
-        state.tax[type] += state.data[index].price * state.data[index].gst;
-        //optimize
-        state.price.total +=
-          state.data[index].price * (state.data[index].gst + 1);
+      const item = state.data.find((item) => item.id === action.payload);
+      if (item.stock > item.count) {
+        const { type, price, gst } = item;
+        item.count++;
+        state.price[type] = (state.price[type] ?? 0) + price;
+        state.tax[type] = (state.tax[type] ?? 0) + price * gst;
+        state.price.total += price * (gst + 1);
       }
     },
     decrement: (state, action) => {
-      const index = state.data.findIndex((item) => item.id == action.payload);
-      if (state.data[index].count > 0) {
-        state.data[index].count--;
-        const type = state.data[index].type;
-        state.price[type] -= state.data[index].price;
-        state.tax[type] -= state.data[index].price * state.data[index].gst;
-        //optimize
-        state.price.total -=
-          state.data[index].price * (state.data[index].gst + 1);
+      const item = state.data.find((item) => item.id === action.payload);
+      if (item.count > 0) {
+        let { type, price, gst } = item;
+        item.count--;
+        state.price[type] = (state.price[type] ?? 0) - price;
+        state.tax[type] = (state.tax[type] ?? 0) - price * gst;
+        state.price.total -= price * (gst + 1);
       }
     },
+
     input: (state, action) => {
-      console.time("input");
-      const value = parseInt(action.payload.value);
-      const index = state.data.findIndex(
-        (item) => item.id == action.payload.id
-      );
-      const prev = state.data[index].count;
-      if (state.data[index].stock >= value && value >= 0) {
-        const type = state.data[index].type;
-        if (!state.price[type]) {
-          state.price[type] = 0;
-          state.tax[type] = 0;
-        }
-        state.data[index].count = value;
-        //optimize
-        state.price[type] += (value - prev) * state.data[index].price;
-        state.tax[type] +=
-          (value - prev) * state.data[index].price * state.data[index].gst;
-        state.price.total +=
-          (value - prev) *
-          state.data[index].price *
-          (state.data[index].gst + 1);
+      const count = parseInt(action.payload.value);
+      const item = state.data.find((item) => item.id === action.payload.id);
+      if (item.stock >= count && count >= 0) {
+        const { type, price, gst } = item;
+        const prev = item.count;
+        item.count = count;
+        state.price[type] = (state.price[type] ?? 0) + (count - prev) * price;
+        state.tax[type] = (state.tax[type] ?? 0) + (count - prev) * price * gst;
+        state.price.total += (count - prev) * price * (gst + 1);
       }
-      console.timeEnd("input");
     },
   },
   extraReducers: (builder) => {
