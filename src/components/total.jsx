@@ -29,10 +29,20 @@ const total = ({ invoice }) => {
           <div className={styles["total-title"]}>
             Total:{" "}
             <span className={styles["total-price"]}>
+              {Object.keys(tax).map((key) => tax[key].total)}
               {invoice ? (
-                <>₹{(price + tax).toLocaleString("en-IN")}</>
+                <>
+                  ₹
+                  {(
+                    price.total +
+                    Object.values(price.total).reduce(
+                      (sum, value) => sum + value,
+                      0
+                    )
+                  ).toLocaleString("en-IN")}
+                </>
               ) : (
-                <>₹{price.total}</>
+                <>₹{price.total.toLocaleString("en-IN")}</>
               )}
             </span>
           </div>
