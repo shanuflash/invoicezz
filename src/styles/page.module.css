@@ -536,3 +536,9 @@
   background-color: var(--blue);
   font-size: 1rem;
 }
+
+.menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

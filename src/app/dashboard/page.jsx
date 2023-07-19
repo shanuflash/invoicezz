@@ -23,8 +23,10 @@ const dashboard = async () => {
     <div className={styles["menu"]}>
       <div className={styles["menu-title"]}>
         Change the stock of items:
-        <Type />
-        <Add />
+        <div className={styles["menu-button"]}>
+          <Type />
+          <Add />
+        </div>
       </div>
       <div className={styles["menu-container"]}>
         {data.map((item, id) => (
