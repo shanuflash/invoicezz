@@ -6,6 +6,7 @@ export const fetchData = createAsyncThunk("fetchData", async () => {
     .from("inventory")
     .select("*")
     .order("id", { ascending: true });
+  if (error) console.log(error);
   return data;
 });
 
@@ -39,7 +40,6 @@ const dataSlice = createSlice({
         state.price.total -= price * (gst + 1);
       }
     },
-
     input: (state, action) => {
       const count = parseInt(action.payload.value);
       const item = state.data.find((item) => item.id === action.payload.id);
@@ -59,14 +59,6 @@ const dataSlice = createSlice({
     });
   },
 });
-
-export const setupStore = () => {
-  const store = configureStore({
-    reducer: dataSlice.reducer,
-  });
-  store.dispatch(fetchData());
-  return store;
-};
 
 export const { increment, decrement, input } = dataSlice.actions;
 
