@@ -15,15 +15,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { empty } from "@/redux/formSlice";
 
 const preview = () => {
-  const groupedItems = data.reduce((acc, item) => {
-    const gst = item.gst || 0;
-    if (!acc[gst]) {
-      acc[gst] = [];
-    }
-    acc[gst].push(item);
-    return acc;
-  }, {});
-
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form);
   const data = useSelector((state) => state.data.data);
@@ -181,34 +172,6 @@ const preview = () => {
                 <div className={styles["invoice-title-text"]}>Price</div>
                 <div className={styles["invoice-title-text"]}>Amount</div>
               </div>
-
-              <div>
-                {Object.entries(groupedItems).map(([gst, items]) => (
-                  <div>
-                    <h2>GST {gst}%</h2>
-                    <div className={styles["invoice-item-container"]}>
-                      {items.map((item) => (
-                        <div className={styles["invoice-item"]}>
-                          <div className={styles["invoice-value"]}>
-                            {item.name}
-                          </div>
-                          <div className={styles["invoice-value"]}>123</div>
-                          <div className={styles["invoice-value"]}>
-                            {item.count}
-                          </div>
-                          <div className={styles["invoice-value"]}>
-                            {item.price}
-                          </div>
-                          <div className={styles["invoice-value"]}>
-                            {item.price * item.count}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
               {data?.map((item) => {
                 if (item.count > 0) {
                   return (
