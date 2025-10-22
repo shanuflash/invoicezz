@@ -1,19 +1,15 @@
 import styles from "@/styles/page.module.css";
-
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/server";
 
 import Add from "./add";
 import Buttons from "./buttons";
 import Price from "./price";
 import Type from "./type";
 
-// optimize with redux
-// import { store } from "@/redux/store";
 export const revalidate = 0;
 
 const dashboard = async () => {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("inventory")
     .select("*")

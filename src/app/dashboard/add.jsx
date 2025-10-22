@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import styles from "@/styles/page.module.css";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/utils/supabase/client";
 import { Dialog } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 export const revalidate = 0;
@@ -10,7 +10,7 @@ const add = () => {
   const [newdata, setnewData] = useState();
   const [type, setType] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const router = useRouter();
 
   const handleAdd = async (e) => {

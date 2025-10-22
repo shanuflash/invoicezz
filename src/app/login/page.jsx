@@ -1,22 +1,18 @@
 "use client";
 import { useState } from "react";
 import styles from "@/styles/page.module.css";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 
 function App() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const supabase = createClientComponentClient();
   const router = useRouter();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: user,
-      password: password,
-    });
-    if (error) console.log(error);
-    else router.push("/");
+    // Auth is disabled - login page kept for reference only
+    alert("Authentication is disabled. This app is now public.");
+    router.push("/");
   };
   return (
     <form className={styles["form"]} onSubmit={handleSubmit}>

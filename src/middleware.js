@@ -1,24 +1,6 @@
-import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { NextResponse } from "next/server";
 
+// Auth middleware disabled - app now works without authentication
 export async function middleware(req) {
-  const res = NextResponse.next();
-  const pathname = req.nextUrl.pathname;
-  const supabase = createMiddlewareClient({ req, res });
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-  if (
-    !session &&
-    (pathname === "/" ||
-      pathname === "/details" ||
-      pathname === "/preview" ||
-      pathname === "/history")
-  ) {
-    return NextResponse.redirect(new URL("/login", req.url));
-  }
-  // if (!session && pathname !== "/login") {
-  //   return NextResponse.redirect("localhost:3000/login");
-  // }
-  return res;
+  return NextResponse.next();
 }
