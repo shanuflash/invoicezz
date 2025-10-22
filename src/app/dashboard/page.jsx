@@ -1,7 +1,6 @@
 import styles from "@/styles/page.module.css";
 
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/supabase";
 
 import Add from "./add";
 import Buttons from "./buttons";
@@ -13,11 +12,16 @@ import Type from "./type";
 export const revalidate = 0;
 
 const dashboard = async () => {
-  const supabase = createServerComponentClient({ cookies });
   const { data, error } = await supabase
     .from("inventory")
     .select("*")
     .order("id", { ascending: true });
+
+  if (error) {
+    console.error("Error fetching inventory:", error);
+  }
+
+  const items = data || [];
 
   return (
     <div className={styles["menu"]}>
@@ -29,8 +33,13 @@ const dashboard = async () => {
         </div>
       </div>
       <div className={styles["menu-container"]}>
-        {data.map((item, id) => (
-          <div className={styles["menu-item"]}>
+        {items.length === 0 ? (
+          <div style={{ padding: "1rem", textAlign: "center" }}>
+            No items in inventory. Add items using the "Add Item" button above.
+          </div>
+        ) : null}
+        {items.map((item, id) => (
+          <div className={styles["menu-item"]} key={item.id}>
             <div className={styles["menu-left"]}>
               <div className={styles["menu-item-title-id"]}>
                 ID {item?.id} {" - "}
@@ -50,7 +59,7 @@ const dashboard = async () => {
             </div>
             <div className={styles["menu-right"]}>
               <Price price={item?.price} id={item?.id} />
-              <Buttons itemdata={data[id]} />
+              <Buttons itemdata={items[id]} />
             </div>
           </div>
         ))}

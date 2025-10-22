@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import styles from "@/styles/page.module.css";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/supabase";
 import { Dialog } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 export const revalidate = 0;
@@ -9,20 +9,26 @@ export const revalidate = 0;
 const type = () => {
   const [newdata, setnewData] = useState();
   const [isOpen, setIsOpen] = useState(false);
-  const supabase = createClientComponentClient();
   const router = useRouter();
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    const { error } = await supabase.from("types").insert({
-      name: newdata.name,
-      cgst: parseFloat(newdata.cgst),
-      sgst: parseFloat(newdata.sgst),
-      gst: parseFloat(newdata.sgst) + parseFloat(newdata.cgst),
-    });
-    console.log(error);
-    setIsOpen(false);
-    router.refresh();
+    try {
+      const { error } = await supabase.from("types").insert({
+        name: newdata.name,
+        cgst: parseFloat(newdata.cgst),
+        sgst: parseFloat(newdata.sgst),
+        gst: parseFloat(newdata.sgst) + parseFloat(newdata.cgst),
+      });
+      
+      if (error) throw error;
+      
+      setIsOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Error adding type:", error);
+      alert("Failed to add type. Please try again.");
+    }
   };
 
   const handlegenerate = async () => {

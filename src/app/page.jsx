@@ -8,14 +8,28 @@ import { decrement, increment, input } from "@/redux/dataSlice";
 const Home = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.data.data);
+  const loading = useSelector((state) => state.data.loading);
+
+  if (loading) {
+    return (
+      <div style={{ padding: "2rem", textAlign: "center" }}>
+        Loading inventory...
+      </div>
+    );
+  }
 
   return (
     <>
       <div className={styles.menu}>
         <div className={styles["menu-title"]}>Add items to your bill:</div>
         <div className={styles["menu-container"]}>
-          {data?.map((item, i) => (
-            <div className={styles["menu-item"]} key={i}>
+          {data.length === 0 ? (
+            <div style={{ padding: "1rem", textAlign: "center" }}>
+              No items available. Please add items in the Dashboard.
+            </div>
+          ) : null}
+          {data.map((item, i) => (
+            <div className={styles["menu-item"]} key={item.id || i}>
               <div className={styles["menu-left"]}>
                 <div className={styles["menu-item-title-id"]}>
                   ID {item?.id} {" - "}

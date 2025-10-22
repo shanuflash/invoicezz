@@ -1,6 +1,6 @@
 {
-  "name": "bill-gen-next",
-  "version": "0.1.0",
+  "name": "invoice-generator",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,14 +10,13 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@headlessui/react": "^1.7.14",
-    "@reduxjs/toolkit": "^1.9.5",
-    "@supabase/auth-helpers-nextjs": "^0.7.1",
-    "@supabase/supabase-js": "^2.24.0",
-    "next": "^13.4.1",
+    "@headlessui/react": "^2.2.0",
+    "@reduxjs/toolkit": "^2.3.0",
+    "@supabase/supabase-js": "^2.46.0",
+    "next": "^15.0.3",
     "num-words": "^1.2.3",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-redux": "^8.0.7"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-redux": "^9.1.2"
   }
 }

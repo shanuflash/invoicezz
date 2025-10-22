@@ -1,34 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Invoice Generator + Inventory Management
+
+A modern web application built with Next.js 15 for generating invoices and managing inventory. This is a public version - no login required!
+
+## Features
+
+- 📝 **Invoice Generation**: Create professional invoices with GST calculations
+- 📦 **Inventory Management**: Track stock levels and manage products
+- 📊 **Dashboard**: Manage items, prices, and stock quantities
+- 📜 **History**: View all generated invoices with filtering options
+- 💾 **Supabase Integration**: Database storage for inventory and invoice history
+- 🎨 **Modern UI**: Clean and responsive interface
+
+## Tech Stack
+
+- **Next.js 15** - React framework with App Router
+- **React 19** - UI library
+- **Redux Toolkit** - State management
+- **Supabase** - Backend and database
+- **Headless UI** - Accessible UI components
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+ installed
+- Supabase account and project (optional - for data persistence)
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables (create `.env.local`):
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+4. Run the development server:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Database Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+You'll need to set up the following tables in Supabase:
 
-## Learn More
+1. **inventory** - Stores product information
+2. **types** - Stores product categories with GST rates
+3. **history** - Stores generated invoices
 
-To learn more about Next.js, take a look at the following resources:
+## Usage
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Add Items**: Go to Dashboard and add products with prices and stock
+2. **Add Types**: Create product categories with GST rates
+3. **Create Invoice**: Select items from home page, add quantities
+4. **Fill Details**: Enter buyer and delivery information
+5. **Generate**: Preview and generate the final invoice
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Customization
 
-## Deploy on Vercel
+Update the following in `/src/app/preview/page.jsx` to customize your invoice:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Company name
+- Company address
+- GSTIN number
+- Bank details
+- Email and contact info
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Notes
+
+- This is a public version with authentication disabled
+- Anyone can access and use all features
+- The login page is kept but non-functional for reference
+- Update company details in the preview page to match your business
+
+## License
+
+This project is open source and available for personal and commercial use.

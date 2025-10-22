@@ -6,11 +6,9 @@ import Total from "@/components/total";
 import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/supabase";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-
 import { useDispatch, useSelector } from "react-redux";
 import { empty } from "@/redux/formSlice";
 
@@ -22,7 +20,7 @@ const preview = () => {
   const tax = useSelector((state) => state.data.tax);
   const router = useRouter();
 
-  const supabase = createClientComponentClient();
+  // Using supabase client without auth
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceno, setInvoiceno] = useState("<generating>");
 
@@ -31,12 +29,24 @@ const preview = () => {
   };
 
   const handleInvoiceno = async () => {
-    const { data: olddata } = await supabase
-      .from("history")
-      .select("invoiceno")
-      .order("invoiceno", { ascending: false })
-      .limit(1);
-    setInvoiceno(olddata[0].invoiceno + 1);
+    try {
+      const { data: olddata, error } = await supabase
+        .from("history")
+        .select("invoiceno")
+        .order("invoiceno", { ascending: false })
+        .limit(1);
+      
+      if (error) throw error;
+      
+      if (olddata && olddata.length > 0) {
+        setInvoiceno(olddata[0].invoiceno + 1);
+      } else {
+        setInvoiceno(1); // First invoice
+      }
+    } catch (error) {
+      console.error("Error fetching invoice number:", error);
+      setInvoiceno(1); // Default to 1 if error
+    }
   };
 
   useEffect(() => {
@@ -44,35 +54,52 @@ const preview = () => {
   }, []);
 
   const handlePrint = async () => {
-    document.title = invoiceno;
-    setIsOpen(false);
-    window.print();
-    const { error } = await supabase.from("history").insert([
-      {
-        ...formData,
-        total: price + tax,
-        invoiceno: Number(invoiceno),
-        items: data,
-      },
-    ]);
+    try {
+      document.title = invoiceno.toString();
+      setIsOpen(false);
+      window.print();
+      
+      // Calculate total
+      const totalAmount = price.total;
+      
+      // Insert invoice history
+      const { error: historyError } = await supabase.from("history").insert([
+        {
+          ...formData,
+          total: totalAmount,
+          invoiceno: Number(invoiceno),
+          items: data,
+        },
+      ]);
 
-    data?.forEach(async (item) => {
-      if (item.count > 0) {
-        const { data: data1, error: error1 } = await supabase
-          .from("inventory")
-          .update({ stock: item.stock - item.count })
-          .eq("id", item.id);
-        if (error1) console.log(error1);
-        else console.log(data1);
+      if (historyError) throw historyError;
+
+      // Update inventory stock
+      const updatePromises = data
+        .filter(item => item.count > 0)
+        .map(item => 
+          supabase
+            .from("inventory")
+            .update({ stock: item.stock - item.count })
+            .eq("id", item.id)
+        );
+
+      const results = await Promise.all(updatePromises);
+      
+      // Check for errors in stock updates
+      const stockErrors = results.filter(r => r.error);
+      if (stockErrors.length > 0) {
+        console.error("Some stock updates failed:", stockErrors);
       }
-    });
 
-    if (error) console.log(error);
-    else {
+      // Reset form and redirect
       dispatch(empty());
-      // refetch todo
-      document.title = "Bill Generator";
+      document.title = "Invoice Generator";
       router.push("/");
+    } catch (error) {
+      console.error("Error generating invoice:", error);
+      alert("Failed to generate invoice. Please try again.");
+      document.title = "Invoice Generator";
     }
   };
 
@@ -103,14 +130,14 @@ const preview = () => {
           <div className={styles.invoice}>
             <div className={styles.left}>
               <div className={styles["invoice-company-name"]}>
-                SARAVANAN TRADERS
+                YOUR COMPANY NAME
               </div>
               <div className={styles["invoice-company-address"]}>
-                No.2/32, Kakkan Nagar, 2nd Cross Street, <br />
-                Adambakkam, Chennai - 600088, Tamilnadu.
+                Your Company Address Line 1, <br />
+                Your City, State - Postal Code, Country.
               </div>
               <div className={styles["invoice-company-contact"]}>
-                GSTIN: 33BAZPS2766P1ZI <br /> Email: saravanantraderss@gmail.com
+                GSTIN: YOUR-GSTIN-HERE <br /> Email: your-email@example.com
               </div>
             </div>
             {/*  */}
@@ -119,7 +146,7 @@ const preview = () => {
                 Date: {new Date().toLocaleDateString("en-IN")}
               </div>
               <div className={styles["invoice-number"]}>
-                Invoice No: ST/{invoiceno}/23-24
+                Invoice No: INV/{invoiceno}/{new Date().getFullYear()}
               </div>
               <div className={styles["invoice-method"]}>
                 Payment Method: {formData.paymed}
@@ -172,16 +199,16 @@ const preview = () => {
                 <div className={styles["invoice-title-text"]}>Price</div>
                 <div className={styles["invoice-title-text"]}>Amount</div>
               </div>
-              {Object.keys(price).map((item) => {
+              {Object.keys(price).map((item, idx) => {
                 if (price[item] > 0 && item !== "total") {
                   const filteredData = data.filter((d) => d.type === item);
                   const gst = filteredData[0]?.gst || 0;
                   return (
-                    <div>
+                    <div key={idx}>
                       <span>{item}</span>
                       <div className={styles["invoice-item-container"]}>
-                        {filteredData?.map((item) => (
-                          <div className={styles["invoice-item"]}>
+                        {filteredData?.map((item, itemIdx) => (
+                          <div className={styles["invoice-item"]} key={itemIdx}>
                             <div className={styles["invoice-value"]}>
                               {item.name}
                             </div>
@@ -256,13 +283,13 @@ const preview = () => {
               <div>
                 <div className={styles["right"]} style={{ width: "100%" }}>
                   <div className={styles["invoice-bank"]}>
-                    Bank Name: Karur Vysya Bank
+                    Bank Name: Your Bank Name
                   </div>
                   <div className={styles["invoice-bank"]}>
-                    Account Number: 1104135000009692
+                    Account Number: XXXX-XXXX-XXXX
                   </div>
                   <div className={styles["invoice-bank"]}>
-                    Branch/IFSC Code: Alandur/KVBL00001104
+                    Branch/IFSC Code: YOUR-BRANCH/IFSC-CODE
                   </div>
                 </div>
               </div>
@@ -278,14 +305,8 @@ const preview = () => {
               </div>
               <div className={styles["invoice-declaration-item"]}>
                 <div className={styles["invoice-declaration-title"]}>
-                  For SARAVANAN TRADERS
+                  For YOUR COMPANY NAME
                   <div className={styles["invoice-declaration-signature"]}>
-                    <Image
-                      src="/sign.png"
-                      width={100}
-                      height={50}
-                      alt="Signature"
-                    />
                     Authorised Signatory
                   </div>
                 </div>

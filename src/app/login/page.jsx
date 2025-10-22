@@ -1,45 +1,34 @@
 "use client";
-import { useState } from "react";
 import styles from "@/styles/page.module.css";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 function App() {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const supabase = createClientComponentClient();
-  const router = useRouter();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: user,
-      password: password,
-    });
-    if (error) console.log(error);
-    else router.push("/");
-  };
+  
   return (
-    <form className={styles["form"]} onSubmit={handleSubmit}>
-      <div className={styles["form-item"]}>
-        <label>Email:</label>
-        <input
-          type="text"
-          placeholder="User Id"
-          onChange={(e) => setUser(e.target.value)}
-          required
-        />
+    <div className={styles["form"]}>
+      <div style={{ 
+        padding: "2rem", 
+        textAlign: "center",
+        maxWidth: "500px",
+        margin: "0 auto"
+      }}>
+        <h2 style={{ marginBottom: "1rem" }}>Login Disabled</h2>
+        <p style={{ marginBottom: "2rem", lineHeight: "1.6" }}>
+          This app has been converted to a public version. 
+          No login is required - everyone can access all features directly!
+        </p>
+        <Link href="/" style={{
+          padding: "0.75rem 2rem",
+          background: "#0070f3",
+          color: "white",
+          borderRadius: "5px",
+          textDecoration: "none",
+          display: "inline-block"
+        }}>
+          Go to Home
+        </Link>
       </div>
-      <div className={styles["form-item"]}>
-        <label>Password:</label>
-        <input
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Log In</button>
-    </form>
+    </div>
   );
 }
 

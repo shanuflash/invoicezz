@@ -1,11 +1,10 @@
 "use client";
 import styles from "@/styles/page.module.css";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/supabase";
 import { useEffect, useState } from "react";
 
 const price = ({ price, id }) => {
-  const supabase = createClientComponentClient();
   const [data, setData] = useState(price);
 
   const handleInput = (e) => {
@@ -13,7 +12,16 @@ const price = ({ price, id }) => {
   };
 
   const update = async () => {
-    await supabase.from("inventory").update({ price: data }).eq("id", id);
+    try {
+      const { error } = await supabase
+        .from("inventory")
+        .update({ price: data })
+        .eq("id", id);
+      
+      if (error) throw error;
+    } catch (error) {
+      console.error("Error updating price:", error);
+    }
   };
 
   useEffect(() => {
