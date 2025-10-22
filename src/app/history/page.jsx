@@ -1,7 +1,7 @@
 "use client";
 import styles from "@/styles/page.module.css";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/supabase";
 import { useEffect, useState } from "react";
 
 const history = () => {
@@ -10,7 +10,6 @@ const history = () => {
     from: "",
     to: "",
   });
-  const supabase = createClientComponentClient();
 
   const getHistory = async () => {
     if (date.from === "" || date.to === "") {

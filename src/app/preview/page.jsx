@@ -6,7 +6,7 @@ import Total from "@/components/total";
 import numWords from "num-words";
 import { Dialog } from "@headlessui/react";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/supabase";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -22,7 +22,7 @@ const preview = () => {
   const tax = useSelector((state) => state.data.tax);
   const router = useRouter();
 
-  const supabase = createClientComponentClient();
+  // Using supabase client without auth
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceno, setInvoiceno] = useState("<generating>");
 
@@ -103,14 +103,14 @@ const preview = () => {
           <div className={styles.invoice}>
             <div className={styles.left}>
               <div className={styles["invoice-company-name"]}>
-                SARAVANAN TRADERS
+                YOUR COMPANY NAME
               </div>
               <div className={styles["invoice-company-address"]}>
-                No.2/32, Kakkan Nagar, 2nd Cross Street, <br />
-                Adambakkam, Chennai - 600088, Tamilnadu.
+                Your Company Address Line 1, <br />
+                Your City, State - Postal Code, Country.
               </div>
               <div className={styles["invoice-company-contact"]}>
-                GSTIN: 33BAZPS2766P1ZI <br /> Email: saravanantraderss@gmail.com
+                GSTIN: YOUR-GSTIN-HERE <br /> Email: your-email@example.com
               </div>
             </div>
             {/*  */}
@@ -119,7 +119,7 @@ const preview = () => {
                 Date: {new Date().toLocaleDateString("en-IN")}
               </div>
               <div className={styles["invoice-number"]}>
-                Invoice No: ST/{invoiceno}/23-24
+                Invoice No: INV/{invoiceno}/{new Date().getFullYear()}
               </div>
               <div className={styles["invoice-method"]}>
                 Payment Method: {formData.paymed}
@@ -256,13 +256,13 @@ const preview = () => {
               <div>
                 <div className={styles["right"]} style={{ width: "100%" }}>
                   <div className={styles["invoice-bank"]}>
-                    Bank Name: Karur Vysya Bank
+                    Bank Name: Your Bank Name
                   </div>
                   <div className={styles["invoice-bank"]}>
-                    Account Number: 1104135000009692
+                    Account Number: XXXX-XXXX-XXXX
                   </div>
                   <div className={styles["invoice-bank"]}>
-                    Branch/IFSC Code: Alandur/KVBL00001104
+                    Branch/IFSC Code: YOUR-BRANCH/IFSC-CODE
                   </div>
                 </div>
               </div>
@@ -278,14 +278,8 @@ const preview = () => {
               </div>
               <div className={styles["invoice-declaration-item"]}>
                 <div className={styles["invoice-declaration-title"]}>
-                  For SARAVANAN TRADERS
+                  For YOUR COMPANY NAME
                   <div className={styles["invoice-declaration-signature"]}>
-                    <Image
-                      src="/sign.png"
-                      width={100}
-                      height={50}
-                      alt="Signature"
-                    />
                     Authorised Signatory
                   </div>
                 </div>

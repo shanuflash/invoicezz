@@ -10,8 +10,8 @@ const inter = Inter({
   display: "swap",
 });
 export const metadata = {
-  title: "Bill Generator",
-  description: "Generate bills for your business",
+  title: "Invoice Generator",
+  description: "Generate invoices and manage inventory for your business",
 };
 
 export default function RootLayout({ children }) {
