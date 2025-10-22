@@ -12,20 +12,25 @@ const history = () => {
   });
 
   const getHistory = async () => {
-    if (date.from === "" || date.to === "") {
-      const { data } = await supabase
+    try {
+      let query = supabase
         .from("history")
         .select("*")
         .order("invoiceno", { ascending: false });
-      return setData(data);
+
+      if (date.from && date.to) {
+        query = query.gte("date", date.from).lt("date", date.to);
+      }
+
+      const { data, error } = await query;
+      
+      if (error) throw error;
+      
+      setData(data || []);
+    } catch (error) {
+      console.error("Error fetching history:", error);
+      setData([]);
     }
-    const { data } = await supabase
-      .from("history")
-      .select("*")
-      .gte("date", date.from)
-      .lt("date", date.to)
-      .order("invoiceno", { ascending: false });
-    return setData(data);
   };
 
   useEffect(() => {
@@ -53,8 +58,13 @@ const history = () => {
           }}
         />
       </div>
-      {Data?.map((item) => (
-        <div className={styles["history-item"]}>
+      {Data.length === 0 ? (
+        <div style={{ padding: "1rem", textAlign: "center" }}>
+          No invoice history found.
+        </div>
+      ) : null}
+      {Data.map((item, index) => (
+        <div className={styles["history-item"]} key={item.invoiceno || index}>
           <div className={styles["item-invoiceno"]}>ID: {item.invoiceno}</div>
           <div className={styles["item-data"]}>Date: {item.date}</div>
           <div className={styles["item-data"]}>
@@ -76,10 +86,10 @@ const history = () => {
           </div>
           <div className={styles["item-data"]}>
             Items:
-            {item.items?.map((data) => {
+            {item.items?.map((data, idx) => {
               if (data.count > 0)
                 return (
-                  <div>
+                  <div key={idx}>
                     {data.name} - {data.count}
                   </div>
                 );

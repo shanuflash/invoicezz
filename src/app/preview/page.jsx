@@ -9,8 +9,6 @@ import { Dialog } from "@headlessui/react";
 import { supabase } from "@/app/supabase";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-
 import { useDispatch, useSelector } from "react-redux";
 import { empty } from "@/redux/formSlice";
 
@@ -31,12 +29,24 @@ const preview = () => {
   };
 
   const handleInvoiceno = async () => {
-    const { data: olddata } = await supabase
-      .from("history")
-      .select("invoiceno")
-      .order("invoiceno", { ascending: false })
-      .limit(1);
-    setInvoiceno(olddata[0].invoiceno + 1);
+    try {
+      const { data: olddata, error } = await supabase
+        .from("history")
+        .select("invoiceno")
+        .order("invoiceno", { ascending: false })
+        .limit(1);
+      
+      if (error) throw error;
+      
+      if (olddata && olddata.length > 0) {
+        setInvoiceno(olddata[0].invoiceno + 1);
+      } else {
+        setInvoiceno(1); // First invoice
+      }
+    } catch (error) {
+      console.error("Error fetching invoice number:", error);
+      setInvoiceno(1); // Default to 1 if error
+    }
   };
 
   useEffect(() => {
@@ -44,35 +54,52 @@ const preview = () => {
   }, []);
 
   const handlePrint = async () => {
-    document.title = invoiceno;
-    setIsOpen(false);
-    window.print();
-    const { error } = await supabase.from("history").insert([
-      {
-        ...formData,
-        total: price + tax,
-        invoiceno: Number(invoiceno),
-        items: data,
-      },
-    ]);
+    try {
+      document.title = invoiceno.toString();
+      setIsOpen(false);
+      window.print();
+      
+      // Calculate total
+      const totalAmount = price.total;
+      
+      // Insert invoice history
+      const { error: historyError } = await supabase.from("history").insert([
+        {
+          ...formData,
+          total: totalAmount,
+          invoiceno: Number(invoiceno),
+          items: data,
+        },
+      ]);
 
-    data?.forEach(async (item) => {
-      if (item.count > 0) {
-        const { data: data1, error: error1 } = await supabase
-          .from("inventory")
-          .update({ stock: item.stock - item.count })
-          .eq("id", item.id);
-        if (error1) console.log(error1);
-        else console.log(data1);
+      if (historyError) throw historyError;
+
+      // Update inventory stock
+      const updatePromises = data
+        .filter(item => item.count > 0)
+        .map(item => 
+          supabase
+            .from("inventory")
+            .update({ stock: item.stock - item.count })
+            .eq("id", item.id)
+        );
+
+      const results = await Promise.all(updatePromises);
+      
+      // Check for errors in stock updates
+      const stockErrors = results.filter(r => r.error);
+      if (stockErrors.length > 0) {
+        console.error("Some stock updates failed:", stockErrors);
       }
-    });
 
-    if (error) console.log(error);
-    else {
+      // Reset form and redirect
       dispatch(empty());
-      // refetch todo
-      document.title = "Bill Generator";
+      document.title = "Invoice Generator";
       router.push("/");
+    } catch (error) {
+      console.error("Error generating invoice:", error);
+      alert("Failed to generate invoice. Please try again.");
+      document.title = "Invoice Generator";
     }
   };
 
@@ -172,16 +199,16 @@ const preview = () => {
                 <div className={styles["invoice-title-text"]}>Price</div>
                 <div className={styles["invoice-title-text"]}>Amount</div>
               </div>
-              {Object.keys(price).map((item) => {
+              {Object.keys(price).map((item, idx) => {
                 if (price[item] > 0 && item !== "total") {
                   const filteredData = data.filter((d) => d.type === item);
                   const gst = filteredData[0]?.gst || 0;
                   return (
-                    <div>
+                    <div key={idx}>
                       <span>{item}</span>
                       <div className={styles["invoice-item-container"]}>
-                        {filteredData?.map((item) => (
-                          <div className={styles["invoice-item"]}>
+                        {filteredData?.map((item, itemIdx) => (
+                          <div className={styles["invoice-item"]} key={itemIdx}>
                             <div className={styles["invoice-value"]}>
                               {item.name}
                             </div>

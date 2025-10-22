@@ -12,7 +12,16 @@ const price = ({ price, id }) => {
   };
 
   const update = async () => {
-    await supabase.from("inventory").update({ price: data }).eq("id", id);
+    try {
+      const { error } = await supabase
+        .from("inventory")
+        .update({ price: data })
+        .eq("id", id);
+      
+      if (error) throw error;
+    } catch (error) {
+      console.error("Error updating price:", error);
+    }
   };
 
   useEffect(() => {

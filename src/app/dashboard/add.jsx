@@ -14,20 +14,44 @@ const add = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    const { data } = await supabase
-      .from("types")
-      .select("gst")
-      .eq("name", newdata.type);
-    setnewData((prev) => ({ ...prev, gst: data[0].gst }));
-    await supabase.from("inventory").insert(newdata);
-    setIsOpen(false);
-    router.refresh();
+    try {
+      const { data, error: typeError } = await supabase
+        .from("types")
+        .select("gst")
+        .eq("name", newdata.type);
+      
+      if (typeError) throw typeError;
+      
+      if (data && data.length > 0) {
+        const itemWithGst = { ...newdata, gst: data[0].gst };
+        const { error: insertError } = await supabase
+          .from("inventory")
+          .insert(itemWithGst);
+        
+        if (insertError) throw insertError;
+        
+        setIsOpen(false);
+        router.refresh();
+      }
+    } catch (error) {
+      console.error("Error adding item:", error);
+      alert("Failed to add item. Please try again.");
+    }
   };
 
   const handleType = async () => {
-    const { data } = await supabase.from("types").select("name");
-    setType(data);
-    setnewData((prev) => ({ ...prev, type: data[0].name }));
+    try {
+      const { data, error } = await supabase.from("types").select("name");
+      
+      if (error) throw error;
+      
+      if (data && data.length > 0) {
+        setType(data);
+        setnewData((prev) => ({ ...prev, type: data[0].name }));
+      }
+    } catch (error) {
+      console.error("Error fetching types:", error);
+    }
   };
 
   useEffect(() => {
@@ -104,8 +128,8 @@ const add = () => {
                   setnewData((prev) => ({ ...prev, type: e.target.value }))
                 }
               >
-                {type?.map((item) => (
-                  <option value={item.name}>{item.name}</option>
+                {type?.map((item, index) => (
+                  <option key={index} value={item.name}>{item.name}</option>
                 ))}
               </select>
             </div>

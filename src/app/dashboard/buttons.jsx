@@ -10,12 +10,18 @@ const buttons = ({ itemdata }) => {
   const [data, setData] = useState(itemdata);
 
   const update = async () => {
-    await supabase
-      .from("inventory")
-      .update({
-        stock: data.stock,
-      })
-      .eq("id", data.id);
+    try {
+      const { error } = await supabase
+        .from("inventory")
+        .update({
+          stock: data.stock,
+        })
+        .eq("id", data.id);
+      
+      if (error) throw error;
+    } catch (error) {
+      console.error("Error updating stock:", error);
+    }
   };
 
   const increment = () => {
@@ -33,8 +39,21 @@ const buttons = ({ itemdata }) => {
   };
 
   const handleDelete = async () => {
-    await supabase.from("inventory").delete().eq("id", data.id);
-    router.refresh();
+    if (confirm("Are you sure you want to delete this item?")) {
+      try {
+        const { error } = await supabase
+          .from("inventory")
+          .delete()
+          .eq("id", data.id);
+        
+        if (error) throw error;
+        
+        router.refresh();
+      } catch (error) {
+        console.error("Error deleting item:", error);
+        alert("Failed to delete item. Please try again.");
+      }
+    }
   };
 
   useEffect(() => {

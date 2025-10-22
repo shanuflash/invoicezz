@@ -17,6 +17,12 @@ const dashboard = async () => {
     .select("*")
     .order("id", { ascending: true });
 
+  if (error) {
+    console.error("Error fetching inventory:", error);
+  }
+
+  const items = data || [];
+
   return (
     <div className={styles["menu"]}>
       <div className={styles["menu-title"]}>
@@ -27,8 +33,13 @@ const dashboard = async () => {
         </div>
       </div>
       <div className={styles["menu-container"]}>
-        {data.map((item, id) => (
-          <div className={styles["menu-item"]}>
+        {items.length === 0 ? (
+          <div style={{ padding: "1rem", textAlign: "center" }}>
+            No items in inventory. Add items using the "Add Item" button above.
+          </div>
+        ) : null}
+        {items.map((item, id) => (
+          <div className={styles["menu-item"]} key={item.id}>
             <div className={styles["menu-left"]}>
               <div className={styles["menu-item-title-id"]}>
                 ID {item?.id} {" - "}
@@ -48,7 +59,7 @@ const dashboard = async () => {
             </div>
             <div className={styles["menu-right"]}>
               <Price price={item?.price} id={item?.id} />
-              <Buttons itemdata={data[id]} />
+              <Buttons itemdata={items[id]} />
             </div>
           </div>
         ))}

@@ -13,15 +13,22 @@ const type = () => {
 
   const handleAdd = async (e) => {
     e.preventDefault();
-    const { error } = await supabase.from("types").insert({
-      name: newdata.name,
-      cgst: parseFloat(newdata.cgst),
-      sgst: parseFloat(newdata.sgst),
-      gst: parseFloat(newdata.sgst) + parseFloat(newdata.cgst),
-    });
-    console.log(error);
-    setIsOpen(false);
-    router.refresh();
+    try {
+      const { error } = await supabase.from("types").insert({
+        name: newdata.name,
+        cgst: parseFloat(newdata.cgst),
+        sgst: parseFloat(newdata.sgst),
+        gst: parseFloat(newdata.sgst) + parseFloat(newdata.cgst),
+      });
+      
+      if (error) throw error;
+      
+      setIsOpen(false);
+      router.refresh();
+    } catch (error) {
+      console.error("Error adding type:", error);
+      alert("Failed to add type. Please try again.");
+    }
   };
 
   const handlegenerate = async () => {
