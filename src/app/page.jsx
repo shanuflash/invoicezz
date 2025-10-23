@@ -87,10 +87,10 @@ const Home = () => {
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">No items available</h3>
             <p className="text-gray-500 mb-6">Add items to your inventory first to create invoices.</p>
-            <a href="/dashboard" className="btn btn-primary">
+            <Link href="/dashboard" className="btn btn-primary">
               <Plus className="w-4 h-4" />
               Add Products
-            </a>
+            </Link>
           </div>
         ) : (
           <div className="divide-y divide-gray-100">

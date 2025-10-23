@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
-};
+  basePath: '/invoicezz',
+  assetPrefix: '/invoicezz',
+};  
 
 module.exports = nextConfig;
