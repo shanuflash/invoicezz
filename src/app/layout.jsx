@@ -3,8 +3,8 @@ import Sidebar from "../components/sidebar";
 import Providers from "@/redux/provider";
 
 export const metadata = {
-  title: "Invoicezz - Professional Invoice Management",
-  description: "Modern invoice generator and inventory management system with beautiful UI",
+  title: "Invoicezz - Manage your invoices with ezz",
+  description: "invoice generator and inventory management system",
 };
 
 export default function RootLayout({ children }) {
