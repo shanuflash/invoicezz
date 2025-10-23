@@ -142,18 +142,18 @@ const preview = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-          <div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 address-grid">
+          <div className="address-section">
             <h3 className="font-semibold text-gray-900 mb-3">Bill To:</h3>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 address-content">
               <div className="font-medium text-gray-900">{formData.customer_name}</div>
               <div className="whitespace-pre-line mt-1">{formData.billing_address}</div>
               {formData.tax_id && <div className="mt-2"><strong>Tax ID:</strong> {formData.tax_id}</div>}
             </div>
           </div>
-          <div>
+          <div className="address-section">
             <h3 className="font-semibold text-gray-900 mb-3">Ship To:</h3>
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 address-content">
               {formData.shipping_contact && <div className="font-medium text-gray-900">{formData.shipping_contact}</div>}
               <div className="whitespace-pre-line mt-1">
                 {formData.shipping_address || formData.billing_address}

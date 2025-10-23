@@ -36,7 +36,6 @@
   }
   
   .invoice {
-    border: 1px solid black;
     padding: 0.5rem;
     font-size: 0.75rem;
     display: flex;
@@ -59,8 +58,61 @@
   }
   
   .invoice-company-name {
-    font-size: 1rem !important;
+    font-size: 0.85rem !important;
     font-weight: bold;
+  }
+
+  /* Global font size reduction for all print content */
+  .print-only * {
+    font-size: 0.6rem !important;
+  }
+
+  .print-only h1,
+  .print-only h2,
+  .print-only h3 {
+    font-size: 0.75rem !important;
+    font-weight: bold !important;
+  }
+
+  .print-only .text-2xl,
+  .print-only .text-xl,
+  .print-only .text-lg {
+    font-size: 0.8rem !important;
+  }
+
+  /* Remove borders for cleaner print */
+  .print-only .border,
+  .print-only .border-gray-200,
+  .print-only .border-b,
+  .print-only .border-t {
+    border: none !important;
+  }
+
+  /* Remove shadows, backgrounds, and container styling */
+  .print-only,
+  .print-only *,
+  .print-only .card,
+  .print-only .shadow-lg,
+  .print-only .shadow,
+  .print-only .bg-gray-50,
+  .print-only .bg-white,
+  .print-only .rounded-lg,
+  .print-only .rounded-xl,
+  .print-only .rounded {
+    box-shadow: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  /* Specifically target the main card container */
+  .card.print-only {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    box-shadow: none !important;
+    background: none !important;
   }
   
   .invoice-company-address,
@@ -75,12 +127,12 @@
   .invoice-delivery-title,
   .invoice-delivery-address,
   .invoice-delivery-method {
-    font-size: 0.7rem !important;
+    font-size: 0.6rem !important;
   }
-  
+
   .invoice-title-text,
   .invoice-value {
-    font-size: 0.65rem !important;
+    font-size: 0.55rem !important;
   }
   
   .invoice-item {
@@ -88,8 +140,6 @@
     width: 100%;
     display: flex;
     justify-content: space-evenly;
-    border: 1px solid rgba(108, 108, 108, 0.3);
-    border-radius: 8px;
   }
   
   .invoice-title {
@@ -124,7 +174,7 @@
   .invoice-bank,
   .invoice-declaration-title,
   .invoice-declaration {
-    font-size: 0.65rem !important;
+    font-size: 0.55rem !important;
   }
   
   .invoice-declaration {
@@ -151,17 +201,42 @@
   
   .disclaimer {
     margin-top: 0.5rem;
-    font-size: 0.6rem !important;
+    font-size: 0.5rem !important;
     width: 100%;
     text-align: center;
   }
-  
+
   .total {
     padding: 0.5rem 1rem !important;
   }
-  
+
   .total-title,
   .total-price {
-    font-size: 0.85rem !important;
+    font-size: 0.75rem !important;
+  }
+
+  .address-grid {
+    display: flex !important;
+    width: 100% !important;
+    gap: 1rem !important;
+  }
+
+  .address-section {
+    width: 50% !important;
+    flex: 1 !important;
+  }
+
+  .address-section h3 {
+    font-size: 0.75rem !important;
+    font-weight: bold !important;
+    margin-bottom: 0.3rem !important;
+  }
+
+  .address-content {
+    font-size: 0.7rem !important;
+  }
+
+  .address-content .font-medium {
+    font-weight: bold !important;
   }
 }
