@@ -1,51 +1,34 @@
 "use client";
-
-import styles from "../styles/page.module.css";
+import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "@/redux/dataSlice";
-import Link from "next/link";
 
-const total = ({ invoice }) => {
+const Total = ({ invoice }) => {
   const dispatch = useDispatch();
   const price = useSelector((state) => state.data.price);
-  const tax = useSelector((state) => state.data.tax);
+
+  const totalAmount = price.total;
 
   return (
-    <>
-      <div className={styles.total}>
-        <div className={styles["total-left"]}>
-          {!invoice && (
-            <>
-              <button onClick={() => dispatch(clear())}>Clear</button>
-              <Link href="/details">Next</Link>
-            </>
-          )}
+    <div className="sticky bottom-0 bg-white border-t border-gray-200 p-5 -mx-8 -mb-8 mt-8 shadow-sm">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <span className="text-gray-600">Total:</span>
+          <span className="text-2xl font-bold text-gray-900">₹{totalAmount.toLocaleString("en-IN")}</span>
         </div>
-        <div className={styles["total-right"]}>
-          <div className={styles["total-title"]}>
-            Total:{" "}
-            <span className={styles["total-price"]}>
-              {Object.keys(tax).map((key) => tax[key].total)}
-              {invoice ? (
-                <>
-                  ₹
-                  {(
-                    price.total +
-                    Object.values(price.total).reduce(
-                      (sum, value) => sum + value,
-                      0
-                    )
-                  ).toLocaleString("en-IN")}
-                </>
-              ) : (
-                <>₹{price.total.toLocaleString("en-IN")}</>
-              )}
-            </span>
+        {!invoice && (
+          <div className="flex gap-3">
+            <button className="btn btn-secondary" onClick={() => dispatch(clear())}>
+              Clear All
+            </button>
+            <Link href="/details">
+              <button className="btn btn-primary">Generate Invoice</button>
+            </Link>
           </div>
-        </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 
-export default total;
+export default Total;

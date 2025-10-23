@@ -1,46 +1,24 @@
 "use client";
-import { useState } from "react";
-import styles from "@/styles/page.module.css";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
-function App() {
-  const [user, setUser] = useState("");
-  const [password, setPassword] = useState("");
-  const supabase = createClientComponentClient();
-  const router = useRouter();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: user,
-      password: password,
-    });
-    if (error) console.log(error);
-    else router.push("/");
-  };
+function Login() {
   return (
-    <form className={styles["form"]} onSubmit={handleSubmit}>
-      <div className={styles["form-item"]}>
-        <label>Email:</label>
-        <input
-          type="text"
-          placeholder="User Id"
-          onChange={(e) => setUser(e.target.value)}
-          required
-        />
+    <div className="flex items-center justify-center min-h-screen">
+      <div className="text-center max-w-md mx-auto p-8">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">Login Disabled</h2>
+        <p className="text-gray-600 mb-8 leading-relaxed">
+          This app has been converted to a public version. 
+          No login is required - everyone can access all features directly!
+        </p>
+        <Link 
+          href="/" 
+          className="btn btn-primary inline-block"
+        >
+          Go to Home
+        </Link>
       </div>
-      <div className={styles["form-item"]}>
-        <label>Password:</label>
-        <input
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-      </div>
-      <button type="submit">Log In</button>
-    </form>
+    </div>
   );
 }
 
-export default App;
+export default Login;

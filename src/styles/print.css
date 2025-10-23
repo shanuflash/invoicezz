@@ -1,0 +1,167 @@
+/* Print-only styles */
+@media print {
+  @page {
+    margin: 10mm;
+    size: A4;
+  }
+  
+  * {
+    visibility: hidden;
+  }
+  
+  body {
+    height: 100%;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    visibility: visible !important;
+    display: block !important;
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+  }
+  
+  .print-only * {
+    visibility: visible;
+  }
+  
+  .invoice {
+    border: 1px solid black;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .invoice .left {
+    width: 50%;
+  }
+  
+  .invoice .right {
+    width: 50%;
+  }
+  
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: rgba(108, 108, 108, 0.3);
+    margin: 1rem 0;
+  }
+  
+  .invoice-company-name {
+    font-size: 1rem !important;
+    font-weight: bold;
+  }
+  
+  .invoice-company-address,
+  .invoice-company-contact,
+  .invoice-date,
+  .invoice-number,
+  .invoice-method,
+  .invoice-buyer-title,
+  .invoice-buyer-name,
+  .invoice-buyer-address,
+  .invoice-buyer-contact,
+  .invoice-delivery-title,
+  .invoice-delivery-address,
+  .invoice-delivery-method {
+    font-size: 0.7rem !important;
+  }
+  
+  .invoice-title-text,
+  .invoice-value {
+    font-size: 0.65rem !important;
+  }
+  
+  .invoice-item {
+    padding: 0.3rem 0 !important;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    border: 1px solid rgba(108, 108, 108, 0.3);
+    border-radius: 8px;
+  }
+  
+  .invoice-title {
+    display: flex;
+    width: 100%;
+  }
+  
+  .invoice-title-text,
+  .invoice-value {
+    width: 20%;
+    text-align: center;
+  }
+  
+  .invoice-item-container {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+  }
+  
+  .invoice-ammountinwords {
+    width: 100%;
+  }
+  
+  .invoice-ammountinwords-value {
+    text-transform: uppercase;
+  }
+  
+  .invoice-ammountinwords-title,
+  .invoice-ammountinwords-value,
+  .invoice-bank,
+  .invoice-declaration-title,
+  .invoice-declaration {
+    font-size: 0.65rem !important;
+  }
+  
+  .invoice-declaration {
+    width: 100%;
+    display: flex;
+  }
+  
+  .invoice-declaration-item {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .invoice-declaration-item:nth-child(2) {
+    text-align: right;
+  }
+  
+  .invoice-declaration-signature {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  
+  .disclaimer {
+    margin-top: 0.5rem;
+    font-size: 0.6rem !important;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .total {
+    padding: 0.5rem 1rem !important;
+  }
+  
+  .total-title,
+  .total-price {
+    font-size: 0.85rem !important;
+  }
+}

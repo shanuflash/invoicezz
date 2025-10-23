@@ -5,12 +5,12 @@ const initialState = {
   invoiceno: "",
   paymed: "",
   payref: "",
-  name: "",
-  address: "",
-  gstin: "",
-  delname: "",
-  deladdress: "",
-  disthro: "",
+  customer_name: "",
+  billing_address: "",
+  tax_id: "",
+  shipping_contact: "",
+  shipping_address: "",
+  shipping_method: "",
 };
 
 export const formSlice = createSlice({

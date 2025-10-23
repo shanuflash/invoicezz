@@ -1,62 +1,73 @@
-import styles from "@/styles/page.module.css";
-
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
-
+import { supabase } from "@/app/supabase";
 import Add from "./add";
 import Buttons from "./buttons";
 import Price from "./price";
-import Type from "./type";
 
-// optimize with redux
-// import { store } from "@/redux/store";
 export const revalidate = 0;
 
-const dashboard = async () => {
-  const supabase = createServerComponentClient({ cookies });
+const Dashboard = async () => {
   const { data, error } = await supabase
     .from("inventory")
     .select("*")
     .order("id", { ascending: true });
 
+  if (error) {
+    console.error("Error fetching inventory:", error);
+  }
+
+  const items = data || [];
+
   return (
-    <div className={styles["menu"]}>
-      <div className={styles["menu-title"]}>
-        Change the stock of items:
-        <div className={styles["menu-button"]}>
-          <Type />
-          <Add />
+    <>
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Inventory Management</h1>
+        <p className="text-gray-600">Manage your product inventory and stock levels</p>
+      </div>
+
+      <div className="flex gap-3 mb-6">
+        <Add />
+      </div>
+
+      {items.length === 0 ? (
+        <div className="text-center py-16 text-gray-600">
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No items in inventory</h3>
+          <p className="text-sm">Start by adding items to your inventory.</p>
         </div>
-      </div>
-      <div className={styles["menu-container"]}>
-        {data.map((item, id) => (
-          <div className={styles["menu-item"]}>
-            <div className={styles["menu-left"]}>
-              <div className={styles["menu-item-title-id"]}>
-                ID {item?.id} {" - "}
-                {item?.type?.toUpperCase()}
+      ) : (
+        <div className="space-y-3">
+          {items.map((item, index) => (
+            <div className="card p-5 flex items-center justify-between hover:shadow-md transition-shadow" key={item.id}>
+              <div className="flex items-center gap-4 flex-1">
+                <div className="flex-1">
+                  <div className="font-semibold text-gray-900 mb-1">{item?.name}</div>
+                  <div className="text-sm text-gray-500">
+                    ID {item?.id}
+                  </div>
+                </div>
+                <div className="text-lg font-bold text-gray-900 mr-6">₹{item?.price}</div>
               </div>
-              <div className={styles["menu-item-title"]}>
-                {item?.name}
-                <span style={{ fontSize: "0.8rem" }}>
-                  {item?.stock ? (
-                    <>
-                      {" - "}
-                      {item?.stock} left
-                    </>
-                  ) : null}
+
+              <div className="flex items-center gap-4">
+                <span className={`px-2 py-1 text-xs font-medium rounded uppercase tracking-wide ${
+                  item?.stock > 10 
+                    ? 'bg-green-100 text-green-700' 
+                    : item?.stock > 0 
+                    ? 'bg-yellow-100 text-yellow-700' 
+                    : 'bg-red-100 text-red-700'
+                }`}>
+                  {item?.stock > 0 ? `${item?.stock} in stock` : 'Out of stock'}
                 </span>
+                <div className="flex gap-2">
+                  <Price price={item?.price} id={item?.id} />
+                  <Buttons itemdata={items[index]} />
+                </div>
               </div>
             </div>
-            <div className={styles["menu-right"]}>
-              <Price price={item?.price} id={item?.id} />
-              <Buttons itemdata={data[id]} />
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      )}
+    </>
   );
 };
 
-export default dashboard;
+export default Dashboard;

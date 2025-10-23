@@ -1,28 +1,21 @@
 "use client";
-
-import styles from "@/styles/page.module.css";
 import { useEffect, useState } from "react";
 import Total from "@/components/total";
 import numWords from "num-words";
-import { Dialog } from "@headlessui/react";
-
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { supabase } from "@/app/supabase";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-
 import { useDispatch, useSelector } from "react-redux";
 import { empty } from "@/redux/formSlice";
+import { clear } from "@/redux/dataSlice";
+import "../../styles/print.css";
 
 const preview = () => {
   const dispatch = useDispatch();
   const formData = useSelector((state) => state.form);
   const data = useSelector((state) => state.data.data);
   const price = useSelector((state) => state.data.price);
-  const tax = useSelector((state) => state.data.tax);
   const router = useRouter();
-
-  const supabase = createClientComponentClient();
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceno, setInvoiceno] = useState("<generating>");
 
@@ -31,12 +24,24 @@ const preview = () => {
   };
 
   const handleInvoiceno = async () => {
-    const { data: olddata } = await supabase
-      .from("history")
-      .select("invoiceno")
-      .order("invoiceno", { ascending: false })
-      .limit(1);
-    setInvoiceno(olddata[0].invoiceno + 1);
+    try {
+      const { data: olddata, error } = await supabase
+        .from("history")
+        .select("invoiceno")
+        .order("invoiceno", { ascending: false })
+        .limit(1);
+      
+      if (error) throw error;
+      
+      if (olddata && olddata.length > 0) {
+        setInvoiceno(olddata[0].invoiceno + 1);
+      } else {
+        setInvoiceno(1);
+      }
+    } catch (error) {
+      console.error("Error fetching invoice number:", error);
+      setInvoiceno(1);
+    }
   };
 
   useEffect(() => {
@@ -44,268 +49,193 @@ const preview = () => {
   }, []);
 
   const handlePrint = async () => {
-    document.title = invoiceno;
-    setIsOpen(false);
-    window.print();
-    const { error } = await supabase.from("history").insert([
-      {
-        ...formData,
-        total: price + tax,
-        invoiceno: Number(invoiceno),
-        items: data,
-      },
-    ]);
+    try {
+      document.title = invoiceno.toString();
+      setIsOpen(false);
+      window.print();
+      
+      const totalAmount = price.total;
+      const { error: historyError } = await supabase.from("history").insert([
+        {
+          ...formData,
+          total: totalAmount,
+          invoiceno: Number(invoiceno),
+          items: data,
+        },
+      ]);
 
-    data?.forEach(async (item) => {
-      if (item.count > 0) {
-        const { data: data1, error: error1 } = await supabase
-          .from("inventory")
-          .update({ stock: item.stock - item.count })
-          .eq("id", item.id);
-        if (error1) console.log(error1);
-        else console.log(data1);
+      if (historyError) throw historyError;
+      const updatePromises = data
+        .filter(item => item.count > 0)
+        .map(item => 
+          supabase
+            .from("inventory")
+            .update({ stock: item.stock - item.count })
+            .eq("id", item.id)
+        );
+
+      const results = await Promise.all(updatePromises);
+      
+      const stockErrors = results.filter(r => r.error);
+      if (stockErrors.length > 0) {
+        console.error("Some stock updates failed:", stockErrors);
       }
-    });
-
-    if (error) console.log(error);
-    else {
+      
       dispatch(empty());
-      // refetch todo
-      document.title = "Bill Generator";
+      dispatch(clear());
+      document.title = "Invoice Generator";
       router.push("/");
+    } catch (error) {
+      console.error("Error generating invoice:", error);
+      alert("Failed to generate invoice. Please try again.");
+      document.title = "Invoice Generator";
     }
   };
 
   return (
     <>
-      <div className={isOpen ? styles.backdrop : styles.backdropoff} />
-      <Dialog
-        className={styles.modal}
-        open={isOpen}
-        onClose={() => setIsOpen(false)}
-      >
-        <Dialog.Panel>
-          <Dialog.Title>Generate Invoice</Dialog.Title>
-          <Dialog.Description>
-            This will add the currend invoice to the database. <br /> Make sure
-            to check the details before generating the invoice. <br /> Check for
-            the preview at the bottom of the site.
-          </Dialog.Description>
+      {isOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 no-print">
+          <div className="bg-white rounded-xl p-6 w-full max-w-md mx-4 shadow-lg">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Generate Invoice</h2>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              This will add the current invoice to the database. Make sure
+              to check the details before generating the invoice.
+            </p>
+            <div className="flex gap-3 justify-end">
+              <button className="btn btn-secondary" onClick={() => setIsOpen(false)}>
+                Cancel
+              </button>
+              <button className="btn btn-primary" onClick={handlePrint}>
+                Generate
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      
+      <div className="no-print mb-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Invoice Preview</h1>
+        <p className="text-gray-600">Review your invoice before generating</p>
+      </div>
 
-          <button onClick={() => setIsOpen(false)}>Cancel</button>
-          <button onClick={handlePrint}>Generate</button>
-        </Dialog.Panel>
-      </Dialog>
-      <div className={styles.menu}>
-        <div className={styles["menu-title"]}>Preview</div>
-
-        <div className={styles.print}>
-          <div className={styles.invoice}>
-            <div className={styles.left}>
-              <div className={styles["invoice-company-name"]}>
-                SARAVANAN TRADERS
-              </div>
-              <div className={styles["invoice-company-address"]}>
-                No.2/32, Kakkan Nagar, 2nd Cross Street, <br />
-                Adambakkam, Chennai - 600088, Tamilnadu.
-              </div>
-              <div className={styles["invoice-company-contact"]}>
-                GSTIN: 33BAZPS2766P1ZI <br /> Email: saravanantraderss@gmail.com
-              </div>
-            </div>
-            {/*  */}
-            <div className={styles.right}>
-              <div className={styles["invoice-date"]}>
-                Date: {new Date().toLocaleDateString("en-IN")}
-              </div>
-              <div className={styles["invoice-number"]}>
-                Invoice No: ST/{invoiceno}/23-24
-              </div>
-              <div className={styles["invoice-method"]}>
-                Payment Method: {formData.paymed}
-              </div>
-              <div>Payment Reference: {formData.payref}</div>
-            </div>
-            {/*  */}
-            <div className={styles.divider} />
-            {/*  */}
-            <div className={styles.left}>
-              <div className={styles["invoice-buyer"]}>
-                <div className={styles["invoice-buyer-title"]}>
-                  Buyer: (Name and Address)
-                </div>
-                <div className={styles["invoice-buyer-name"]}>
-                  {formData.name}
-                </div>
-                <div className={styles["invoice-buyer-address"]}>
-                  {formData.address}
-                </div>
-                <div className={styles["invoice-buyer-contact"]}>
-                  GSTIN: {formData.gstin}
-                </div>
-              </div>
-            </div>
-            {/*  */}
-            <div className={styles.right}>
-              <div className={styles["invoice-delivery"]}>
-                <div className={styles["invoice-delivery-title"]}>
-                  Delivery Address:
-                </div>
-                <div className={styles["invoice-delivery-address"]}>
-                  {formData.delname}
-                  <br />
-                  {formData.deladdress}
-                </div>
-                <div className={styles["invoice-delivery-method"]}>
-                  Despatched through: {formData.disthro}
-                </div>
-              </div>
-            </div>
-            {/*  */}
-            <div className={styles.divider} />
-            {/*  */}
-            <div className={styles["invoice-item-container"]}>
-              <div className={styles["invoice-title"]}>
-                <div className={styles["invoice-title-text"]}>Item</div>
-                <div className={styles["invoice-title-text"]}>HSN/SAC</div>
-                <div className={styles["invoice-title-text"]}>Quantity</div>
-                <div className={styles["invoice-title-text"]}>Price</div>
-                <div className={styles["invoice-title-text"]}>Amount</div>
-              </div>
-              {Object.keys(price).map((item) => {
-                if (price[item] > 0 && item !== "total") {
-                  const filteredData = data.filter((d) => d.type === item);
-                  const gst = filteredData[0]?.gst || 0;
-                  return (
-                    <div>
-                      <span>{item}</span>
-                      <div className={styles["invoice-item-container"]}>
-                        {filteredData?.map((item) => (
-                          <div className={styles["invoice-item"]}>
-                            <div className={styles["invoice-value"]}>
-                              {item.name}
-                            </div>
-                            <div className={styles["invoice-value"]}>123</div>
-                            <div className={styles["invoice-value"]}>
-                              {item.count}
-                            </div>
-                            <div className={styles["invoice-value"]}>
-                              {item.price}
-                            </div>
-                            <div className={styles["invoice-value"]}>
-                              {item.price * item.count}
-                            </div>
-                          </div>
-                        ))}
-                        <div className={styles["invoice-item"]}>
-                          <div className={styles["invoice-value"]}>
-                            CGST {((gst * 100) / 2).toFixed(2)}%
-                          </div>
-                          <div className={styles["invoice-value"]}></div>
-                          <div className={styles["invoice-value"]}></div>
-                          <div className={styles["invoice-value"]}></div>
-                          <div className={styles["invoice-value"]}>
-                            {parseInt(tax[item] / 2)}
-                          </div>
-                        </div>
-                        <div className={styles["invoice-item"]}>
-                          <div className={styles["invoice-value"]}>
-                            SGST {((gst * 100) / 2).toFixed(2)}%
-                          </div>
-                          <div className={styles["invoice-value"]}></div>
-                          <div className={styles["invoice-value"]}></div>
-                          <div className={styles["invoice-value"]}></div>
-                          <div className={styles["invoice-value"]}>
-                            {parseInt(tax[item] / 2)}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-              })}
-            </div>
-            <Total invoice />
-            <div className={styles.divider} />
-            <div style={{ display: "flex", width: "100%" }}>
-              <div className={styles["left"]}>
-                <div className={styles["invoice-ammountinwords"]}>
-                  <div className={styles["invoice-ammountinwords-title"]}>
-                    Tax Amount in Words:
-                  </div>
-                  <div className={styles["invoice-ammountinwords-value"]}>
-                    {numWords(
-                      parseInt(
-                        Object.values(tax).reduce(
-                          (sum, value) => sum + value,
-                          0
-                        )
-                      )
-                    ).toUpperCase()}
-                  </div>
-                </div>
-                <div className={styles["invoice-ammountinwords"]}>
-                  <div className={styles["invoice-ammountinwords-title"]}>
-                    Amount in Words:
-                  </div>
-                  <div className={styles["invoice-ammountinwords-value"]}>
-                    {numWords(parseInt(price.total)).toUpperCase()}
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className={styles["right"]} style={{ width: "100%" }}>
-                  <div className={styles["invoice-bank"]}>
-                    Bank Name: Karur Vysya Bank
-                  </div>
-                  <div className={styles["invoice-bank"]}>
-                    Account Number: 1104135000009692
-                  </div>
-                  <div className={styles["invoice-bank"]}>
-                    Branch/IFSC Code: Alandur/KVBL00001104
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className={styles.divider} />
-            <div className={styles["invoice-declaration"]}>
-              <div className={styles["invoice-declaration-item"]}>
-                <div className={styles["invoice-declaration-title"]}>
-                  Declaration:
-                </div>
-                We Declare that this invoice shows the actual price of the goods
-                described and that all particulars are true and correct.
-              </div>
-              <div className={styles["invoice-declaration-item"]}>
-                <div className={styles["invoice-declaration-title"]}>
-                  For SARAVANAN TRADERS
-                  <div className={styles["invoice-declaration-signature"]}>
-                    <Image
-                      src="/sign.png"
-                      width={100}
-                      height={50}
-                      alt="Signature"
-                    />
-                    Authorised Signatory
-                  </div>
-                </div>
+      <div className="card p-8 mb-8 max-w-4xl mx-auto print-only">
+        <div className="flex justify-between items-start mb-8">
+          <div>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">YOUR COMPANY NAME</h1>
+            <div className="text-sm text-gray-600">
+              <div>Your Company Address Line 1</div>
+              <div>Your City, State - Postal Code, Country</div>
+              <div className="mt-2">
+                <div>Tax ID: YOUR-TAX-ID-HERE</div>
+                <div>Email: your-email@example.com</div>
               </div>
             </div>
           </div>
-          <div className={styles["disclaimer"]}>
-            This is a Computer Generated Invoice
+          <div className="text-right">
+            <div className="text-sm text-gray-600 space-y-1">
+              <div><strong>Date:</strong> {new Date(formData.date).toLocaleDateString()}</div>
+              <div><strong>Invoice No:</strong> INV/{invoiceno}/{new Date().getFullYear()}</div>
+              <div><strong>Payment Method:</strong> {formData.paymed}</div>
+              {formData.payref && <div><strong>Payment Ref:</strong> {formData.payref}</div>}
+            </div>
           </div>
         </div>
 
-        <div className={`${styles["button-container"]} ${styles.button}`}>
-          <Link href="/details" style={{ width: "auto" }}>
-            Previous
-          </Link>
-          <button style={{ width: "auto" }} onClick={handleGenerate}>
-            Generate
-          </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-3">Bill To:</h3>
+            <div className="text-sm text-gray-600">
+              <div className="font-medium text-gray-900">{formData.customer_name}</div>
+              <div className="whitespace-pre-line mt-1">{formData.billing_address}</div>
+              {formData.tax_id && <div className="mt-2"><strong>Tax ID:</strong> {formData.tax_id}</div>}
+            </div>
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-3">Ship To:</h3>
+            <div className="text-sm text-gray-600">
+              {formData.shipping_contact && <div className="font-medium text-gray-900">{formData.shipping_contact}</div>}
+              <div className="whitespace-pre-line mt-1">
+                {formData.shipping_address || formData.billing_address}
+              </div>
+              {formData.shipping_method && <div className="mt-2"><strong>Shipping:</strong> {formData.shipping_method}</div>}
+            </div>
+          </div>
+        </div>
+
+        <div className="border border-gray-200 rounded-lg overflow-hidden mb-6">
+          <div className="bg-gray-50 px-6 py-3 border-b border-gray-200">
+            <div className="grid grid-cols-4 gap-4 text-sm font-medium text-gray-900">
+              <div>Item</div>
+              <div className="text-center">Qty</div>
+              <div className="text-right">Unit Price</div>
+              <div className="text-right">Total</div>
+            </div>
+          </div>
+          
+          <div className="divide-y divide-gray-200">
+            {data.filter(item => item.count > 0).map((item, idx) => (
+              <div key={idx} className="px-6 py-4">
+                <div className="grid grid-cols-4 gap-4 text-sm">
+                  <div>
+                    <div className="font-medium text-gray-900">{item.name}</div>
+                  </div>
+                  <div className="text-center">{item.count}</div>
+                  <div className="text-right">₹{item.price}</div>
+                  <div className="text-right font-medium">₹{(item.price * item.count).toFixed(2)}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        <div className="bg-gray-50 p-6 rounded-lg">
+          <div className="flex justify-between items-center mb-4">
+            <span className="text-lg font-semibold text-gray-900">Total Amount:</span>
+            <span className="text-2xl font-bold text-blue-600">₹{price.total.toLocaleString("en-IN")}</span>
+          </div>
+          
+          <div className="text-sm text-gray-600 mb-4">
+            <div><strong>Amount in Words:</strong> {numWords(parseInt(price.total)).toUpperCase()}</div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 pt-6 border-t border-gray-200">
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-3">Payment Information</h3>
+            <div className="text-sm text-gray-600 space-y-1">
+              <div><strong>Bank Name:</strong> Your Bank Name</div>
+              <div><strong>Account Number:</strong> XXXX-XXXX-XXXX</div>
+              <div><strong>Routing/SWIFT:</strong> YOUR-ROUTING-CODE</div>
+            </div>
+          </div>
+          <div>
+            <h3 className="font-semibold text-gray-900 mb-3">Terms & Conditions</h3>
+            <div className="text-sm text-gray-600">
+              <p>Payment is due within 30 days of invoice date. Late payments may incur additional charges.</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-8 pt-6 border-t border-gray-200 flex justify-between items-end">
+          <div className="text-xs text-gray-500">
+            This is a computer generated invoice
+          </div>
+          <div className="text-right">
+            <div className="text-sm font-medium text-gray-900">YOUR COMPANY NAME</div>
+            <div className="text-xs text-gray-500 mt-1">Authorized Signature</div>
+          </div>
         </div>
       </div>
+
+        <div className="no-print flex items-center justify-between pt-6 border-t border-gray-200 mt-8">
+          <Link href="/details" className="btn btn-secondary">
+            Previous
+          </Link>
+          <button className="btn btn-primary" onClick={handleGenerate}>
+            Generate Invoice
+          </button>
+        </div>
     </>
   );
 };

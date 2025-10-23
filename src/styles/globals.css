@@ -1,80 +1,68 @@
-:root {
-  /* --primary: #00171f;
-  --secondary: #ffffff;
-  --secondary-button: #007ea7;
-  --primary-button: #00a8e8;
-  --ascent: #007ea7; */
-
-  /* --primary: #ffffff;
-  --secondary: #00171f;
-  --secondary-button: #00a8e8;
-  --primary-button: #007ea7;
-  --ascent: #00a8e8; */
-
-  --black: #000000;
-  --black-light: #13171a;
-  --bg: #dfecf1;
-  --blue: #d0e1e9;
-  --ascent: #00a8e8;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  background-color: var(--bg);
-  max-width: 100vw;
-  overflow-x: hidden;
-  overflow-y: overlay;
-}
-
-body {
-  margin: 0;
-  color: var(--primary);
-  background-color: var(--bg);
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-input[type="number"] {
-  -moz-appearance: textfield;
-}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
 
 :root {
-  color-scheme: light;
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #2563eb;
+  --radius: 0.5rem;
 }
 
-::-webkit-scrollbar {
-  width: 5px;
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: #f9fafb;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
 }
 
-::-webkit-scrollbar-track {
-  background-color: transparent;
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-lg font-medium text-sm transition-colors border cursor-pointer inline-block text-center;
+    text-decoration: none;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-600 text-white border-blue-600 hover:bg-blue-700 hover:border-blue-700;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-gray-700 border-gray-300 hover:bg-gray-50;
+  }
+  
+  .input {
+    @apply px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+  }
+  
+  .card {
+    @apply bg-white border border-gray-200 rounded-lg shadow-sm;
+  }
 }
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--black);
-  border-radius: 4px;
-}
-
-button {
-  font-size: 1rem;
-  color: var(--bg);
-  width: 100%;
-  padding: 0.7rem 2rem;
-  border-radius: 12px;
-  background-color: var(--black);
-  border: none;
-  cursor: pointer;
-}
-

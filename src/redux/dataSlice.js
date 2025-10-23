@@ -1,13 +1,20 @@
 import { supabase } from "@/app/supabase";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-export const fetchData = createAsyncThunk("fetchData", async () => {
-  let { data, error } = await supabase
-    .from("inventory")
-    .select("*")
-    .order("id", { ascending: true });
-  if (error) console.log(error);
-  return data;
+export const fetchData = createAsyncThunk("fetchData", async (_, { rejectWithValue }) => {
+  try {
+    const { data, error } = await supabase
+      .from("inventory")
+      .select("*")
+      .order("id", { ascending: true });
+    
+    if (error) throw error;
+    
+    return data.map(item => ({ ...item, count: 0 }));
+  } catch (error) {
+    console.error("Error fetching inventory:", error);
+    return rejectWithValue(error.message);
+  }
 });
 
 const dataSlice = createSlice({
@@ -17,39 +24,34 @@ const dataSlice = createSlice({
     price: {
       total: 0,
     },
-    tax: {},
+    loading: false,
+    error: null,
   },
   reducers: {
     increment: (state, action) => {
       const item = state.data.find((item) => item.id === action.payload);
       if (item.stock > item.count) {
-        const { type, price, gst } = item;
+        const { price } = item;
         item.count++;
-        state.price[type] = (state.price[type] ?? 0) + price;
-        state.tax[type] = (state.tax[type] ?? 0) + price * gst;
-        state.price.total += price * (gst + 1);
+        state.price.total += price;
       }
     },
     decrement: (state, action) => {
       const item = state.data.find((item) => item.id === action.payload);
       if (item.count > 0) {
-        let { type, price, gst } = item;
+        const { price } = item;
         item.count--;
-        state.price[type] = (state.price[type] ?? 0) - price;
-        state.tax[type] = (state.tax[type] ?? 0) - price * gst;
-        state.price.total -= price * (gst + 1);
+        state.price.total -= price;
       }
     },
     input: (state, action) => {
       const count = parseInt(action.payload.value);
       const item = state.data.find((item) => item.id === action.payload.id);
       if (item.stock >= count && count >= 0) {
-        const { type, price, gst } = item;
+        const { price } = item;
         const prev = item.count;
         item.count = count;
-        state.price[type] = (state.price[type] ?? 0) + (count - prev) * price;
-        state.tax[type] = (state.tax[type] ?? 0) + (count - prev) * price * gst;
-        state.price.total += (count - prev) * price * (gst + 1);
+        state.price.total += (count - prev) * price;
       }
     },
     clear: (state) => {
@@ -59,13 +61,22 @@ const dataSlice = createSlice({
       state.price = {
         total: 0,
       };
-      state.tax = {};
     },
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.data = action.payload;
-    });
+    builder
+      .addCase(fetchData.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchData.fulfilled, (state, action) => {
+        state.data = action.payload || [];
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(fetchData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 

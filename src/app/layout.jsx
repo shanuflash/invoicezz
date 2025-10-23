@@ -1,26 +1,23 @@
 import "../styles/globals.css";
-import styles from "../styles/page.module.css";
-import Nav from "../components/nav";
-
-import { Inter } from "next/font/google";
+import Sidebar from "../components/sidebar";
 import Providers from "@/redux/provider";
 
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-});
 export const metadata = {
-  title: "Bill Generator",
-  description: "Generate bills for your business",
+  title: "Invoicezz",
+  description: "Professional invoice generator and inventory management",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Providers>
-        <body className={`${inter.className} ${styles.body}`}>
-          <Nav />
-          <div className={styles.content}>{children}</div>
+        <body>
+          <div className="flex min-h-screen">
+            <Sidebar />
+            <main className="flex-1 p-8 overflow-y-auto">
+              {children}
+            </main>
+          </div>
         </body>
       </Providers>
     </html>
