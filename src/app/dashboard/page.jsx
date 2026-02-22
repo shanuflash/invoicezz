@@ -74,7 +74,7 @@ const Dashboard = async () => {
                       ? 'badge-warning'
                       : 'badge-danger'
                   }`}>
-                    {item?.stock > 0 ? `${item?.stock} in stock` : 'Out of stock'}
+                    {item?.stock > 10 ? 'In stock' : item?.stock > 0 ? 'Low stock' : 'Out of stock'}
                   </span>
                 </td>
                 <td className="px-5 py-3 text-[13px] text-zinc-600">
