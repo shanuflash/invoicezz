@@ -1,16 +1,13 @@
 "use client";
 import { supabase } from "@/app/supabase";
 import { useEffect, useState } from "react";
-import { Download, X } from "lucide-react";
+import { Download } from "lucide-react";
 import InvoiceTemplate from "@/components/invoice-template";
 import "../../styles/print.css";
 
 const History = () => {
   const [data, setData] = useState([]);
-  const [dateFilter, setDateFilter] = useState({
-    from: "",
-    to: "",
-  });
+  const [dateFilter, setDateFilter] = useState({ from: "", to: "" });
   const [printInvoice, setPrintInvoice] = useState(null);
 
   const getHistory = async () => {
@@ -25,9 +22,7 @@ const History = () => {
       }
 
       const { data: historyData, error } = await query;
-
       if (error) throw error;
-
       setData(historyData || []);
     } catch (error) {
       console.error("Error fetching history:", error);
@@ -39,13 +34,8 @@ const History = () => {
     getHistory();
   }, [dateFilter]);
 
-  const handleDownload = (invoice) => {
-    setPrintInvoice(invoice);
-  };
-
   useEffect(() => {
     if (!printInvoice) return;
-
     const timer = setTimeout(() => {
       const prevTitle = document.title;
       document.title = `INV-${printInvoice.invoiceno}`;
@@ -53,7 +43,6 @@ const History = () => {
       document.title = prevTitle;
       setPrintInvoice(null);
     }, 100);
-
     return () => clearTimeout(timer);
   }, [printInvoice]);
 
@@ -82,33 +71,38 @@ const History = () => {
         </div>
       )}
 
-      <div className="no-print">
-        <div className="mb-6">
-          <h1 className="text-xl font-semibold text-zinc-900">History</h1>
+      <div className="no-print space-y-5">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold text-zinc-900">History</h1>
+          <div className="flex items-center gap-4 text-[13px] text-zinc-500">
+            <span>{data.length} invoice{data.length !== 1 ? 's' : ''}</span>
+            <span className="text-zinc-300">|</span>
+            <span className="font-medium text-zinc-900">₹{totalRevenue.toLocaleString("en-IN")}</span>
+          </div>
         </div>
 
-        <div className="mb-5 flex gap-3 items-end">
+        <div className="flex gap-3 items-end">
           <div>
-            <label className="block text-sm font-medium text-zinc-700 mb-1">From</label>
+            <label className="block text-[11px] font-medium text-zinc-500 uppercase tracking-wider mb-1">From</label>
             <input
               type="date"
-              className="input"
+              className="input text-[13px]"
               value={dateFilter.from}
               onChange={(e) => setDateFilter({ ...dateFilter, from: e.target.value })}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-zinc-700 mb-1">To</label>
+            <label className="block text-[11px] font-medium text-zinc-500 uppercase tracking-wider mb-1">To</label>
             <input
               type="date"
-              className="input"
+              className="input text-[13px]"
               value={dateFilter.to}
               onChange={(e) => setDateFilter({ ...dateFilter, to: e.target.value })}
             />
           </div>
           {(dateFilter.from || dateFilter.to) && (
             <button
-              className="btn btn-secondary"
+              className="btn btn-secondary text-[13px]"
               onClick={() => setDateFilter({ from: "", to: "" })}
             >
               Clear
@@ -116,85 +110,74 @@ const History = () => {
           )}
         </div>
 
-        {data.length === 0 ? (
-          <div className="text-center py-12 text-sm text-zinc-500">
-            No invoices found.
-          </div>
-        ) : (
-          <>
-            <div className="space-y-3">
-              {data.map((invoice, index) => (
-                <div className="card px-5 py-4" key={invoice.invoiceno || index}>
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <div className="text-sm font-medium text-zinc-900">
-                        Invoice #{invoice.invoiceno}
-                      </div>
-                      <div className="text-xs text-zinc-500">
-                        {new Date(invoice.date).toLocaleDateString()} · {invoice.paymed}
-                      </div>
+        <div className="card overflow-hidden">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-zinc-200 bg-zinc-50">
+                <th className="text-left text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5">Invoice</th>
+                <th className="text-left text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5">Customer</th>
+                <th className="text-left text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5">Items</th>
+                <th className="text-right text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5">Amount</th>
+                <th className="text-right text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5 w-16"></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-zinc-100">
+              {data.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-5 py-14 text-center text-sm text-zinc-400">
+                    No invoices found.
+                  </td>
+                </tr>
+              ) : data.map((invoice, index) => (
+                <tr className="hover:bg-zinc-50/50 transition-colors" key={invoice.invoiceno || index}>
+                  <td className="px-5 py-3">
+                    <div className="text-[13px] font-medium text-zinc-900">#{invoice.invoiceno}</div>
+                    <div className="text-[11px] text-zinc-400 mt-0.5">
+                      {new Date(invoice.date).toLocaleDateString()} · {invoice.paymed}
                     </div>
-                    <div className="flex items-center gap-3">
-                      <div className="text-lg font-semibold text-zinc-900">
-                        ₹{invoice.total?.toLocaleString("en-IN")}
-                      </div>
-                      <button
-                        className="btn btn-secondary py-1.5 px-2.5"
-                        onClick={() => handleDownload(invoice)}
-                        title="Download invoice"
-                      >
-                        <Download className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs mb-3">
-                    <div>
-                      <span className="text-zinc-500">Customer</span>
-                      <div className="text-zinc-900">{invoice.customer_name}</div>
-                    </div>
-                    <div>
-                      <span className="text-zinc-500">Tax ID</span>
-                      <div className="text-zinc-900">{invoice.tax_id || '—'}</div>
-                    </div>
-                    <div>
-                      <span className="text-zinc-500">Payment Ref</span>
-                      <div className="text-zinc-900">{invoice.payref || '—'}</div>
-                    </div>
-                    <div>
-                      <span className="text-zinc-500">Shipping</span>
-                      <div className="text-zinc-900">{invoice.shipping_method || '—'}</div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="text-xs text-zinc-500 mb-1">Items</div>
-                    <div className="flex flex-wrap gap-1.5">
-                      {invoice.items?.filter(item => item.count > 0).map((item, idx) => (
+                  </td>
+                  <td className="px-5 py-3">
+                    <div className="text-[13px] text-zinc-900">{invoice.customer_name}</div>
+                    {invoice.tax_id && (
+                      <div className="text-[11px] text-zinc-400 mt-0.5">{invoice.tax_id}</div>
+                    )}
+                  </td>
+                  <td className="px-5 py-3">
+                    <div className="flex flex-wrap gap-1">
+                      {invoice.items?.filter(item => item.count > 0).slice(0, 3).map((item, idx) => (
                         <span key={idx} className="badge badge-info">
                           {item.name} × {item.count}
                         </span>
-                      )) || (
-                        <span className="text-xs text-zinc-400">No items</span>
+                      ))}
+                      {(invoice.items?.filter(item => item.count > 0).length || 0) > 3 && (
+                        <span className="badge badge-info">
+                          +{invoice.items.filter(item => item.count > 0).length - 3}
+                        </span>
+                      )}
+                      {(!invoice.items || invoice.items.filter(item => item.count > 0).length === 0) && (
+                        <span className="text-[11px] text-zinc-400">—</span>
                       )}
                     </div>
-                  </div>
-                </div>
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <span className="text-[13px] font-medium text-zinc-900">
+                      ₹{invoice.total?.toLocaleString("en-IN")}
+                    </span>
+                  </td>
+                  <td className="px-5 py-3 text-right">
+                    <button
+                      className="w-7 h-7 rounded border border-zinc-200 flex items-center justify-center text-zinc-400 hover:text-zinc-600 hover:border-zinc-300 transition-colors ml-auto"
+                      onClick={() => setPrintInvoice(invoice)}
+                      title="Download PDF"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
+                  </td>
+                </tr>
               ))}
-            </div>
-
-            <div className="mt-5 flex items-center justify-between px-1 text-sm">
-              <span className="text-zinc-500">
-                {data.length} invoice{data.length !== 1 ? 's' : ''}
-                {(dateFilter.from || dateFilter.to) && ' (filtered)'}
-              </span>
-              <div>
-                <span className="text-zinc-500">Total </span>
-                <span className="font-semibold text-zinc-900">₹{totalRevenue.toLocaleString("en-IN")}</span>
-              </div>
-            </div>
-          </>
-        )}
+            </tbody>
+          </table>
+        </div>
       </div>
     </>
   );

@@ -17,75 +17,79 @@ const Dashboard = async () => {
   }
 
   const items = data || [];
-
   const totalValue = items.reduce((sum, item) => sum + (item.price * item.stock), 0);
   const lowStockItems = items.filter(item => item.stock <= 5).length;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900">Inventory</h1>
+        <h1 className="text-lg font-semibold text-zinc-900">Inventory</h1>
+        <div className="flex items-center gap-4 text-[13px] text-zinc-500">
+          <span>{items.length} products</span>
+          <span className="text-zinc-300">|</span>
+          <span>₹{totalValue.toLocaleString('en-IN')} value</span>
+          {lowStockItems > 0 && (
+            <>
+              <span className="text-zinc-300">|</span>
+              <span className="text-amber-600">{lowStockItems} low stock</span>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div>
         <Add />
       </div>
 
-      <div className="flex items-center gap-6 text-sm">
-        <div>
-          <span className="text-zinc-500">Products </span>
-          <span className="font-medium text-zinc-900">{items.length}</span>
-        </div>
-        <div>
-          <span className="text-zinc-500">Value </span>
-          <span className="font-medium text-zinc-900">₹{totalValue.toLocaleString('en-IN')}</span>
-        </div>
-        {lowStockItems > 0 && (
-          <div>
-            <span className="text-zinc-500">Low stock </span>
-            <span className="font-medium text-amber-600">{lowStockItems}</span>
-          </div>
-        )}
-      </div>
-
-      <div className="card">
-        {items.length === 0 ? (
-          <div className="px-5 py-12 text-center">
-            <Package className="w-8 h-8 text-zinc-300 mx-auto mb-3" />
-            <p className="text-sm text-zinc-500 mb-4">No items in inventory yet.</p>
-            <Add />
-          </div>
-        ) : (
-          <div className="divide-y divide-zinc-100">
-            {items.map((item, index) => (
-              <div className="px-5 py-3 hover:bg-zinc-50/60 transition-colors" key={item.id}>
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <span className="text-sm font-medium text-zinc-900">{item?.name}</span>
-                      <span className={`badge ${
-                        item?.stock > 10
-                          ? 'badge-success'
-                          : item?.stock > 0
-                          ? 'badge-warning'
-                          : 'badge-danger'
-                      }`}>
-                        {item?.stock > 0 ? `${item?.stock} in stock` : 'Out of stock'}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-3 text-xs text-zinc-500">
-                      <span>₹{item?.price?.toLocaleString('en-IN')}</span>
-                      <span className="text-zinc-300">/</span>
-                      <span>₹{(item?.price * item?.stock)?.toLocaleString('en-IN')} total value</span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center gap-2 ml-4">
+      <div className="card overflow-hidden">
+        <table className="w-full">
+          <thead>
+            <tr className="border-b border-zinc-200 bg-zinc-50">
+              <th className="text-left text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5">Product</th>
+              <th className="text-left text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5">Status</th>
+              <th className="text-left text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5">Value</th>
+              <th className="text-right text-[11px] font-medium text-zinc-500 uppercase tracking-wider px-5 py-2.5">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-zinc-100">
+            {items.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-5 py-14 text-center">
+                  <Package className="w-7 h-7 text-zinc-300 mx-auto mb-2" />
+                  <p className="text-sm text-zinc-400 mb-3">No items in inventory.</p>
+                  <Add />
+                </td>
+              </tr>
+            ) : items.map((item, index) => (
+              <tr className="hover:bg-zinc-50/50 transition-colors" key={item.id}>
+                <td className="px-5 py-3">
+                  <div className="text-[13px] font-medium text-zinc-900">{item?.name}</div>
+                  <div className="text-[11px] text-zinc-400 mt-0.5">ID: {item?.id}</div>
+                </td>
+                <td className="px-5 py-3">
+                  <span className={`badge ${
+                    item?.stock > 10
+                      ? 'badge-success'
+                      : item?.stock > 0
+                      ? 'badge-warning'
+                      : 'badge-danger'
+                  }`}>
+                    {item?.stock > 0 ? `${item?.stock} in stock` : 'Out of stock'}
+                  </span>
+                </td>
+                <td className="px-5 py-3 text-[13px] text-zinc-600">
+                  ₹{(item?.price * item?.stock)?.toLocaleString('en-IN')}
+                </td>
+                <td className="px-5 py-3">
+                  <div className="flex items-center justify-end gap-2">
                     <Price price={item?.price} id={item?.id} />
                     <Buttons itemdata={items[index]} />
                   </div>
-                </div>
-              </div>
+                </td>
+              </tr>
             ))}
-          </div>
-        )}
+          </tbody>
+        </table>
       </div>
     </div>
   );

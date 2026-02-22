@@ -36,29 +36,29 @@ const Add = () => {
 
   return (
     <>
-      <button className="btn btn-primary" onClick={() => setIsOpen(true)}>
-        <Plus className="w-4 h-4" />
+      <button className="btn btn-primary text-[13px]" onClick={() => setIsOpen(true)}>
+        <Plus className="w-3.5 h-3.5" />
         Add Product
       </button>
 
       {isOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={() => setIsOpen(false)}>
-          <div className="bg-white rounded-lg w-full max-w-md shadow-lg" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-white rounded-lg w-full max-w-md border border-zinc-200" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-200">
-              <h2 className="text-base font-semibold text-zinc-900">Add Product</h2>
+              <h2 className="text-[15px] font-semibold text-zinc-900">Add Product</h2>
               <button
                 onClick={() => setIsOpen(false)}
                 className="w-7 h-7 rounded flex items-center justify-center hover:bg-zinc-100 transition-colors"
               >
-                <X className="w-4 h-4 text-zinc-500" />
+                <X className="w-4 h-4 text-zinc-400" />
               </button>
             </div>
 
             <form onSubmit={handleAdd} className="p-5 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-1">Name</label>
+                <label className="block text-[13px] font-medium text-zinc-700 mb-1.5">Name</label>
                 <input
-                  className="input w-full"
+                  className="input w-full text-[13px]"
                   required
                   type="text"
                   placeholder="Product name"
@@ -71,9 +71,9 @@ const Add = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-medium text-zinc-700 mb-1">Price (₹)</label>
+                  <label className="block text-[13px] font-medium text-zinc-700 mb-1.5">Price (₹)</label>
                   <input
-                    className="input w-full"
+                    className="input w-full text-[13px]"
                     required
                     type="number"
                     placeholder="0"
@@ -86,9 +86,9 @@ const Add = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-zinc-700 mb-1">Stock</label>
+                  <label className="block text-[13px] font-medium text-zinc-700 mb-1.5">Stock</label>
                   <input
-                    className="input w-full"
+                    className="input w-full text-[13px]"
                     required
                     type="number"
                     placeholder="0"
@@ -102,9 +102,9 @@ const Add = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-zinc-700 mb-1">Product ID</label>
+                <label className="block text-[13px] font-medium text-zinc-700 mb-1.5">Product ID</label>
                 <input
-                  className="input w-full"
+                  className="input w-full text-[13px]"
                   type="text"
                   placeholder="Auto-generated if empty"
                   value={newdata.id || ''}
@@ -117,7 +117,7 @@ const Add = () => {
               <div className="flex gap-2 justify-end pt-3 border-t border-zinc-100">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-secondary text-[13px]"
                   onClick={() => setIsOpen(false)}
                   disabled={loading}
                 >
@@ -125,7 +125,7 @@ const Add = () => {
                 </button>
                 <button
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-primary text-[13px]"
                   disabled={loading}
                 >
                   {loading ? (
@@ -135,7 +135,7 @@ const Add = () => {
                     </>
                   ) : (
                     <>
-                      <Plus className="w-4 h-4" />
+                      <Plus className="w-3.5 h-3.5" />
                       Add
                     </>
                   )}

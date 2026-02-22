@@ -78,13 +78,13 @@
   }
 
   .btn-primary {
-    background-color: #2563eb;
+    background-color: #18181b;
     color: #ffffff;
-    border-color: #2563eb;
+    border-color: #18181b;
   }
   .btn-primary:hover {
-    background-color: #1d4ed8;
-    border-color: #1d4ed8;
+    background-color: #27272a;
+    border-color: #27272a;
   }
 
   .btn-secondary {
@@ -138,8 +138,8 @@
     outline: none;
   }
   .input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    border-color: #18181b;
+    box-shadow: 0 0 0 2px rgba(24, 24, 27, 0.1);
   }
 
   .card {
@@ -174,8 +174,8 @@
   }
 
   .badge-info {
-    background-color: #eff6ff;
-    color: #1d4ed8;
+    background-color: #f4f4f5;
+    color: #3f3f46;
   }
 
   .spinner {

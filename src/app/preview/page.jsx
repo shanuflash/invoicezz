@@ -18,10 +18,6 @@ const Preview = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [invoiceno, setInvoiceno] = useState("<generating>");
 
-  const handleGenerate = async () => {
-    setIsOpen(true);
-  };
-
   const handleInvoiceno = async () => {
     try {
       const { data: olddata, error } = await supabase
@@ -95,16 +91,20 @@ const Preview = () => {
     <>
       {isOpen && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 no-print">
-          <div className="bg-white rounded-lg p-5 w-full max-w-sm mx-4 shadow-lg">
-            <h2 className="text-base font-semibold text-zinc-900 mb-2">Generate Invoice</h2>
-            <p className="text-sm text-zinc-600 mb-5">
-              This will save the invoice and update stock levels. Please verify the details first.
-            </p>
-            <div className="flex gap-2 justify-end">
-              <button className="btn btn-secondary" onClick={() => setIsOpen(false)}>
+          <div className="bg-white rounded-lg w-full max-w-sm mx-4 border border-zinc-200">
+            <div className="px-5 py-4 border-b border-zinc-200">
+              <h2 className="text-[15px] font-semibold text-zinc-900">Confirm Generation</h2>
+            </div>
+            <div className="px-5 py-4">
+              <p className="text-[13px] text-zinc-600 leading-relaxed">
+                This will save the invoice and update stock levels. Make sure the details are correct.
+              </p>
+            </div>
+            <div className="flex gap-2 justify-end px-5 py-3 border-t border-zinc-100 bg-zinc-50 rounded-b-lg">
+              <button className="btn btn-secondary text-[13px]" onClick={() => setIsOpen(false)}>
                 Cancel
               </button>
-              <button className="btn btn-primary" onClick={handlePrint}>
+              <button className="btn btn-primary text-[13px]" onClick={handlePrint}>
                 Generate
               </button>
             </div>
@@ -112,11 +112,18 @@ const Preview = () => {
         </div>
       )}
 
-      <div className="no-print mb-6">
-        <h1 className="text-xl font-semibold text-zinc-900">Preview</h1>
+      <div className="no-print space-y-5">
+        <div className="flex items-center justify-between">
+          <h1 className="text-lg font-semibold text-zinc-900">Preview</h1>
+          <div className="flex items-center gap-4 text-[13px] text-zinc-500">
+            <span>INV/{invoiceno}/{new Date().getFullYear()}</span>
+            <span className="text-zinc-300">|</span>
+            <span className="font-medium text-zinc-900">₹{price.total.toLocaleString("en-IN")}</span>
+          </div>
+        </div>
       </div>
 
-      <div className="mb-6">
+      <div className="mt-5 mb-5">
         <InvoiceTemplate
           formData={formData}
           items={data}
@@ -125,11 +132,11 @@ const Preview = () => {
         />
       </div>
 
-      <div className="no-print flex items-center justify-between pt-5 border-t border-zinc-200 mt-6">
-        <Link href="/details" className="btn btn-secondary">
+      <div className="no-print flex items-center justify-between pt-5 border-t border-zinc-200">
+        <Link href="/details" className="btn btn-secondary text-[13px]">
           Back
         </Link>
-        <button className="btn btn-primary" onClick={handleGenerate}>
+        <button className="btn btn-primary text-[13px]" onClick={() => setIsOpen(true)}>
           Generate Invoice
         </button>
       </div>

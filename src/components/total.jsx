@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "@/redux/dataSlice";
-import { FileText, Trash2 } from "lucide-react";
+import { Trash2, ArrowRight } from "lucide-react";
 
 const Total = ({ invoice }) => {
   const dispatch = useDispatch();
@@ -12,63 +12,49 @@ const Total = ({ invoice }) => {
 
   const totalAmount = price.total;
   const totalItems = selectedItems.reduce((sum, item) => sum + item.count, 0);
-
-  if (totalAmount === 0 && !invoice) {
-    return null;
-  }
+  const isEmpty = totalAmount === 0;
 
   return (
-    <div className="sticky bottom-0 bg-zinc-50 border-t border-zinc-200 -mx-6 -mb-6 mt-6">
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div>
-              <span className="text-2xl font-semibold text-zinc-900">
-                ₹{totalAmount.toLocaleString("en-IN")}
-              </span>
-              <span className="text-sm text-zinc-500 ml-2">
-                {totalItems} {totalItems === 1 ? 'item' : 'items'}
-              </span>
-            </div>
-
-            {selectedItems.length > 0 && !invoice && (
-              <div className="flex gap-1.5 ml-2">
-                {selectedItems.slice(0, 3).map((item) => (
-                  <span key={item.id} className="badge badge-info">
-                    {item.name} × {item.count}
-                  </span>
-                ))}
-                {selectedItems.length > 3 && (
-                  <span className="badge badge-info">
-                    +{selectedItems.length - 3} more
-                  </span>
-                )}
-              </div>
-            )}
-          </div>
-
-          {!invoice && (
-            <div className="flex items-center gap-2">
-              <button
-                className="btn btn-ghost text-zinc-500 hover:text-red-600"
-                onClick={() => dispatch(clear())}
-                disabled={totalAmount === 0}
-              >
-                <Trash2 className="w-4 h-4" />
-                Clear
-              </button>
-              <Link href="/details">
-                <button
-                  className="btn btn-primary"
-                  disabled={totalAmount === 0}
-                >
-                  <FileText className="w-4 h-4" />
-                  Generate Invoice
-                </button>
-              </Link>
-            </div>
-          )}
+    <div className="sticky bottom-0 border-t border-zinc-200 -mx-6 -mb-6 mt-5 bg-zinc-50">
+      {selectedItems.length > 0 && !invoice && (
+        <div className="px-6 pt-3 pb-0 flex flex-wrap gap-x-4 gap-y-1 text-[12px] text-zinc-500">
+          {selectedItems.map((item) => (
+            <span key={item.id}>
+              {item.name} <span className="text-zinc-400">×{item.count}</span> <span className="text-zinc-900 font-medium">₹{(item.price * item.count).toLocaleString("en-IN")}</span>
+            </span>
+          ))}
         </div>
+      )}
+      <div className="px-6 py-3 flex items-center justify-between">
+        <div className="flex items-baseline gap-2">
+          <span className={`text-[15px] font-semibold ${isEmpty ? 'text-zinc-300' : 'text-zinc-900'}`}>
+            ₹{totalAmount.toLocaleString("en-IN")}
+          </span>
+          <span className={`text-[12px] ${isEmpty ? 'text-zinc-300' : 'text-zinc-400'}`}>
+            {isEmpty ? 'No items selected' : `${totalItems} ${totalItems === 1 ? 'item' : 'items'}`}
+          </span>
+        </div>
+
+        {!invoice && (
+          <div className="flex items-center gap-1.5">
+            <button
+              className="btn btn-ghost text-[13px] text-zinc-400 hover:text-red-600"
+              onClick={() => dispatch(clear())}
+              disabled={isEmpty}
+            >
+              <Trash2 className="w-3.5 h-3.5" />
+            </button>
+            <Link href={isEmpty ? "#" : "/details"} onClick={(e) => isEmpty && e.preventDefault()}>
+              <button
+                className="btn btn-primary text-[13px]"
+                disabled={isEmpty}
+              >
+                Continue
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );

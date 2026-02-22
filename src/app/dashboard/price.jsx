@@ -47,7 +47,7 @@ const Price = ({ price, id }) => {
         />
       ) : (
         <button
-          className="text-sm font-medium text-zinc-900 hover:text-blue-600 transition-colors"
+          className="text-sm font-medium text-zinc-900 hover:text-zinc-600 transition-colors"
           onClick={() => setIsEditing(true)}
         >
           {data?.toLocaleString('en-IN')}
