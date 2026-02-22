@@ -1,37 +1,62 @@
 "use client";
 import { supabase } from "@/app/supabase";
-import { useEffect, useState } from "react";
-import { Download } from "lucide-react";
+import { useEffect, useState, useCallback } from "react";
+import { Download, ChevronLeft, ChevronRight } from "lucide-react";
 import InvoiceTemplate from "@/components/invoice-template";
 import "../../styles/print.css";
 
+const PAGE_SIZE = 10;
+
 const History = () => {
   const [data, setData] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
+  const [page, setPage] = useState(0);
   const [dateFilter, setDateFilter] = useState({ from: "", to: "" });
   const [printInvoice, setPrintInvoice] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const getHistory = async () => {
+  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+
+  const getHistory = useCallback(async () => {
+    setLoading(true);
     try {
-      let query = supabase
+      let countQuery = supabase
+        .from("history")
+        .select("*", { count: "exact", head: true });
+
+      let dataQuery = supabase
         .from("history")
         .select("*")
-        .order("invoiceno", { ascending: false });
+        .order("invoiceno", { ascending: false })
+        .range(page * PAGE_SIZE, (page + 1) * PAGE_SIZE - 1);
 
       if (dateFilter.from && dateFilter.to) {
-        query = query.gte("date", dateFilter.from).lt("date", dateFilter.to);
+        countQuery = countQuery.gte("date", dateFilter.from).lt("date", dateFilter.to);
+        dataQuery = dataQuery.gte("date", dateFilter.from).lt("date", dateFilter.to);
       }
 
-      const { data: historyData, error } = await query;
-      if (error) throw error;
-      setData(historyData || []);
+      const [countResult, dataResult] = await Promise.all([countQuery, dataQuery]);
+
+      if (countResult.error) throw countResult.error;
+      if (dataResult.error) throw dataResult.error;
+
+      setTotalCount(countResult.count || 0);
+      setData(dataResult.data || []);
     } catch (error) {
       console.error("Error fetching history:", error);
       setData([]);
+      setTotalCount(0);
+    } finally {
+      setLoading(false);
     }
-  };
+  }, [page, dateFilter]);
 
   useEffect(() => {
     getHistory();
+  }, [getHistory]);
+
+  useEffect(() => {
+    setPage(0);
   }, [dateFilter]);
 
   useEffect(() => {
@@ -46,7 +71,7 @@ const History = () => {
     return () => clearTimeout(timer);
   }, [printInvoice]);
 
-  const totalRevenue = data.reduce((acc, item) => acc + (item.total || 0), 0);
+  const pageRevenue = data.reduce((acc, item) => acc + (item.total || 0), 0);
 
   return (
     <>
@@ -75,9 +100,9 @@ const History = () => {
         <div className="flex items-center justify-between">
           <h1 className="text-lg font-semibold text-zinc-900">History</h1>
           <div className="flex items-center gap-4 text-[13px] text-zinc-500">
-            <span>{data.length} invoice{data.length !== 1 ? 's' : ''}</span>
+            <span>{totalCount} invoice{totalCount !== 1 ? 's' : ''}</span>
             <span className="text-zinc-300">|</span>
-            <span className="font-medium text-zinc-900">₹{totalRevenue.toLocaleString("en-IN")}</span>
+            <span className="font-medium text-zinc-900">₹{pageRevenue.toLocaleString("en-IN")}</span>
           </div>
         </div>
 
@@ -110,6 +135,54 @@ const History = () => {
           )}
         </div>
 
+        {totalCount > PAGE_SIZE && (
+          <div className="flex items-center justify-between">
+            <span className="text-[13px] text-zinc-500">
+              Showing {page * PAGE_SIZE + 1}–{Math.min((page + 1) * PAGE_SIZE, totalCount)} of {totalCount}
+            </span>
+            <div className="flex items-center gap-1">
+              <button
+                className="w-8 h-8 rounded border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-50 hover:border-zinc-300 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                onClick={() => setPage(p => p - 1)}
+                disabled={page === 0}
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i)
+                .filter(i => i === 0 || i === totalPages - 1 || Math.abs(i - page) <= 1)
+                .reduce((acc, i, idx, arr) => {
+                  if (idx > 0 && i - arr[idx - 1] > 1) acc.push("...");
+                  acc.push(i);
+                  return acc;
+                }, [])
+                .map((item, idx) =>
+                  item === "..." ? (
+                    <span key={`ellipsis-${idx}`} className="w-8 h-8 flex items-center justify-center text-[13px] text-zinc-400">…</span>
+                  ) : (
+                    <button
+                      key={item}
+                      className={`w-8 h-8 rounded border text-[13px] flex items-center justify-center transition-colors ${
+                        item === page
+                          ? "bg-zinc-900 text-white border-zinc-900"
+                          : "border-zinc-200 text-zinc-600 hover:bg-zinc-50 hover:border-zinc-300"
+                      }`}
+                      onClick={() => setPage(item)}
+                    >
+                      {item + 1}
+                    </button>
+                  )
+                )}
+              <button
+                className="w-8 h-8 rounded border border-zinc-200 flex items-center justify-center text-zinc-500 hover:bg-zinc-50 hover:border-zinc-300 transition-colors disabled:opacity-40 disabled:pointer-events-none"
+                onClick={() => setPage(p => p + 1)}
+                disabled={page >= totalPages - 1}
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="card overflow-hidden">
           <table className="w-full">
             <thead>
@@ -122,7 +195,14 @@ const History = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-zinc-100">
-              {data.length === 0 ? (
+              {loading ? (
+                <tr>
+                  <td colSpan={5} className="px-5 py-14 text-center text-sm text-zinc-400">
+                    <div className="spinner mx-auto mb-2" />
+                    Loading...
+                  </td>
+                </tr>
+              ) : data.length === 0 ? (
                 <tr>
                   <td colSpan={5} className="px-5 py-14 text-center text-sm text-zinc-400">
                     No invoices found.
