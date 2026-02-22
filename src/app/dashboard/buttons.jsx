@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/app/supabase";
 import { useRouter } from "next/navigation";
-import { Trash2, Minus, Plus, Edit3 } from "lucide-react";
+import { Trash2, Minus, Plus } from "lucide-react";
 
 const Buttons = ({ itemdata }) => {
   const router = useRouter();
@@ -17,7 +17,7 @@ const Buttons = ({ itemdata }) => {
           stock: parseInt(data.stock) || 0,
         })
         .eq("id", data.id);
-      
+
       if (error) throw error;
     } catch (error) {
       console.error("Error updating stock:", error);
@@ -40,19 +40,19 @@ const Buttons = ({ itemdata }) => {
   };
 
   const handleDelete = async () => {
-    if (confirm(`Are you sure you want to delete "${data.name}"? This action cannot be undone.`)) {
+    if (confirm(`Delete "${data.name}"?`)) {
       try {
         const { error } = await supabase
           .from("inventory")
           .delete()
           .eq("id", data.id);
-        
+
         if (error) throw error;
-        
+
         router.refresh();
       } catch (error) {
         console.error("Error deleting item:", error);
-        alert("Failed to delete item. Please try again.");
+        alert("Failed to delete item.");
       }
     }
   };
@@ -62,28 +62,27 @@ const Buttons = ({ itemdata }) => {
   }, [data.stock]);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5">
       <button
-        className="btn btn-ghost text-red-600 hover:bg-red-50 hover:text-red-700 p-2"
+        className="btn btn-ghost text-zinc-400 hover:text-red-600 p-1.5"
         onClick={handleDelete}
-        title="Delete product"
+        title="Delete"
       >
-        <Trash2 className="w-4 h-4" />
+        <Trash2 className="w-3.5 h-3.5" />
       </button>
 
-      <div className="flex items-center gap-1 bg-gray-50 rounded-xl p-1">
+      <div className="flex items-center gap-1 border border-zinc-200 rounded-md p-0.5">
         <button
-          className="w-8 h-8 rounded-lg border border-gray-200 bg-white flex items-center justify-center font-semibold text-gray-600 hover:bg-gray-50 hover:border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          className="w-7 h-7 rounded flex items-center justify-center text-zinc-500 hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
           onClick={decrement}
           disabled={data.stock <= 0}
-          title="Decrease stock"
         >
           <Minus className="w-3 h-3" />
         </button>
-        
+
         {isEditing ? (
           <input
-            className="w-16 text-center input text-sm font-semibold bg-white border-gray-200"
+            className="w-12 text-center text-sm font-medium border-0 focus:outline-none focus:ring-0 bg-transparent"
             type="number"
             value={data?.stock}
             onChange={handleInput}
@@ -94,18 +93,16 @@ const Buttons = ({ itemdata }) => {
           />
         ) : (
           <button
-            className="w-16 h-8 text-center text-sm font-semibold text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="w-12 h-7 text-center text-sm font-medium text-zinc-900 hover:bg-zinc-50 rounded transition-colors"
             onClick={() => setIsEditing(true)}
-            title="Click to edit stock"
           >
             {data?.stock}
           </button>
         )}
-        
+
         <button
-          className="w-8 h-8 rounded-lg border border-gray-200 bg-white flex items-center justify-center font-semibold text-gray-600 hover:bg-gray-50 hover:border-gray-300 transition-all"
+          className="w-7 h-7 rounded flex items-center justify-center text-zinc-500 hover:bg-zinc-100 transition-colors"
           onClick={increment}
-          title="Increase stock"
         >
           <Plus className="w-3 h-3" />
         </button>

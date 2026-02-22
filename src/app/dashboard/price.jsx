@@ -1,7 +1,6 @@
 "use client";
 import { supabase } from "@/app/supabase";
 import { useEffect, useState } from "react";
-import { IndianRupee, Edit3 } from "lucide-react";
 
 const Price = ({ price, id }) => {
   const [data, setData] = useState(price);
@@ -18,7 +17,7 @@ const Price = ({ price, id }) => {
         .from("inventory")
         .update({ price: parseFloat(data) || 0 })
         .eq("id", id);
-      
+
       if (error) throw error;
     } catch (error) {
       console.error("Error updating price:", error);
@@ -32,31 +31,28 @@ const Price = ({ price, id }) => {
   }, [data]);
 
   return (
-    <div className="flex items-center gap-1 bg-gray-50 rounded-xl p-1">
-      <div className="flex items-center gap-1 px-2">
-        <IndianRupee className="w-3 h-3 text-gray-500" />
-        {isEditing ? (
-          <input
-            className="w-20 text-center input text-sm font-semibold bg-white border-gray-200"
-            type="number"
-            step="0.01"
-            min="0"
-            value={data}
-            onChange={handleInput}
-            onBlur={() => setIsEditing(false)}
-            onKeyDown={(e) => e.key === 'Enter' && setIsEditing(false)}
-            autoFocus
-          />
-        ) : (
-          <button
-            className="text-sm font-semibold text-gray-900 hover:text-indigo-600 transition-colors"
-            onClick={() => setIsEditing(true)}
-            title="Click to edit price"
-          >
-            {data?.toLocaleString('en-IN')}
-          </button>
-        )}
-      </div>
+    <div className="flex items-center border border-zinc-200 rounded-md px-2 py-1">
+      <span className="text-xs text-zinc-400 mr-1">₹</span>
+      {isEditing ? (
+        <input
+          className="w-16 text-center text-sm font-medium border-0 focus:outline-none focus:ring-0 bg-transparent"
+          type="number"
+          step="0.01"
+          min="0"
+          value={data}
+          onChange={handleInput}
+          onBlur={() => setIsEditing(false)}
+          onKeyDown={(e) => e.key === 'Enter' && setIsEditing(false)}
+          autoFocus
+        />
+      ) : (
+        <button
+          className="text-sm font-medium text-zinc-900 hover:text-blue-600 transition-colors"
+          onClick={() => setIsEditing(true)}
+        >
+          {data?.toLocaleString('en-IN')}
+        </button>
+      )}
     </div>
   );
 };

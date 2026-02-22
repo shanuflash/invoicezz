@@ -24,7 +24,7 @@ const dataSlice = createSlice({
     price: {
       total: 0,
     },
-    loading: false,
+    loading: true,
     error: null,
   },
   reducers: {

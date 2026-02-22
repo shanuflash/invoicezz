@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import { clear } from "@/redux/dataSlice";
-import { FileText, Trash2, Calculator } from "lucide-react";
+import { FileText, Trash2 } from "lucide-react";
 
 const Total = ({ invoice }) => {
   const dispatch = useDispatch();
@@ -18,56 +18,21 @@ const Total = ({ invoice }) => {
   }
 
   return (
-    <div className="sticky bottom-0 bg-white border-t border-gray-100 -mx-8 -mb-8 mt-8">
-      <div className="p-6">
-        <div className="card p-6 bg-gradient-to-r from-sky-50 to-cyan-50 border-sky-100">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-sky-500 to-cyan-600 rounded-xl flex items-center justify-center">
-                  <Calculator className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600 mb-1">Invoice Summary</div>
-                  <div className="flex items-center gap-4">
-                    <span className="text-3xl font-bold gradient-text">
-                      ₹{totalAmount.toLocaleString("en-IN")}
-                    </span>
-                    <div className="text-sm text-gray-500">
-                      {totalItems} {totalItems === 1 ? 'item' : 'items'} • {selectedItems.length} {selectedItems.length === 1 ? 'product' : 'products'}
-                    </div>
-                  </div>
-                </div>
-              </div>
+    <div className="sticky bottom-0 bg-zinc-50 border-t border-zinc-200 -mx-6 -mb-6 mt-6">
+      <div className="px-6 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div>
+              <span className="text-2xl font-semibold text-zinc-900">
+                ₹{totalAmount.toLocaleString("en-IN")}
+              </span>
+              <span className="text-sm text-zinc-500 ml-2">
+                {totalItems} {totalItems === 1 ? 'item' : 'items'}
+              </span>
             </div>
-            
-            {!invoice && (
-              <div className="flex items-center gap-3">
-                <button 
-                  className="btn btn-ghost text-gray-600 hover:text-red-600" 
-                  onClick={() => dispatch(clear())}
-                  disabled={totalAmount === 0}
-                >
-                  <Trash2 className="w-4 h-4" />
-                  Clear All
-                </button>
-                <Link href="/details">
-                  <button 
-                    className="btn btn-primary"
-                    disabled={totalAmount === 0}
-                  >
-                    <FileText className="w-4 h-4" />
-                    Generate Invoice
-                  </button>
-                </Link>
-              </div>
-            )}
-          </div>
-          
-          {selectedItems.length > 0 && !invoice && (
-            <div className="mt-4 pt-4 border-t border-sky-200">
-              <div className="text-sm text-gray-600 mb-2">Selected Items:</div>
-              <div className="flex flex-wrap gap-2">
+
+            {selectedItems.length > 0 && !invoice && (
+              <div className="flex gap-1.5 ml-2">
                 {selectedItems.slice(0, 3).map((item) => (
                   <span key={item.id} className="badge badge-info">
                     {item.name} × {item.count}
@@ -79,6 +44,28 @@ const Total = ({ invoice }) => {
                   </span>
                 )}
               </div>
+            )}
+          </div>
+
+          {!invoice && (
+            <div className="flex items-center gap-2">
+              <button
+                className="btn btn-ghost text-zinc-500 hover:text-red-600"
+                onClick={() => dispatch(clear())}
+                disabled={totalAmount === 0}
+              >
+                <Trash2 className="w-4 h-4" />
+                Clear
+              </button>
+              <Link href="/details">
+                <button
+                  className="btn btn-primary"
+                  disabled={totalAmount === 0}
+                >
+                  <FileText className="w-4 h-4" />
+                  Generate Invoice
+                </button>
+              </Link>
             </div>
           )}
         </div>

@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { supabase } from "@/app/supabase";
 import { useRouter } from "next/navigation";
-import { Plus, X, Package } from "lucide-react";
+import { Plus, X } from "lucide-react";
 
 export const revalidate = 0;
 
@@ -15,14 +15,14 @@ const Add = () => {
   const handleAdd = async (e) => {
     e.preventDefault();
     setLoading(true);
-    
+
     try {
       const { error: insertError } = await supabase
         .from("inventory")
         .insert(newdata);
-      
+
       if (insertError) throw insertError;
-      
+
       setIsOpen(false);
       setnewData({});
       router.refresh();
@@ -34,48 +34,34 @@ const Add = () => {
     }
   };
 
-  const handlegenerate = () => {
-    setIsOpen(true);
-  };
-
   return (
     <>
-      <button className="btn btn-primary" onClick={handlegenerate}>
+      <button className="btn btn-primary" onClick={() => setIsOpen(true)}>
         <Plus className="w-4 h-4" />
         Add Product
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setIsOpen(false)}>
-          <div className="bg-white rounded-2xl w-full max-w-lg shadow-2xl animate-scale-in" onClick={(e) => e.stopPropagation()}>
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gradient-to-br from-sky-500 to-cyan-600 rounded-xl flex items-center justify-center">
-                  <Package className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h2 className="text-xl font-semibold text-gray-900">Add New Product</h2>
-                  <p className="text-sm text-gray-500">Add a new item to your inventory</p>
-                </div>
-              </div>
-              <button 
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={() => setIsOpen(false)}>
+          <div className="bg-white rounded-lg w-full max-w-md shadow-lg" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-200">
+              <h2 className="text-base font-semibold text-zinc-900">Add Product</h2>
+              <button
                 onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                className="w-7 h-7 rounded flex items-center justify-center hover:bg-zinc-100 transition-colors"
               >
-                <X className="w-4 h-4 text-gray-500" />
+                <X className="w-4 h-4 text-zinc-500" />
               </button>
             </div>
-            
-            {/* Form */}
-            <form onSubmit={handleAdd} className="p-6 space-y-5">
+
+            <form onSubmit={handleAdd} className="p-5 space-y-4">
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Product Name</label>
+                <label className="block text-sm font-medium text-zinc-700 mb-1">Name</label>
                 <input
                   className="input w-full"
                   required
                   type="text"
-                  placeholder="Enter product name"
+                  placeholder="Product name"
                   value={newdata.name || ''}
                   onChange={(e) =>
                     setnewData((prev) => ({ ...prev, name: e.target.value }))
@@ -83,14 +69,14 @@ const Add = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Price (₹)</label>
+                  <label className="block text-sm font-medium text-zinc-700 mb-1">Price (₹)</label>
                   <input
                     className="input w-full"
                     required
                     type="number"
-                    placeholder="0.00"
+                    placeholder="0"
                     step="0.01"
                     min="0"
                     value={newdata.price || ''}
@@ -100,7 +86,7 @@ const Add = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Stock Quantity</label>
+                  <label className="block text-sm font-medium text-zinc-700 mb-1">Stock</label>
                   <input
                     className="input w-full"
                     required
@@ -116,7 +102,7 @@ const Add = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Product ID (Optional)</label>
+                <label className="block text-sm font-medium text-zinc-700 mb-1">Product ID</label>
                 <input
                   className="input w-full"
                   type="text"
@@ -126,20 +112,19 @@ const Add = () => {
                     setnewData((prev) => ({ ...prev, id: e.target.value }))
                   }
                 />
-                <p className="text-xs text-gray-500 mt-1">Leave empty to auto-generate a unique ID</p>
               </div>
 
-              <div className="flex gap-3 justify-end pt-4 border-t border-gray-100">
-                <button 
-                  type="button" 
-                  className="btn btn-secondary" 
+              <div className="flex gap-2 justify-end pt-3 border-t border-zinc-100">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
                   onClick={() => setIsOpen(false)}
                   disabled={loading}
                 >
                   Cancel
                 </button>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   className="btn btn-primary"
                   disabled={loading}
                 >
@@ -151,7 +136,7 @@ const Add = () => {
                   ) : (
                     <>
                       <Plus className="w-4 h-4" />
-                      Add Product
+                      Add
                     </>
                   )}
                 </button>
