@@ -4,27 +4,45 @@ import { supabase } from "@/app/supabase";
 import { useRouter } from "next/navigation";
 import { Plus, X } from "lucide-react";
 
-export const revalidate = 0;
-
 const Add = () => {
   const [newdata, setnewData] = useState({});
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  const closeModal = () => {
+    setIsOpen(false);
+    setnewData({});
+  };
+
+  const getNextId = async () => {
+    const { data: maxRow, error } = await supabase
+      .from("inventory")
+      .select("id")
+      .order("id", { ascending: false })
+      .limit(1);
+    if (error) throw error;
+    return maxRow && maxRow.length > 0 ? maxRow[0].id + 1 : 1;
+  };
+
   const handleAdd = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
+      const id = (newdata.id && newdata.id.trim() !== '')
+        ? parseInt(newdata.id, 10)
+        : await getNextId();
+
+      if (isNaN(id)) throw new Error("Product ID must be a number");
+
       const { error: insertError } = await supabase
         .from("inventory")
-        .insert(newdata);
+        .insert({ id, name: newdata.name, price: newdata.price, stock: newdata.stock });
 
       if (insertError) throw insertError;
 
-      setIsOpen(false);
-      setnewData({});
+      closeModal();
       router.refresh();
     } catch (error) {
       console.error("Error adding item:", error);
@@ -42,12 +60,12 @@ const Add = () => {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={() => setIsOpen(false)}>
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4" onClick={closeModal}>
           <div className="bg-white rounded-lg w-full max-w-md border border-zinc-200" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-200">
               <h2 className="text-[15px] font-semibold text-zinc-900">Add Product</h2>
               <button
-                onClick={() => setIsOpen(false)}
+                onClick={closeModal}
                 className="w-7 h-7 rounded flex items-center justify-center hover:bg-zinc-100 transition-colors"
               >
                 <X className="w-4 h-4 text-zinc-400" />
@@ -118,7 +136,7 @@ const Add = () => {
                 <button
                   type="button"
                   className="btn btn-secondary text-[13px]"
-                  onClick={() => setIsOpen(false)}
+                  onClick={closeModal}
                   disabled={loading}
                 >
                   Cancel

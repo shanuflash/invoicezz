@@ -1,8 +1,9 @@
 "use client";
+import { useEffect } from "react";
 import Total from "@/components/total";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment, input } from "@/redux/dataSlice";
+import { decrement, increment, input, fetchData } from "@/redux/dataSlice";
 import { Package, Minus, Plus } from "lucide-react";
 
 const Home = () => {
@@ -11,6 +12,10 @@ const Home = () => {
   const loading = useSelector((state) => state.data.loading);
   const totalPrice = useSelector((state) => state.data.price.total);
   const selectedItems = data.filter(item => item.count > 0);
+
+  useEffect(() => {
+    dispatch(fetchData());
+  }, [dispatch]);
 
   if (loading) {
     return (

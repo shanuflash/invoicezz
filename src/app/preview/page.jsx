@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { empty } from "@/redux/formSlice";
-import { clear } from "@/redux/dataSlice";
+import { clear, fetchData } from "@/redux/dataSlice";
 import "../../styles/print.css";
 
 const Preview = () => {
@@ -78,6 +78,7 @@ const Preview = () => {
 
       dispatch(empty());
       dispatch(clear());
+      await dispatch(fetchData());
       document.title = "Invoicezz";
       router.push("/");
     } catch (error) {
