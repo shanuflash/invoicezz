@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 import Sidebar from "../components/sidebar";
 import Providers from "@/redux/provider";
+import { PortalWidget } from "shanu-portal-widget";
 
 export const metadata = {
   title: "Invoicezz",
@@ -22,6 +23,7 @@ export default function RootLayout({ children }) {
               </div>
             </main>
           </div>
+          <PortalWidget />
         </body>
       </Providers>
     </html>
