@@ -60,8 +60,8 @@ importers:
         specifier: ^9.2.0
         version: 9.2.0(react@19.2.1)(redux@5.0.1)
       shanu-portal-widget:
-        specifier: 1.0.7
-        version: 1.0.7(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
+        specifier: ^1.0.8
+        version: 1.0.8(react-dom@19.2.1(react@19.2.1))(react@19.2.1)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
@@ -1091,8 +1091,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  shanu-portal-widget@1.0.7:
-    resolution: {integrity: sha512-a/VV1mhSEzLTPSIk05n7JZOS2xQcc4+2eqboiepl27CX/B2CQQEFu0HBM+iHEksZdiib7kiqfVnGcGQ96uTshg==}
+  shanu-portal-widget@1.0.8:
+    resolution: {integrity: sha512-T9lDe5DWj0N83cG6lKhgkf5hpMpg4NCU2/rixH+FDAp3OJGGvQHDkVzF5JsgT9YFlFIO6CuOIrox0HQ02nIBig==}
     peerDependencies:
       react: '>=18.0.0'
       react-dom: '>=18.0.0'
@@ -1977,7 +1977,7 @@ snapshots:
   semver@7.8.0:
     optional: true
 
-  shanu-portal-widget@1.0.7(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
+  shanu-portal-widget@1.0.8(react-dom@19.2.1(react@19.2.1))(react@19.2.1):
     dependencies:
       react: 19.2.1
       react-dom: 19.2.1(react@19.2.1)
