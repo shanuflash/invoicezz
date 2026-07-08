@@ -2,6 +2,7 @@ import "../styles/globals.css";
 import Sidebar from "../components/sidebar";
 import Providers from "@/redux/provider";
 import { PortalWidget } from "shanu-portal-widget";
+import { Analytics } from "@vercel/analytics/next";
 
 export const metadata = {
   title: "Invoicezz",
@@ -24,6 +25,7 @@ export default function RootLayout({ children }) {
             </main>
           </div>
           <PortalWidget />
+          <Analytics />
         </body>
       </Providers>
     </html>
